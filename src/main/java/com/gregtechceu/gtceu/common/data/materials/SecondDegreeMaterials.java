@@ -61,7 +61,7 @@ public class SecondDegreeMaterials {
                 .gem().ore(2, 1)
                 .color(0xa7e404).secondaryColor(0x166439).iconSet(RUBY)
                 .appendFlags(EXT_METAL, NO_SMASHING, NO_SMELTING, HIGH_SIFTER_OUTPUT)
-                .components(Magnesium, 2, Iron, 1, SiliconDioxide, 2)
+                .components(Magnesium, 1, Iron, 1, Silicon, 1, Oxygen, 4)
                 .buildAndRegister();
 
         Opal = new Material.Builder(GTCEu.id("opal"))

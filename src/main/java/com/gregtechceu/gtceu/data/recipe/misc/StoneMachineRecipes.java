@@ -203,13 +203,13 @@ public class StoneMachineRecipes {
                             .wall(Items.POLISHED_BLACKSTONE_WALL)
                             .pressurePlate(Items.POLISHED_BLACKSTONE_PRESSURE_PLATE)
                             .material(GTMaterials.Blackstone)
+                            .button(Items.POLISHED_BLACKSTONE_BUTTON)
                             .registerAllMaterialInfo()
                             .build(),
                     new StoneTypeEntry.Builder(mcModID, "polished_blackstone_brick")
                             .stone(Items.POLISHED_BLACKSTONE_BRICKS)
                             .slab(Items.POLISHED_BLACKSTONE_BRICK_SLAB)
                             .stair(Items.POLISHED_BLACKSTONE_BRICK_STAIRS)
-                            .button(Items.POLISHED_BLACKSTONE_BUTTON)
                             .wall(Items.POLISHED_BLACKSTONE_BRICK_WALL)
                             .material(GTMaterials.Blackstone)
                             .registerAllMaterialInfo()
@@ -595,30 +595,6 @@ public class StoneMachineRecipes {
             }
         }
 
-        if (entry.button != null) {
-            if (ConfigHolder.INSTANCE.recipes.hardRedstoneRecipes && entry.pressurePlate != null) {
-                VanillaRecipeHelper.addShapedRecipe(provider, "stone_button", new ItemStack(entry.button, 6), "sP",
-                        'P', entry.pressurePlate);
-            }
-
-            if (entry.slab != null) {
-                GTRecipeTypes.CUTTER_RECIPES.recipeBuilder("cut_" + entry.stoneName + "slab_into_button")
-                        .inputItems(entry.slab)
-                        .outputItems(entry.button, 3)
-                        .duration(60)
-                        .EUt(8)
-                        .save(provider);
-            } else {
-                GTRecipeTypes.FORMING_PRESS_RECIPES.recipeBuilder("cut_" + entry.stoneName + "_into_button")
-                        .inputItems(entry.stone)
-                        .notConsumable(GTItems.SHAPE_MOLD_NUGGET)
-                        .outputItems(entry.button, 6)
-                        .duration(60)
-                        .EUt(8)
-                        .save(provider);
-            }
-        }
-
         if (entry.pressurePlate != null) {
 
             if (ConfigHolder.INSTANCE.recipes.hardRedstoneRecipes && entry.slab != null) {
@@ -637,6 +613,30 @@ public class StoneMachineRecipes {
                         .save(provider);
             } else if (ConfigHolder.INSTANCE.recipes.removeVanillaBlockRecipes) {
 
+            }
+        }
+
+        if (entry.button != null) {
+            if (ConfigHolder.INSTANCE.recipes.hardRedstoneRecipes && entry.pressurePlate != null) {
+                VanillaRecipeHelper.addShapedRecipe(provider, "stone_button", new ItemStack(entry.button, 6), "sP",
+                        'P', entry.pressurePlate);
+            }
+
+            if (entry.pressurePlate != null) {
+                GTRecipeTypes.CUTTER_RECIPES.recipeBuilder("cut_" + entry.stoneName + "slab_into_button")
+                        .inputItems(entry.pressurePlate)
+                        .outputItems(entry.button, 3)
+                        .duration(60)
+                        .EUt(8)
+                        .save(provider);
+            } else {
+                GTRecipeTypes.FORMING_PRESS_RECIPES.recipeBuilder("cut_" + entry.stoneName + "_into_button")
+                        .inputItems(entry.stone)
+                        .notConsumable(GTItems.SHAPE_MOLD_NUGGET)
+                        .outputItems(entry.button, 6)
+                        .duration(60)
+                        .EUt(8)
+                        .save(provider);
             }
         }
 

@@ -480,6 +480,11 @@ public class ConfigHolder {
                 "This does nothing if enableCleanroom is false.", "Default: false" })
         public boolean cleanMultiblocks = false;
         @Configurable
+        @Configurable.Comment({
+                "Whether the miner should attempt to replace the block mined with a cobbled version of the ore",
+                "Default: true" })
+        public boolean replaceWithCobbleVersion = true;
+        @Configurable
         @Configurable.Comment({ "Block to replace mined ores with in the miner and multiblock miner.",
                 "Default: minecraft:cobblestone" })
         public String replaceMinedBlocksWith = "minecraft:cobblestone";
@@ -689,7 +694,7 @@ public class ConfigHolder {
         @Configurable.Range(min = 0, max = 14)
         public int voltageTierQuarkTech = 5;
         @Configurable
-        @Configurable.Comment({ "Advanced QuarkTech Suit Chestplate Voltage Tier.", "Default: 5 (LuV)" })
+        @Configurable.Comment({ "Advanced QuarkTech Suit Chestplate Voltage Tier.", "Default: 6 (LuV)" })
         @Configurable.Range(min = 0, max = 14)
         public int voltageTierAdvQuarkTech = 6;
         @Configurable

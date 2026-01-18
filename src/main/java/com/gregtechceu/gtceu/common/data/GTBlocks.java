@@ -46,6 +46,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.grower.AbstractTreeGrower;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
@@ -579,7 +580,7 @@ public class GTBlocks {
 
     private static BlockEntry<BatteryBlock> createBatteryBlock(IBatteryData batteryData) {
         var batteryBlock = REGISTRATE.block("%s_battery".formatted(batteryData.getBatteryName()),
-                p -> new BatteryBlock(p, batteryData))
+                        p -> new BatteryBlock(p, batteryData))
                 .initialProperties(() -> Blocks.IRON_BLOCK)
                 .properties(p -> p.isValidSpawn((state, level, pos, entityType) -> false))
                 .blockstate(GTModels.createBatteryBlockModel(batteryData))
@@ -1164,6 +1165,7 @@ public class GTBlocks {
             GTCEu.id("block/casings/signs/machine_casing_stripes_b"));
 
     public static Table<StoneBlockType, StoneTypes, BlockEntry<Block>> STONE_BLOCKS;
+    public static Map<TagPrefix, Supplier<BlockState>> COBBLE_BLOCKS = new HashMap<>();
 
     public static BlockEntry<Block> RED_GRANITE;
     public static BlockEntry<Block> MARBLE;
@@ -1218,7 +1220,7 @@ public class GTBlocks {
                         .build();
                 if (type == StoneBlockType.STONE && strata.isNatural()) {
                     entry.tag(BlockTags.STONE_ORE_REPLACEABLES, BlockTags.BASE_STONE_OVERWORLD,
-                            BlockTags.DRIPSTONE_REPLACEABLE, BlockTags.MOSS_REPLACEABLE)
+                                    BlockTags.DRIPSTONE_REPLACEABLE, BlockTags.MOSS_REPLACEABLE)
                             .blockstate(GTModels.randomRotatedModel(GTCEu.id(ModelProvider.BLOCK_FOLDER + "/stones/" +
                                     strata.getSerializedName() + "/" + type.id)));
                 } else {
@@ -1238,6 +1240,12 @@ public class GTBlocks {
             }
         }
         STONE_BLOCKS = builder.build();
+
+        STONE_BLOCKS.row(StoneBlockType.COBBLE).forEach((ore, block) -> {
+            if (ore.generateBlocks) {
+                GTBlocks.registerCobbleBlock(ore.getTagPrefix(), block::getDefaultState);
+            }
+        });
 
         RED_GRANITE = STONE_BLOCKS.get(StoneBlockType.STONE, StoneTypes.RED_GRANITE);
         MARBLE = STONE_BLOCKS.get(StoneBlockType.STONE, StoneTypes.MARBLE);
@@ -1372,9 +1380,18 @@ public class GTBlocks {
         };
     }
 
+    public static void registerCobbleBlock(TagPrefix orePrefix, Supplier<BlockState> state) {
+        COBBLE_BLOCKS.put(orePrefix, state);
+    }
+
+    public static void removeCobbleBlock(TagPrefix orePrefix) {
+        COBBLE_BLOCKS.remove(orePrefix);
+    }
+
     public static void init() {
         // Decor Blocks
         generateStoneBlocks();
+        initializeCobbleReplacements();
 
         // Procedural Blocks
         REGISTRATE.creativeModeTab(() -> GTCreativeModeTabs.MATERIAL_BLOCK);
@@ -1403,6 +1420,27 @@ public class GTBlocks {
         GCYMBlocks.init();
     }
 
+    private static void initializeCobbleReplacements() {
+        // replacement blocks for mc based stone types
+        registerCobbleBlock(TagPrefix.ore, Blocks.COBBLESTONE::defaultBlockState);
+        registerCobbleBlock(TagPrefix.oreDeepslate, Blocks.COBBLED_DEEPSLATE::defaultBlockState);
+        registerCobbleBlock(TagPrefix.oreAndesite, Blocks.ANDESITE::defaultBlockState);
+        registerCobbleBlock(TagPrefix.oreDiorite, Blocks.DIORITE::defaultBlockState);
+        registerCobbleBlock(TagPrefix.oreGranite, Blocks.GRANITE::defaultBlockState);
+        registerCobbleBlock(TagPrefix.oreRedGranite,
+                STONE_BLOCKS.get(StoneBlockType.COBBLE, StoneTypes.RED_GRANITE)::getDefaultState);
+        registerCobbleBlock(TagPrefix.oreMarble,
+                STONE_BLOCKS.get(StoneBlockType.COBBLE, StoneTypes.MARBLE)::getDefaultState);
+        registerCobbleBlock(TagPrefix.oreSand, Blocks.SAND::defaultBlockState);
+        registerCobbleBlock(TagPrefix.oreGravel, Blocks.GRAVEL::defaultBlockState);
+        registerCobbleBlock(TagPrefix.oreRedSand, Blocks.RED_SAND::defaultBlockState);
+        registerCobbleBlock(TagPrefix.oreBasalt, Blocks.BASALT::defaultBlockState);
+        registerCobbleBlock(TagPrefix.oreBlackstone, Blocks.BLACKSTONE::defaultBlockState);
+        registerCobbleBlock(TagPrefix.oreEndstone, Blocks.END_STONE::defaultBlockState);
+        registerCobbleBlock(TagPrefix.oreNetherrack, Blocks.NETHERRACK::defaultBlockState);
+        registerCobbleBlock(TagPrefix.oreTuff, Blocks.TUFF::defaultBlockState);
+    }
+
     public static boolean doMetalPipe(Material material) {
         return GTValues.FOOLS.getAsBoolean() && material.hasProperty(PropertyKey.INGOT) &&
                 !material.hasProperty(PropertyKey.POLYMER) && !material.hasProperty(PropertyKey.WOOD);
@@ -1410,7 +1448,7 @@ public class GTBlocks {
 
     /**
      * kinda nasty block property copy function because one doesn't exist.
-     * 
+     *
      * @param props the props to copy
      * @return a shallow copy of the block properties like {@link BlockBehaviour.Properties#copy(BlockBehaviour)} does
      */

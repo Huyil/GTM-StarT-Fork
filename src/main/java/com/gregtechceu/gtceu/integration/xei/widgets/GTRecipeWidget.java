@@ -163,7 +163,7 @@ public class GTRecipeWidget extends WidgetGroup {
         if (EUt.voltage() > 0) {
             textsY += 10;
             Component text = Component.translatable(EUt.isInput() ? "gtceu.recipe.eu" : "gtceu.recipe.eu_inverted",
-                    FormattingUtil.formatNumber2Places(minAmperage), GTValues.VN[minVoltageTier])
+                            FormattingUtil.formatNumber2Places(minAmperage), GTValues.VN[minVoltageTier])
                     .withStyle(ChatFormatting.UNDERLINE);
             recipeVoltageText = new LabelWidget(3 - xOffset, textsY, text).setTextColor(-1)
                     .setDropShadow(true);
@@ -284,7 +284,7 @@ public class GTRecipeWidget extends WidgetGroup {
         voltageTextWidget.setSelfPositionX(getVoltageXOffset() - xOffset);
         if (recipeVoltageText != null) {
             recipeVoltageText.setComponent(Component.translatable("gtceu.recipe.eu",
-                    FormattingUtil.formatNumber2Places(minAmperage), GTValues.VN[minVoltageTier])
+                            FormattingUtil.formatNumber2Places(minAmperage), GTValues.VN[minVoltageTier])
                     .withStyle(ChatFormatting.UNDERLINE));
             recipeVoltageText.setHoverTooltips(
                     Component.translatable("gtceu.recipe.eu.total", FormattingUtil.formatNumbers(inputEUt.getTotalEU()))
@@ -307,7 +307,7 @@ public class GTRecipeWidget extends WidgetGroup {
 
                     if (logic != ChanceLogic.NONE && logic != ChanceLogic.OR) {
                         tooltips.add(Component.translatable("gtceu.gui.content.chance_base_logic",
-                                FormattingUtil.formatNumber2Places(baseChanceFloat), logic.getTranslation())
+                                        FormattingUtil.formatNumber2Places(baseChanceFloat), logic.getTranslation())
                                 .withStyle(ChatFormatting.YELLOW));
                     } else {
                         tooltips.add(
@@ -322,7 +322,7 @@ public class GTRecipeWidget extends WidgetGroup {
 
                     if (logic != ChanceLogic.NONE && logic != ChanceLogic.OR) {
                         tooltips.add(Component.translatable("gtceu.gui.content.chance_boosted_logic",
-                                FormattingUtil.formatNumber2Places(boostedChanceFloat), logic.getTranslation())
+                                        FormattingUtil.formatNumber2Places(boostedChanceFloat), logic.getTranslation())
                                 .withStyle(ChatFormatting.YELLOW));
                     } else {
                         tooltips.add(
@@ -332,7 +332,7 @@ public class GTRecipeWidget extends WidgetGroup {
                 } else {
                     if (logic != ChanceLogic.NONE && logic != ChanceLogic.OR) {
                         tooltips.add(Component.translatable("gtceu.gui.content.chance_no_boost_logic",
-                                FormattingUtil.formatNumber2Places(baseChanceFloat), logic.getTranslation())
+                                        FormattingUtil.formatNumber2Places(baseChanceFloat), logic.getTranslation())
                                 .withStyle(ChatFormatting.YELLOW));
                     } else {
                         tooltips.add(
@@ -354,50 +354,72 @@ public class GTRecipeWidget extends WidgetGroup {
 
     public void collectStorage(Table<IO, RecipeCapability<?>, Object> extraTable,
                                Table<IO, RecipeCapability<?>, List<Content>> extraContents, GTRecipe recipe) {
-        Map<RecipeCapability<?>, List<Object>> inputCapabilities = new Object2ObjectLinkedOpenHashMap<>();
         for (var entry : recipe.inputs.entrySet()) {
             RecipeCapability<?> cap = entry.getKey();
             List<Content> contents = entry.getValue();
 
             extraContents.put(IO.IN, cap, contents);
-            inputCapabilities.put(cap, cap.createXEIContainerContents(contents, recipe, IO.IN));
         }
         for (var entry : recipe.tickInputs.entrySet()) {
             RecipeCapability<?> cap = entry.getKey();
             List<Content> contents = entry.getValue();
 
-            extraContents.put(IO.IN, cap, contents);
-            inputCapabilities.put(cap, cap.createXEIContainerContents(contents, recipe, IO.IN));
+            if (extraContents.get(IO.IN, cap) == null) {
+                extraContents.put(IO.IN, cap, contents);
+            } else {
+                ArrayList<Content> fullContents = new ArrayList<>(extraContents.get(IO.IN, cap));
+                fullContents.addAll(contents);
+                extraContents.put(IO.IN, cap, fullContents);
+            }
         }
-        for (var entry : inputCapabilities.entrySet()) {
-            while (entry.getValue().size() < recipe.recipeType.getMaxInputs(entry.getKey())) entry.getValue().add(null);
-            var container = entry.getKey().createXEIContainer(entry.getValue());
-            if (container != null) {
-                extraTable.put(IO.IN, entry.getKey(), container);
+        if (extraContents.containsRow(IO.IN)) {
+            Map<RecipeCapability<?>, List<Object>> inputCapabilities = new Object2ObjectLinkedOpenHashMap<>();
+            for (var entry : extraContents.row(IO.IN).entrySet()) {
+                RecipeCapability<?> cap = entry.getKey();
+                inputCapabilities.put(cap, cap.createXEIContainerContents(entry.getValue(), recipe, IO.IN));
+            }
+
+            for (var entry : inputCapabilities.entrySet()) {
+                while (entry.getValue().size() < recipe.recipeType.getMaxInputs(entry.getKey()))
+                    entry.getValue().add(null);
+                var container = entry.getKey().createXEIContainer(entry.getValue());
+                if (container != null) {
+                    extraTable.put(IO.IN, entry.getKey(), container);
+                }
             }
         }
 
-        Map<RecipeCapability<?>, List<Object>> outputCapabilities = new Object2ObjectLinkedOpenHashMap<>();
         for (var entry : recipe.outputs.entrySet()) {
             RecipeCapability<?> cap = entry.getKey();
             List<Content> contents = entry.getValue();
 
             extraContents.put(IO.OUT, cap, contents);
-            outputCapabilities.put(cap, cap.createXEIContainerContents(contents, recipe, IO.OUT));
         }
         for (var entry : recipe.tickOutputs.entrySet()) {
             RecipeCapability<?> cap = entry.getKey();
             List<Content> contents = entry.getValue();
 
-            extraContents.put(IO.OUT, cap, contents);
-            outputCapabilities.put(cap, cap.createXEIContainerContents(contents, recipe, IO.OUT));
+            if (extraContents.get(IO.OUT, cap) == null) {
+                extraContents.put(IO.OUT, cap, contents);
+            } else {
+                ArrayList<Content> fullContents = new ArrayList<>(extraContents.get(IO.IN, cap));
+                fullContents.addAll(contents);
+                extraContents.put(IO.OUT, cap, fullContents);
+            }
         }
-        for (var entry : outputCapabilities.entrySet()) {
-            while (entry.getValue().size() < recipe.recipeType.getMaxOutputs(entry.getKey()))
-                entry.getValue().add(null);
-            var container = entry.getKey().createXEIContainer(entry.getValue());
-            if (container != null) {
-                extraTable.put(IO.OUT, entry.getKey(), container);
+        if (extraContents.containsRow(IO.OUT)) {
+            Map<RecipeCapability<?>, List<Object>> outputCapabilities = new Object2ObjectLinkedOpenHashMap<>();
+            for (var entry : extraContents.row(IO.OUT).entrySet()) {
+                RecipeCapability<?> cap = entry.getKey();
+                outputCapabilities.put(cap, cap.createXEIContainerContents(entry.getValue(), recipe, IO.OUT));
+            }
+            for (var entry : outputCapabilities.entrySet()) {
+                while (entry.getValue().size() < recipe.recipeType.getMaxOutputs(entry.getKey()))
+                    entry.getValue().add(null);
+                var container = entry.getKey().createXEIContainer(entry.getValue());
+                if (container != null) {
+                    extraTable.put(IO.OUT, entry.getKey(), container);
+                }
             }
         }
     }
