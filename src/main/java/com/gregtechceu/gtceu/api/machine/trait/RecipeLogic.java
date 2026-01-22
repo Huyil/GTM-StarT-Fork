@@ -18,6 +18,7 @@ import com.gregtechceu.gtceu.api.recipe.RecipeHelper;
 import com.gregtechceu.gtceu.api.registry.GTRegistries;
 import com.gregtechceu.gtceu.api.sound.AutoReleasedSound;
 import com.gregtechceu.gtceu.common.cover.MachineControllerCover;
+import com.gregtechceu.gtceu.config.ConfigHolder;
 import com.gregtechceu.gtceu.utils.GTMath;
 
 import com.lowdragmc.lowdraglib.gui.texture.IGuiTexture;
@@ -311,7 +312,11 @@ public class RecipeLogic extends MachineTrait implements IEnhancedManaged, IWork
 
     protected void regressRecipe() {
         if (progress > 0 && machine.regressWhenWaiting()) {
-            this.progress = 1;
+            if (ConfigHolder.INSTANCE.machines.recipeProgressLowEnergy) {
+                this.progress = 1;
+            } else {
+                this.progress = Math.max(1, progress - 2);
+            }
         }
     }
 

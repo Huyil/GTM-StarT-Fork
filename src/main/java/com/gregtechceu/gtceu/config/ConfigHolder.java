@@ -209,7 +209,7 @@ public class ConfigHolder {
 
             @Configurable
             @Configurable.Comment({ "Enable GTEU to FE (and vice versa) Converters.", "Default: false" })
-            public boolean enableFEConverters = false;
+            public boolean enableFEConverters = true;
 
             @Configurable
             @Configurable.Comment({ "Forge Energy to GTEU ratio for converting FE to EU.", "Only affects converters.",
@@ -436,6 +436,11 @@ public class ConfigHolder {
 
     public static class MachineConfigs {
 
+        @Configurable
+        @Configurable.Comment({ "Whether insufficient energy supply should reset Machine recipe progress to zero.",
+                "If true, progress will reset.", "If false, progress will decrease to zero with 2x speed",
+                "Default: false" })
+        public boolean recipeProgressLowEnergy = false;
         @Configurable
         @Configurable.Comment({
                 "Whether to require a Wrench, Wirecutter, or other GregTech tools to break machines, casings, wires, and more.",
@@ -731,11 +736,11 @@ public class ConfigHolder {
 
         @Configurable
         @Configurable.Comment({ "Enable hazardous materials", "Default: true" })
-        public boolean hazardsEnabled = true;
+        public boolean hazardsEnabled = false;
         @Configurable
         @Configurable.Comment({ "Whether hazards are applied to all valid items, or just GT's.",
                 "true = all, false = GT only.", "Default: true" })
-        public boolean universalHazards = true;
+        public boolean universalHazards = false;
         @Configurable
         @Configurable.Comment({ "Whether environmental hazards like pollution or radiation are active",
                 "Default: false" })
