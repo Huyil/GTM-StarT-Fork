@@ -57,8 +57,8 @@ public class ConfigHolder {
         @Configurable
         @Configurable.Comment({
                 "Change the recipe of Rods in the Lathe to 1 Rod and 2 Small Piles of Dust, instead of 2 Rods.",
-                "Default: true" })
-        public boolean harderRods = true; // default true
+                "Default: false" })
+        public boolean harderRods = false; // default false
         @Configurable
         @Configurable.Comment({
                 "Whether to make crafting recipes for Bricks, Firebricks, Nether Bricks, and Coke Bricks harder.",
@@ -94,8 +94,8 @@ public class ConfigHolder {
         public boolean nerfPaperCrafting = true; // default true
         @Configurable
         @Configurable.Comment({ "Recipes for items like Iron Doors, Trapdoors, Anvil" +
-                " require Iron Plates, Rods, and more.", "Default: true" })
-        public boolean hardAdvancedIronRecipes = true; // default true
+                " require Iron Plates, Rods, and more.", "Default: false" })
+        public boolean hardAdvancedIronRecipes = false; // default false
         @Configurable
         @Configurable.Comment({ "Whether to make coloring blocks like Concrete or Glass harder.", "Default: false" })
         public boolean hardDyeRecipes = false; // default false
@@ -127,8 +127,8 @@ public class ConfigHolder {
         @Configurable
         @Configurable.Comment({
                 "Whether tools should have enchants or not. Like the flint sword getting fire aspect.",
-                "Default: false" })
-        public boolean enchantedTools = false;
+                "Default: true" })
+        public boolean enchantedTools = true;
 
         @Configurable
         @Configurable.Comment({ "Whether to enable macerator decomposition recycling", "Default: true" })
@@ -209,7 +209,7 @@ public class ConfigHolder {
 
             @Configurable
             @Configurable.Comment({ "Enable GTEU to FE (and vice versa) Converters.", "Default: false" })
-            public boolean enableFEConverters = false;
+            public boolean enableFEConverters = true;
 
             @Configurable
             @Configurable.Comment({ "Forge Energy to GTEU ratio for converting FE to EU.", "Only affects converters.",
@@ -576,8 +576,8 @@ public class ConfigHolder {
         public boolean orderedAssemblyLineItems = true;
         @Configurable
         @Configurable.Comment({ "Whether the Assembly Line should require the fluid inputs to be in order.",
-                "(Requires Ordered Assembly Line Item Inputs to be enabled.)", "Default: true" })
-        public boolean orderedAssemblyLineFluids = true;
+                "(Requires Ordered Assembly Line Item Inputs to be enabled.)", "Default: false" })
+        public boolean orderedAssemblyLineFluids = false;
 
         @Configurable
         @Configurable.Comment({
@@ -731,11 +731,11 @@ public class ConfigHolder {
 
         @Configurable
         @Configurable.Comment({ "Enable hazardous materials", "Default: true" })
-        public boolean hazardsEnabled = true;
+        public boolean hazardsEnabled = false;
         @Configurable
         @Configurable.Comment({ "Whether hazards are applied to all valid items, or just GT's.",
                 "true = all, false = GT only.", "Default: true" })
-        public boolean universalHazards = true;
+        public boolean universalHazards = false;
         @Configurable
         @Configurable.Comment({ "Whether environmental hazards like pollution or radiation are active",
                 "Default: false" })

@@ -163,12 +163,12 @@ public class GTRecipeWidget extends WidgetGroup {
         if (EUt.voltage() > 0) {
             textsY += 10;
             Component text = Component.translatable(EUt.isInput() ? "gtceu.recipe.eu" : "gtceu.recipe.eu_inverted",
-                            FormattingUtil.formatNumber2Places(minAmperage), GTValues.VN[minVoltageTier])
+                            FormattingUtil.formatNumbers(EUt.getTotalEU()))
                     .withStyle(ChatFormatting.UNDERLINE);
             recipeVoltageText = new LabelWidget(3 - xOffset, textsY, text).setTextColor(-1)
                     .setDropShadow(true);
             recipeVoltageText.setHoverTooltips(
-                    Component.translatable("gtceu.recipe.eu.total", FormattingUtil.formatNumbers(EUt.getTotalEU()))
+                    Component.translatable("gtceu.recipe.eu.amp_notation", FormattingUtil.formatNumber2Places(minAmperage), GTValues.VN[minVoltageTier])
                             .withStyle(ChatFormatting.UNDERLINE));
             if (recipeVoltageText != null) {
                 addWidget(recipeVoltageText);
@@ -283,11 +283,11 @@ public class GTRecipeWidget extends WidgetGroup {
         voltageTextWidget.setText(tierText);
         voltageTextWidget.setSelfPositionX(getVoltageXOffset() - xOffset);
         if (recipeVoltageText != null) {
-            recipeVoltageText.setComponent(Component.translatable("gtceu.recipe.eu",
-                            FormattingUtil.formatNumber2Places(minAmperage), GTValues.VN[minVoltageTier])
+            recipeVoltageText.setComponent(Component.translatable("gtceu.recipe.eu", FormattingUtil.formatNumbers(inputEUt.getTotalEU())
+                            )
                     .withStyle(ChatFormatting.UNDERLINE));
             recipeVoltageText.setHoverTooltips(
-                    Component.translatable("gtceu.recipe.eu.total", FormattingUtil.formatNumbers(inputEUt.getTotalEU()))
+                    Component.translatable("gtceu.recipe.eu.amp_notation", FormattingUtil.formatNumber2Places(minAmperage), GTValues.VN[minVoltageTier])
                             .withStyle(ChatFormatting.UNDERLINE));
         }
         detectAndSendChanges();

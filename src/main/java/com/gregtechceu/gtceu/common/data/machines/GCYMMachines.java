@@ -82,7 +82,7 @@ public class GCYMMachines {
             IV, LuV, ZPM, UV);
 
     public final static MultiblockMachineDefinition LARGE_MACERATION_TOWER = REGISTRATE
-            .multiblock("large_maceration_tower", LargeMacerationTowerMachine::new)
+            .multiblock("large_maceration_tower", WorkableElectricMultiblockMachine::new)
             .langValue("Large Maceration Tower")
             .tooltips(Component.translatable("gtceu.multiblock.parallelizable.tooltip"))
             .tooltips(Component.translatable("gtceu.machine.available_recipe_map_1.tooltip",
@@ -572,7 +572,7 @@ public class GCYMMachines {
             .pattern(definition -> FactoryBlockPattern.start()
                     .aisle("#XXX#", "#XXX#", "#XXX#", "#XXX#", "#####")
                     .aisle("XXXXX", "XCCCX", "XAAAX", "XXAXX", "##X##")
-                    .aisle("XXXXX", "XCPCX", "XAPAX", "XAPAX", "#XXX#")
+                    .aisle("XXXXX", "XCPCX", "XAPAX", "XAPAX", "#XMX#")
                     .aisle("XXXXX", "XCCCX", "XAAAX", "XXAXX", "##X##")
                     .aisle("#XXX#", "#XSX#", "#XXX#", "#XXX#", "#####")
                     .where('S', controller(blocks(definition.get())))
@@ -581,6 +581,7 @@ public class GCYMMachines {
                             .or(autoAbilities(true, false, true)))
                     .where('P', blocks(CASING_STEEL_PIPE.get()))
                     .where('C', blocks(MOLYBDENUM_DISILICIDE_COIL_BLOCK.get()))
+                    .where('M', abilities(MUFFLER))
                     .where('A', air())
                     .where('#', any())
                     .build())
