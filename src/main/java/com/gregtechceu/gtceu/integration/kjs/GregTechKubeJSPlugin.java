@@ -516,9 +516,11 @@ public class GregTechKubeJSPlugin extends KubeJSPlugin {
         }
 
         PowerlessJetpack.FUELS.clear();
+
         // Must run recycling recipes very last
-        RecyclingRecipes.init(builtRecipe -> recipesByName.put(builtRecipe.getId(),
-                GTRecipeSerializer.SERIALIZER.fromJson(builtRecipe.getId(), builtRecipe.serializeRecipe())));
+        // we don't actually want to update recycling recipes after kjs, we manually manage those
+        // RecyclingRecipes.init(builtRecipe -> recipesByName.put(builtRecipe.getId(),
+        //         GTRecipeSerializer.SERIALIZER.fromJson(builtRecipe.getId(), builtRecipe.serializeRecipe())));
         ItemMaterialData.resolveItemMaterialInfos(builtRecipe -> recipesByName.put(builtRecipe.getId(),
                 GTRecipeSerializer.SERIALIZER.fromJson(builtRecipe.getId(), builtRecipe.serializeRecipe())));
 
