@@ -86,6 +86,22 @@ public class GTRecipeTypes {
             .setSteamProgressBar(GuiTextures.PROGRESS_BAR_ARROW_STEAM, LEFT_TO_RIGHT)
             .setSound(GTSoundEntries.FURNACE);
 
+    public final static GTRecipeType BLAST_FURNACE_RECIPES = register("electric_vanilla_blast_furnace", ELECTRIC, RecipeType.BLASTING)
+            .setMaxIOSize(1, 1, 0, 0).setEUIO(IO.IN)
+            .prepareBuilder(recipeBuilder -> recipeBuilder.EUt(4))
+            .setSlotOverlay(false, false, GuiTextures.FURNACE_OVERLAY_1)
+            .setProgressBar(GuiTextures.PROGRESS_BAR_ARROW, LEFT_TO_RIGHT)
+            .setSteamProgressBar(GuiTextures.PROGRESS_BAR_ARROW_STEAM, LEFT_TO_RIGHT)
+            .setSound(GTSoundEntries.FURNACE);
+
+    public final static GTRecipeType SMOKING_FURNACE_RECIPES = register("electric_smoking_furnace", ELECTRIC, RecipeType.SMOKING)
+            .setMaxIOSize(1, 1, 0, 0).setEUIO(IO.IN)
+            .prepareBuilder(recipeBuilder -> recipeBuilder.EUt(4))
+            .setSlotOverlay(false, false, GuiTextures.FURNACE_OVERLAY_1)
+            .setProgressBar(GuiTextures.PROGRESS_BAR_ARROW, LEFT_TO_RIGHT)
+            .setSteamProgressBar(GuiTextures.PROGRESS_BAR_ARROW_STEAM, LEFT_TO_RIGHT)
+            .setSound(GTSoundEntries.FURNACE);
+
     public final static GTRecipeType ALLOY_SMELTER_RECIPES = register("alloy_smelter", ELECTRIC)
             .setMaxIOSize(2, 1, 0, 0).setEUIO(IO.IN)
             .setSlotOverlay(false, false, GuiTextures.FURNACE_OVERLAY_1)

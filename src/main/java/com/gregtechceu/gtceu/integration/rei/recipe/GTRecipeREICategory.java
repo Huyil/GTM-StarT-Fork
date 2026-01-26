@@ -11,6 +11,7 @@ import com.lowdragmc.lowdraglib.rei.IGui2Renderer;
 import com.lowdragmc.lowdraglib.rei.ModularUIDisplayCategory;
 import com.lowdragmc.lowdraglib.utils.Size;
 
+import dev.emi.emi.api.recipe.VanillaEmiRecipeCategories;
 import net.minecraft.Util;
 import net.minecraft.network.chat.Component;
 
@@ -87,6 +88,8 @@ public class GTRecipeREICategory extends ModularUIDisplayCategory<GTRecipeDispla
 
     public static CategoryIdentifier<?> machineCategory(GTRecipeCategory category) {
         if (category == GTRecipeTypes.FURNACE_RECIPES.getCategory()) return BuiltinPlugin.SMELTING;
+        else if (category == GTRecipeTypes.BLAST_FURNACE_RECIPES.getCategory()) return BuiltinPlugin.BLASTING;
+        else if (category == GTRecipeTypes.SMOKING_FURNACE_RECIPES.getCategory()) return BuiltinPlugin.SMOKING;
         else return CATEGORIES.apply(category);
     }
 

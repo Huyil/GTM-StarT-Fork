@@ -89,6 +89,8 @@ public class GTRecipeJEICategory extends ModularUIRecipeCategory<GTRecipe> {
 
     public static RecipeType<?> machineType(GTRecipeCategory category) {
         if (category == GTRecipeTypes.FURNACE_RECIPES.getCategory()) return RecipeTypes.SMELTING;
+        else if (category == GTRecipeTypes.BLAST_FURNACE_RECIPES.getCategory()) return RecipeTypes.BLASTING;
+        else if (category == GTRecipeTypes.SMOKING_FURNACE_RECIPES.getCategory()) return RecipeTypes.SMOKING;
         return TYPES.apply(category);
     }
 
