@@ -587,6 +587,20 @@ public class ConfigHolder {
         public int steamMultiParallelAmount = 8;
 
         @Configurable
+        @Configurable.Comment({
+                "Whether the Large Chemical Reactor should have coil benefits. WARNING: Setting this to true will remove perfect overclock from the LCR!",
+                "Default: true"
+        })
+        public boolean lcrCoilBenefits = true;
+
+        @Configurable
+        @Configurable.Comment({
+                "Wether to add a parallel version of the LCR.",
+                "Default: false"
+        })
+        public boolean parallelLCR = false;
+
+        @Configurable
         @Configurable.Comment("Whether the Drums can input fluids from the output side (bottom).")
         public boolean allowDrumsInputFluidsFromOutputSide = false;
 
