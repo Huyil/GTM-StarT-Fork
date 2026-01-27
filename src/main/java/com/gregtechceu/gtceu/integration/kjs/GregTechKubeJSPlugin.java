@@ -75,7 +75,6 @@ import com.gregtechceu.gtceu.data.pack.GTDynamicResourcePack;
 import com.gregtechceu.gtceu.data.recipe.CraftingComponent;
 import com.gregtechceu.gtceu.data.recipe.GTCraftingComponents;
 import com.gregtechceu.gtceu.data.recipe.builder.GTRecipeBuilder;
-import com.gregtechceu.gtceu.data.recipe.misc.RecyclingRecipes;
 import com.gregtechceu.gtceu.integration.kjs.builders.*;
 import com.gregtechceu.gtceu.integration.kjs.builders.block.ActiveBlockBuilder;
 import com.gregtechceu.gtceu.integration.kjs.builders.block.CoilBlockBuilder;
@@ -520,7 +519,7 @@ public class GregTechKubeJSPlugin extends KubeJSPlugin {
         // Must run recycling recipes very last
         // we don't actually want to update recycling recipes after kjs, we manually manage those
         // RecyclingRecipes.init(builtRecipe -> recipesByName.put(builtRecipe.getId(),
-        //         GTRecipeSerializer.SERIALIZER.fromJson(builtRecipe.getId(), builtRecipe.serializeRecipe())));
+        // GTRecipeSerializer.SERIALIZER.fromJson(builtRecipe.getId(), builtRecipe.serializeRecipe())));
         ItemMaterialData.resolveItemMaterialInfos(builtRecipe -> recipesByName.put(builtRecipe.getId(),
                 GTRecipeSerializer.SERIALIZER.fromJson(builtRecipe.getId(), builtRecipe.serializeRecipe())));
 

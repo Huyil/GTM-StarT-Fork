@@ -42,6 +42,7 @@ public class GTCraftingComponents {
     public static CraftingComponent PIPE_NONUPLE;
     public static CraftingComponent GLASS;
     public static CraftingComponent PLATE;
+    public static CraftingComponent PLATE_DOUBLE;
     public static CraftingComponent HULL_PLATE;
     public static CraftingComponent MOTOR;
     public static CraftingComponent ROTOR;
@@ -378,6 +379,18 @@ public class GTCraftingComponents {
                 .add(ZPM, plate, NaquadahAlloy)
                 .add(UV, plate, Darmstadtium)
                 .add(UHV, plate, Neutronium);
+
+        PLATE_DOUBLE = CraftingComponent.of("plate_double", plateDouble, Iron)
+                .add(ULV, plateDouble, WroughtIron)
+                .add(LV, plateDouble, Steel)
+                .add(MV, plateDouble, Aluminium)
+                .add(HV, plateDouble, StainlessSteel)
+                .add(EV, plateDouble, Titanium)
+                .add(IV, plateDouble, TungstenSteel)
+                .add(LuV, plateDouble, RhodiumPlatedPalladium)
+                .add(ZPM, plateDouble, NaquadahAlloy)
+                .add(UV, plateDouble, Darmstadtium)
+                .add(UHV, plateDouble, Neutronium);
 
         HULL_PLATE = CraftingComponent.of("hull_plate", plate, Wood)
                 .add(ULV, plate, Wood)

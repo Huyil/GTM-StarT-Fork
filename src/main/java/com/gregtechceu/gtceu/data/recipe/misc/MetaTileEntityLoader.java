@@ -793,6 +793,12 @@ public class MetaTileEntityLoader {
                 'C', CIRCUIT, 'W', CABLE, 'G', GLASS, 'B', SAWBLADE);
         registerMachineRecipe(provider, GTMachines.ELECTRIC_FURNACE, "ECE", "CMC", "WCW", 'M', HULL, 'E', CIRCUIT, 'W',
                 CABLE, 'C', COIL_HEATING);
+        registerMachineRecipe(provider, GTMachines.ELECTRIC_BLAST_FURNACE, "EDE", "CMC", "WQW", 'M', HULL, 'E', CIRCUIT,
+                'W',
+                CABLE, 'C', COIL_HEATING, 'Q', COIL_HEATING_DOUBLE, 'D', PLATE_DOUBLE);
+        registerMachineRecipe(provider, GTMachines.ELECTRIC_SMOKING_FURNACE, "ESE", "CMC", "WQW", 'M', HULL, 'E',
+                CIRCUIT, 'W',
+                CABLE, 'C', COIL_HEATING, 'Q', COIL_HEATING_DOUBLE, 'S', SPRING);
         registerMachineRecipe(provider, GTMachines.EXTRACTOR, "GCG", "EMP", "WCW", 'M', HULL, 'E', PISTON, 'P', PUMP,
                 'C', CIRCUIT, 'W', CABLE, 'G', GLASS);
         registerMachineRecipe(provider, GTMachines.EXTRUDER, "CCE", "XMP", "CCE", 'M', HULL, 'X', PISTON, 'E', CIRCUIT,
