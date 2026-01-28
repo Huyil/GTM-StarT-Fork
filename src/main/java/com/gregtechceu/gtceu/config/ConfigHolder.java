@@ -608,14 +608,14 @@ public class ConfigHolder {
         @Configurable.Comment({
                 "Whether the Super/Quantum Tanks should act the same as fluid cells for filling/emptying fluid slots.",
                 "Default: false" })
-        public static boolean superTankFluidCellBehavior = false;
+        public boolean superTankFluidCellBehavior = false;
 
         @Configurable
         @Configurable.Comment({
                 "Whether multiblocks stall (pause) on power fail.",
                 "Default: false"
         })
-        public static boolean multiblocksStallOnPowerFail = false;
+        public boolean multiblocksStallOnPowerFail = false;
 
         @Configurable
         @Configurable.Comment("Small Steam Boiler Options")

@@ -150,11 +150,11 @@ public class QuantumFluidHandlerItemStack implements IFluidHandlerItem, ICapabil
     }
 
     public boolean canFillFluidType(FluidStack fluid) {
-        return ConfigHolder.MachineConfigs.superTankFluidCellBehavior;
+        return ConfigHolder.INSTANCE.machines.superTankFluidCellBehavior;
     }
 
     public boolean canDrainFluidType(FluidStack fluid) {
-        return ConfigHolder.MachineConfigs.superTankFluidCellBehavior;
+        return ConfigHolder.INSTANCE.machines.superTankFluidCellBehavior;
     }
 
     protected void setContainerToEmpty() {
