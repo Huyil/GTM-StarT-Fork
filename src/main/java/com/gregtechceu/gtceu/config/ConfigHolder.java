@@ -587,8 +587,35 @@ public class ConfigHolder {
         public int steamMultiParallelAmount = 8;
 
         @Configurable
+        @Configurable.Comment({
+                "Whether the Large Chemical Reactor should have coil benefits. WARNING: Setting this to true will remove perfect overclock from the LCR!",
+                "Default: true"
+        })
+        public boolean lcrCoilBenefits = true;
+
+        @Configurable
+        @Configurable.Comment({
+                "Whether to add a parallel version of the LCR.",
+                "Default: false"
+        })
+        public boolean parallelLCR = false;
+
+        @Configurable
         @Configurable.Comment("Whether the Drums can input fluids from the output side (bottom).")
         public boolean allowDrumsInputFluidsFromOutputSide = false;
+
+        @Configurable
+        @Configurable.Comment({
+                "Whether the Super/Quantum Tanks should act the same as fluid cells for filling/emptying fluid slots.",
+                "Default: false" })
+        public boolean superTankFluidCellBehavior = false;
+
+        @Configurable
+        @Configurable.Comment({
+                "Whether multiblocks stall (pause) on power fail.",
+                "Default: false"
+        })
+        public boolean multiblocksStallOnPowerFail = false;
 
         @Configurable
         @Configurable.Comment("Small Steam Boiler Options")
