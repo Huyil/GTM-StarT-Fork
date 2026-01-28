@@ -2,7 +2,6 @@ package com.gregtechceu.gtceu.common.data.machines;
 
 import com.gregtechceu.gtceu.GTCEu;
 import com.gregtechceu.gtceu.api.GTCEuAPI;
-import com.gregtechceu.gtceu.api.GTValues;
 import com.gregtechceu.gtceu.api.capability.recipe.ItemRecipeCapability;
 import com.gregtechceu.gtceu.api.data.RotationState;
 import com.gregtechceu.gtceu.api.data.chemical.ChemicalHelper;
@@ -17,7 +16,6 @@ import com.gregtechceu.gtceu.api.machine.property.GTMachineModelProperties;
 import com.gregtechceu.gtceu.api.machine.trait.RecipeLogic;
 import com.gregtechceu.gtceu.api.pattern.FactoryBlockPattern;
 import com.gregtechceu.gtceu.api.pattern.MultiblockShapeInfo;
-import com.gregtechceu.gtceu.api.pattern.Predicates;
 import com.gregtechceu.gtceu.api.pattern.TraceabilityPredicate;
 import com.gregtechceu.gtceu.client.renderer.machine.DynamicRenderHelper;
 import com.gregtechceu.gtceu.client.util.TooltipHelper;
@@ -71,7 +69,7 @@ public class GTMultiMachines {
 
     //////////////////////////////////////
     // ******* Multiblock *******//
-    //////////////////////////////////////
+    /// ///////////////////////////////////
     public static final MultiblockMachineDefinition LARGE_BOILER_BRONZE = registerLargeBoiler("bronze",
             CASING_BRONZE_BRICKS, CASING_BRONZE_PIPE, FIREBOX_BRONZE,
             GTCEu.id("block/casings/solid/machine_casing_bronze_plated_bricks"), BoilerFireboxType.BRONZE_FIREBOX,
@@ -104,8 +102,8 @@ public class GTMultiMachines {
                     .aisle("XXX", "XYX", "XXX")
                     .where('X',
                             blocks(CASING_COKE_BRICKS.get()).or(blocks(COKE_OVEN_HATCH.get()).setMaxGlobalLimited(5)))
-                    .where('#', Predicates.air())
-                    .where('Y', Predicates.controller(blocks(definition.getBlock())))
+                    .where('#', air())
+                    .where('Y', controller(blocks(definition.getBlock())))
                     .build())
             .workableCasingModel(GTCEu.id("block/casings/solid/machine_coke_bricks"),
                     GTCEu.id("block/multiblock/coke_oven"))
@@ -125,10 +123,10 @@ public class GTMultiMachines {
                     .aisle("XXX", "X&X", "X#X", "X#X")
                     .aisle("XXX", "XYX", "XXX", "XXX")
                     .where('X', blocks(CASING_PRIMITIVE_BRICKS.get()))
-                    .where('#', Predicates.air())
-                    .where('&', Predicates.air()
-                            .or(Predicates.custom(bws -> GTUtil.isBlockSnow(bws.getBlockState()), null)))
-                    .where('Y', Predicates.controller(blocks(definition.getBlock())))
+                    .where('#', air())
+                    .where('&', air()
+                            .or(custom(bws -> GTUtil.isBlockSnow(bws.getBlockState()), null)))
+                    .where('Y', controller(blocks(definition.getBlock())))
                     .build())
             .register();
 
@@ -159,12 +157,12 @@ public class GTMultiMachines {
                         .where('X', CASING_INVAR_HEATPROOF.getDefaultState())
                         .where('S', definition, Direction.NORTH)
                         .where('#', Blocks.AIR.defaultBlockState())
-                        .where('E', ENERGY_INPUT_HATCH[GTValues.LV], Direction.SOUTH)
-                        .where('I', ITEM_IMPORT_BUS[GTValues.LV], Direction.NORTH)
-                        .where('O', ITEM_EXPORT_BUS[GTValues.LV], Direction.NORTH)
-                        .where('F', FLUID_IMPORT_HATCH[GTValues.LV], Direction.WEST)
-                        .where('D', FLUID_EXPORT_HATCH[GTValues.LV], Direction.EAST)
-                        .where('H', MUFFLER_HATCH[GTValues.LV], Direction.UP)
+                        .where('E', ENERGY_INPUT_HATCH[LV], Direction.SOUTH)
+                        .where('I', ITEM_IMPORT_BUS[LV], Direction.NORTH)
+                        .where('O', ITEM_EXPORT_BUS[LV], Direction.NORTH)
+                        .where('F', FLUID_IMPORT_HATCH[LV], Direction.WEST)
+                        .where('D', FLUID_EXPORT_HATCH[LV], Direction.EAST)
+                        .where('H', MUFFLER_HATCH[LV], Direction.UP)
                         .where('M', MAINTENANCE_HATCH, Direction.NORTH);
                 GTCEuAPI.HEATING_COILS.entrySet().stream()
                         .sorted(Comparator.comparingInt(entry -> entry.getKey().getTier()))
@@ -174,7 +172,7 @@ public class GTMultiMachines {
             })
             .recoveryItems(
                     () -> new ItemLike[] {
-                            GTMaterialItems.MATERIAL_ITEMS.get(TagPrefix.dustTiny, GTMaterials.Ash).get() })
+                            GTMaterialItems.MATERIAL_ITEMS.get(TagPrefix.dustTiny, Ash).get() })
             .workableCasingModel(GTCEu.id("block/casings/solid/machine_casing_heatproof"),
                     GTCEu.id("block/multiblock/electric_blast_furnace"))
             .tooltips(Component.translatable("gtceu.machine.electric_blast_furnace.tooltip.0"),
@@ -185,8 +183,8 @@ public class GTMultiMachines {
                 if (controller instanceof CoilWorkableElectricMultiblockMachine coilMachine && controller.isFormed()) {
                     components.add(Component.translatable("gtceu.multiblock.blast_furnace.max_temperature",
                             Component.translatable(
-                                    FormattingUtil.formatNumbers(coilMachine.getCoilType().getCoilTemperature() +
-                                            100L * Math.max(0, coilMachine.getTier() - GTValues.MV)) + "K")
+                                            FormattingUtil.formatNumbers(coilMachine.getCoilType().getCoilTemperature() +
+                                                    100L * Math.max(0, coilMachine.getTier() - MV)) + "K")
                                     .setStyle(Style.EMPTY.withColor(ChatFormatting.RED))));
                 }
                 // spotless:on
@@ -207,16 +205,16 @@ public class GTMultiMachines {
             .appearanceBlock(CASING_PTFE_INERT)
             .pattern(definition -> {
                 var casing = blocks(CASING_PTFE_INERT.get()).setMinGlobalLimited(10);
-                var abilities = Predicates.autoAbilities(definition.getRecipeTypes())
-                        .or(Predicates.autoAbilities(true, false, false));
+                var abilities = autoAbilities(definition.getRecipeTypes())
+                        .or(autoAbilities(true, false, false));
                 return FactoryBlockPattern.start()
                         .aisle("XXX", "XCX", "XXX")
                         .aisle("XCX", "CPC", "XCX")
                         .aisle("XXX", "XSX", "XXX")
-                        .where('S', Predicates.controller(blocks(definition.getBlock())))
+                        .where('S', controller(blocks(definition.getBlock())))
                         .where('X', casing.or(abilities))
                         .where('P', blocks(CASING_POLYTETRAFLUOROETHYLENE_PIPE.get()))
-                        .where('C', Predicates.heatingCoils().setExactLimit(1)
+                        .where('C', heatingCoils().setExactLimit(1)
                                 .or(abilities)
                                 .or(casing))
                         .build();
@@ -265,41 +263,44 @@ public class GTMultiMachines {
                     GTCEu.id("block/multiblock/large_chemical_reactor"))
             .register();
 
-    public static final MultiblockMachineDefinition EXTREME_CHEMICAL_REACTOR = REGISTRATE
-            .multiblock("extreme_chemical_reactor",
-                    ConfigHolder.INSTANCE.machines.lcrCoilBenefits ? CoilWorkableElectricMultiblockMachine::new :
-                            WorkableElectricMultiblockMachine::new)
-            .conditionalTooltip(defaultEnvironmentRequirement(),
-                    ConfigHolder.INSTANCE.gameplay.environmentalHazards)
-            .rotationState(RotationState.ALL)
-            .recipeType(GTRecipeTypes.LARGE_CHEMICAL_RECIPES)
-            .recipeModifiers(DEFAULT_ENVIRONMENT_REQUIREMENT, PARALLEL_HATCH,
-                    ConfigHolder.INSTANCE.machines.lcrCoilBenefits ? CHEMICAL_REACTOR_OVERCLOCK : OC_PERFECT_SUBTICK,
-                    BATCH_MODE)
-            .appearanceBlock(CASING_PTFE_INERT)
-            .pattern(definition -> {
-                var casing = blocks(CASING_PTFE_INERT.get()).setMinGlobalLimited(10);
-                var abilities = Predicates.autoAbilities(definition.getRecipeTypes())
-                        .or(Predicates.autoAbilities(true, false, true));
+    public static MultiblockMachineDefinition EXTREME_CHEMICAL_REACTOR = !ConfigHolder.INSTANCE.machines.parallelLCR ?
+            null : REGISTRATE
+                    .multiblock("extreme_chemical_reactor",
+                            ConfigHolder.INSTANCE.machines.lcrCoilBenefits ?
+                                    CoilWorkableElectricMultiblockMachine::new :
+                                    WorkableElectricMultiblockMachine::new)
+                    .conditionalTooltip(defaultEnvironmentRequirement(),
+                            ConfigHolder.INSTANCE.gameplay.environmentalHazards)
+                    .rotationState(RotationState.ALL)
+                    .recipeType(GTRecipeTypes.LARGE_CHEMICAL_RECIPES)
+                    .recipeModifiers(DEFAULT_ENVIRONMENT_REQUIREMENT, PARALLEL_HATCH,
+                            ConfigHolder.INSTANCE.machines.lcrCoilBenefits ? CHEMICAL_REACTOR_OVERCLOCK :
+                                    OC_PERFECT_SUBTICK,
+                            BATCH_MODE)
+                    .appearanceBlock(CASING_PTFE_INERT)
+                    .pattern(definition -> {
+                        var casing = blocks(CASING_PTFE_INERT.get()).setMinGlobalLimited(10);
+                        var abilities = autoAbilities(definition.getRecipeTypes())
+                                .or(autoAbilities(true, false, true));
 
-                return FactoryBlockPattern.start()
-                        .aisle("ABBBA", "CAAAC", "AADAA", "CAAAC", "ABBBA")
-                        .aisle("BAAAB", "AE EA", "AE EA", "AE EA", "BAAAB")
-                        .aisle("BAAAB", "A E A", "D E D", "A E A", "BAAAB")
-                        .aisle("BAAAB", "AE EA", "AE EA", "AE EA", "BAAAB")
-                        .aisle("ABBBA", "CAAAC", "AA@AA", "CAAAC", "ABBBA")
-                        .where('A', casing.or(abilities))
-                        .where('B', blocks(GCYMBlocks.HEAT_VENT.get()))
-                        .where('C', blocks(ChemicalHelper.getBlock(TagPrefix.frameGt, BlackSteel)))
-                        .where('D', Predicates.heatingCoils())
-                        .where('E', blocks(CASING_POLYTETRAFLUOROETHYLENE_PIPE.get()))
-                        .where(' ', air())
-                        .where('@', Predicates.controller(blocks(definition.getBlock())))
-                        .build();
-            })
-            .workableCasingModel(GTCEu.id("block/casings/solid/machine_casing_inert_ptfe"),
-                    GTCEu.id("block/multiblock/large_chemical_reactor"))
-            .register();
+                        return FactoryBlockPattern.start()
+                                .aisle("ABBBA", "CAAAC", "AADAA", "CAAAC", "ABBBA")
+                                .aisle("BAAAB", "AE EA", "AE EA", "AE EA", "BAAAB")
+                                .aisle("BAAAB", "A E A", "D E D", "A E A", "BAAAB")
+                                .aisle("BAAAB", "AE EA", "AE EA", "AE EA", "BAAAB")
+                                .aisle("ABBBA", "CAAAC", "AA@AA", "CAAAC", "ABBBA")
+                                .where('A', casing.or(abilities))
+                                .where('B', blocks(GCYMBlocks.HEAT_VENT.get()))
+                                .where('C', blocks(ChemicalHelper.getBlock(TagPrefix.frameGt, BlackSteel)))
+                                .where('D', heatingCoils())
+                                .where('E', blocks(CASING_POLYTETRAFLUOROETHYLENE_PIPE.get()))
+                                .where(' ', air())
+                                .where('@', controller(blocks(definition.getBlock())))
+                                .build();
+                    })
+                    .workableCasingModel(GTCEu.id("block/casings/solid/machine_casing_inert_ptfe"),
+                            GTCEu.id("block/multiblock/large_chemical_reactor"))
+                    .register();
 
     public static final MultiblockMachineDefinition IMPLOSION_COMPRESSOR = REGISTRATE
             .multiblock("implosion_compressor", WorkableElectricMultiblockMachine::new)
@@ -313,9 +314,9 @@ public class GTMultiMachines {
                     .aisle("XXX", "XSX", "XXX")
                     .where('S', controller(blocks(definition.get())))
                     .where('X', blocks(CASING_STEEL_SOLID.get()).setMinGlobalLimited(14)
-                            .or(Predicates.autoAbilities(definition.getRecipeTypes()))
-                            .or(Predicates.autoAbilities(true, true, false)))
-                    .where('#', Predicates.air())
+                            .or(autoAbilities(definition.getRecipeTypes()))
+                            .or(autoAbilities(true, true, false)))
+                    .where('#', air())
                     .build())
             .workableCasingModel(GTCEu.id("block/casings/solid/machine_casing_solid_steel"),
                     GTCEu.id("block/multiblock/implosion_compressor"))
@@ -332,13 +333,13 @@ public class GTMultiMachines {
                     .aisle("CCC", "C#C", "CCC")
                     .aisle("CCC", "C#C", "CCC")
                     .aisle("XXX", "XSX", "XXX")
-                    .where('S', Predicates.controller(blocks(definition.get())))
+                    .where('S', controller(blocks(definition.get())))
                     .where('X',
                             blocks(MACHINE_CASING_ULV.get()).setMinGlobalLimited(6)
-                                    .or(Predicates.autoAbilities(definition.getRecipeTypes()))
-                                    .or(Predicates.autoAbilities(true, true, false)))
-                    .where('C', Predicates.heatingCoils())
-                    .where('#', Predicates.air())
+                                    .or(autoAbilities(definition.getRecipeTypes()))
+                                    .or(autoAbilities(true, true, false)))
+                    .where('C', heatingCoils())
+                    .where('#', air())
                     .build())
             .shapeInfos(definition -> {
                 List<MultiblockShapeInfo> shapeInfo = new ArrayList<>();
@@ -349,12 +350,12 @@ public class GTMultiMachines {
                         .aisle("EEX", "XHX", "XXX")
                         .where('S', definition, Direction.NORTH)
                         .where('X', MACHINE_CASING_ULV.getDefaultState())
-                        .where('E', ENERGY_INPUT_HATCH[GTValues.LV], Direction.SOUTH)
-                        .where('I', ITEM_IMPORT_BUS[GTValues.LV], Direction.NORTH)
-                        .where('O', ITEM_EXPORT_BUS[GTValues.LV], Direction.NORTH)
-                        .where('F', FLUID_IMPORT_HATCH[GTValues.LV], Direction.NORTH)
-                        .where('D', FLUID_EXPORT_HATCH[GTValues.LV], Direction.NORTH)
-                        .where('H', MUFFLER_HATCH[GTValues.LV], Direction.SOUTH)
+                        .where('E', ENERGY_INPUT_HATCH[LV], Direction.SOUTH)
+                        .where('I', ITEM_IMPORT_BUS[LV], Direction.NORTH)
+                        .where('O', ITEM_EXPORT_BUS[LV], Direction.NORTH)
+                        .where('F', FLUID_IMPORT_HATCH[LV], Direction.NORTH)
+                        .where('D', FLUID_EXPORT_HATCH[LV], Direction.NORTH)
+                        .where('H', MUFFLER_HATCH[LV], Direction.SOUTH)
                         .where('M', MAINTENANCE_HATCH, Direction.NORTH)
                         .where('#', Blocks.AIR.defaultBlockState());
                 GTCEuAPI.HEATING_COILS.entrySet().stream()
@@ -402,10 +403,10 @@ public class GTMultiMachines {
                         .aisle("EEX", "CCC", "XXX")
                         .where('S', definition, Direction.NORTH)
                         .where('X', CASING_INVAR_HEATPROOF.getDefaultState())
-                        .where('E', ENERGY_INPUT_HATCH[GTValues.LV], Direction.SOUTH)
-                        .where('I', ITEM_IMPORT_BUS[GTValues.LV], Direction.NORTH)
-                        .where('O', ITEM_EXPORT_BUS[GTValues.LV], Direction.NORTH)
-                        .where('H', MUFFLER_HATCH[GTValues.LV], Direction.SOUTH)
+                        .where('E', ENERGY_INPUT_HATCH[LV], Direction.SOUTH)
+                        .where('I', ITEM_IMPORT_BUS[LV], Direction.NORTH)
+                        .where('O', ITEM_EXPORT_BUS[LV], Direction.NORTH)
+                        .where('H', MUFFLER_HATCH[LV], Direction.SOUTH)
                         .where('M', MAINTENANCE_HATCH, Direction.NORTH)
                         .where('#', Blocks.AIR.defaultBlockState());
                 GTCEuAPI.HEATING_COILS.entrySet().stream()
@@ -416,7 +417,7 @@ public class GTMultiMachines {
             })
             .recoveryItems(
                     () -> new ItemLike[] {
-                            GTMaterialItems.MATERIAL_ITEMS.get(TagPrefix.dustTiny, GTMaterials.Ash).get() })
+                            GTMaterialItems.MATERIAL_ITEMS.get(TagPrefix.dustTiny, Ash).get() })
             .workableCasingModel(GTCEu.id("block/casings/solid/machine_casing_heatproof"),
                     GTCEu.id("block/multiblock/multi_furnace"))
             .additionalDisplay((controller, components) -> {
@@ -439,12 +440,12 @@ public class GTMultiMachines {
                     .aisle("HCHCH", "HCHCH", "HCHCH")
                     .aisle("HCHCH", "H###H", "HCHCH")
                     .aisle("HCHCH", "HCOCH", "HCHCH")
-                    .where('O', Predicates.controller(blocks(definition.get())))
+                    .where('O', controller(blocks(definition.get())))
                     .where('H', blocks(CASING_STAINLESS_CLEAN.get()).setMinGlobalLimited(12)
-                            .or(Predicates.autoAbilities(definition.getRecipeTypes()))
-                            .or(Predicates.autoAbilities(true, true, false)))
-                    .where('#', Predicates.air())
-                    .where('C', Predicates.heatingCoils())
+                            .or(autoAbilities(definition.getRecipeTypes()))
+                            .or(autoAbilities(true, true, false)))
+                    .where('#', air())
+                    .where('C', heatingCoils())
                     .build())
             .shapeInfos(definition -> {
                 List<MultiblockShapeInfo> shapeInfo = new ArrayList<>();
@@ -454,12 +455,12 @@ public class GTMultiMachines {
                         .aisle("ECHCH", "HCXCH", "HCHCH")
                         .where('S', definition, Direction.NORTH)
                         .where('H', CASING_STAINLESS_CLEAN.getDefaultState())
-                        .where('E', ENERGY_INPUT_HATCH[GTValues.LV], Direction.WEST)
-                        .where('I', ITEM_IMPORT_BUS[GTValues.LV], Direction.NORTH)
-                        .where('F', FLUID_IMPORT_HATCH[GTValues.LV], Direction.NORTH)
-                        .where('D', FLUID_EXPORT_HATCH[GTValues.LV], Direction.NORTH)
+                        .where('E', ENERGY_INPUT_HATCH[LV], Direction.WEST)
+                        .where('I', ITEM_IMPORT_BUS[LV], Direction.NORTH)
+                        .where('F', FLUID_IMPORT_HATCH[LV], Direction.NORTH)
+                        .where('D', FLUID_EXPORT_HATCH[LV], Direction.NORTH)
                         .where('M', MAINTENANCE_HATCH, Direction.NORTH)
-                        .where('X', MUFFLER_HATCH[GTValues.LV], Direction.SOUTH)
+                        .where('X', MUFFLER_HATCH[LV], Direction.SOUTH)
                         .where('#', Blocks.AIR.defaultBlockState());
                 GTCEuAPI.HEATING_COILS.entrySet().stream()
                         .sorted(Comparator.comparingInt(entry -> entry.getKey().getTier()))
@@ -497,18 +498,18 @@ public class GTMultiMachines {
                         .aisle("ZZZ", "Z#Z", "ZZZ")
                         .aisle("XXX", "X#X", "XXX").setRepeatable(0, 10)
                         .aisle("XXX", "XXX", "XXX")
-                        .where('S', Predicates.controller(blocks(definition.getBlock())))
+                        .where('S', controller(blocks(definition.getBlock())))
                         .where('Y', blocks(CASING_STAINLESS_CLEAN.get())
-                                .or(Predicates.abilities(PartAbility.EXPORT_ITEMS).setMaxGlobalLimited(1))
-                                .or(Predicates.abilities(PartAbility.INPUT_ENERGY).setMinGlobalLimited(1)
+                                .or(abilities(PartAbility.EXPORT_ITEMS).setMaxGlobalLimited(1))
+                                .or(abilities(PartAbility.INPUT_ENERGY).setMinGlobalLimited(1)
                                         .setMaxGlobalLimited(2))
-                                .or(Predicates.abilities(PartAbility.IMPORT_FLUIDS).setExactLimit(1))
+                                .or(abilities(PartAbility.IMPORT_FLUIDS).setExactLimit(1))
                                 .or(maint))
                         .where('Z', blocks(CASING_STAINLESS_CLEAN.get())
                                 .or(exportPredicate)
                                 .or(maint))
                         .where('X', blocks(CASING_STAINLESS_CLEAN.get()).or(exportPredicate))
-                        .where('#', Predicates.air())
+                        .where('#', air())
                         .build();
             })
             .shapeInfos(definition -> {
@@ -553,17 +554,17 @@ public class GTMultiMachines {
             .multiblock("vacuum_freezer", WorkableElectricMultiblockMachine::new)
             .rotationState(RotationState.ALL)
             .recipeType(GTRecipeTypes.VACUUM_RECIPES)
-            .recipeModifiers(GTRecipeModifiers.OC_NON_PERFECT_SUBTICK, BATCH_MODE)
+            .recipeModifiers(OC_NON_PERFECT_SUBTICK, BATCH_MODE)
             .appearanceBlock(CASING_ALUMINIUM_FROSTPROOF)
             .pattern(definition -> FactoryBlockPattern.start()
                     .aisle("XXX", "XXX", "XXX")
                     .aisle("XXX", "X#X", "XXX")
                     .aisle("XXX", "XSX", "XXX")
-                    .where('S', Predicates.controller(blocks(definition.getBlock())))
+                    .where('S', controller(blocks(definition.getBlock())))
                     .where('X', blocks(CASING_ALUMINIUM_FROSTPROOF.get()).setMinGlobalLimited(14)
-                            .or(Predicates.autoAbilities(definition.getRecipeTypes()))
-                            .or(Predicates.autoAbilities(true, false, false)))
-                    .where('#', Predicates.air())
+                            .or(autoAbilities(definition.getRecipeTypes()))
+                            .or(autoAbilities(true, false, false)))
+                    .where('#', air())
                     .build())
             .workableCasingModel(GTCEu.id("block/casings/solid/machine_casing_frost_proof"),
                     GTCEu.id("block/multiblock/vacuum_freezer"))
@@ -580,17 +581,17 @@ public class GTMultiMachines {
                     .aisle("FIF", "RTR", "SAG", "#Y#")
                     .aisle("FIF", "RTR", "DAG", "#Y#").setRepeatable(3, 15)
                     .aisle("FOF", "RTR", "DAG", "#Y#")
-                    .where('S', Predicates.controller(blocks(definition.getBlock())))
+                    .where('S', controller(blocks(definition.getBlock())))
                     .where('F', blocks(CASING_STEEL_SOLID.get())
                             .or(!ConfigHolder.INSTANCE.machines.orderedAssemblyLineFluids ?
-                                    Predicates.abilities(PartAbility.IMPORT_FLUIDS_1X,
+                                    abilities(PartAbility.IMPORT_FLUIDS_1X,
                                             PartAbility.IMPORT_FLUIDS_4X, PartAbility.IMPORT_FLUIDS_9X) :
-                                    Predicates.abilities(PartAbility.IMPORT_FLUIDS_1X).setMaxGlobalLimited(4)))
+                                    abilities(PartAbility.IMPORT_FLUIDS_1X).setMaxGlobalLimited(4)))
                     .where('O',
-                            Predicates.abilities(PartAbility.EXPORT_ITEMS)
+                            abilities(PartAbility.EXPORT_ITEMS)
                                     .addTooltips(Component.translatable("gtceu.multiblock.pattern.location_end")))
                     .where('Y',
-                            blocks(CASING_STEEL_SOLID.get()).or(Predicates.abilities(PartAbility.INPUT_ENERGY)
+                            blocks(CASING_STEEL_SOLID.get()).or(abilities(PartAbility.INPUT_ENERGY)
                                     .setMinGlobalLimited(1).setMaxGlobalLimited(2)))
                     .where('I', blocks(ITEM_IMPORT_BUS[0].getBlock()))
                     .where('G', blocks(CASING_GRATE.get()))
@@ -598,7 +599,7 @@ public class GTMultiMachines {
                     .where('R', blocks(CASING_LAMINATED_GLASS.get()))
                     .where('T', blocks(CASING_ASSEMBLY_LINE.get()))
                     .where('D', dataHatchPredicate(blocks(CASING_GRATE.get())))
-                    .where('#', Predicates.any())
+                    .where('#', any())
                     .build())
             .partSorter(AssemblyLineMachine::partSorter)
             .workableCasingModel(GTCEu.id("block/casings/solid/machine_casing_solid_steel"),
@@ -613,13 +614,13 @@ public class GTMultiMachines {
                     .aisle("XXXX", "##F#", "##F#")
                     .aisle("XXHX", "F##F", "FFFF")
                     .aisle("SXXX", "##F#", "##F#")
-                    .where('S', Predicates.controller(blocks(definition.getBlock())))
+                    .where('S', controller(blocks(definition.getBlock())))
                     .where('X', blocks(CASING_PUMP_DECK.get()))
-                    .where('F', Predicates.frames(GTMaterials.TreatedWood))
+                    .where('F', frames(TreatedWood))
                     .where('H',
-                            Predicates.abilities(PartAbility.PUMP_FLUID_HATCH)
+                            abilities(PartAbility.PUMP_FLUID_HATCH)
                                     .or(blocks(FLUID_EXPORT_HATCH[ULV].get(), FLUID_EXPORT_HATCH[LV].get())))
-                    .where('#', Predicates.any())
+                    .where('#', any())
                     .build())
             .allowExtendedFacing(false)
             .modelProperty(GTMachineModelProperties.RECIPE_LOGIC_STATUS, RecipeLogic.Status.IDLE)
@@ -648,12 +649,12 @@ public class GTMultiMachines {
                     .aisle("XXX", "XXX", "XXX")
                     .aisle("XXX", "X#X", "XXX")
                     .aisle("XXX", "XSX", "XXX")
-                    .where('S', Predicates.controller(blocks(definition.getBlock())))
-                    .where('#', Predicates.air())
+                    .where('S', controller(blocks(definition.getBlock())))
+                    .where('#', air())
                     .where('X', blocks(CASING_BRONZE_BRICKS.get()).setMinGlobalLimited(14)
-                            .or(Predicates.abilities(PartAbility.STEAM_IMPORT_ITEMS).setPreviewCount(1))
-                            .or(Predicates.abilities(PartAbility.STEAM_EXPORT_ITEMS).setPreviewCount(1))
-                            .or(Predicates.abilities(PartAbility.STEAM).setExactLimit(1)))
+                            .or(abilities(PartAbility.STEAM_IMPORT_ITEMS).setPreviewCount(1))
+                            .or(abilities(PartAbility.STEAM_EXPORT_ITEMS).setPreviewCount(1))
+                            .or(abilities(PartAbility.STEAM).setExactLimit(1)))
                     .build())
             .workableCasingModel(GTCEu.id("block/casings/solid/machine_casing_bronze_plated_bricks"),
                     GTCEu.id("block/multiblock/steam_grinder"))
@@ -670,14 +671,14 @@ public class GTMultiMachines {
                     .aisle("FFF", "XXX", " X ")
                     .aisle("FFF", "X#X", " X ")
                     .aisle("FFF", "XSX", " X ")
-                    .where('S', Predicates.controller(blocks(definition.getBlock())))
-                    .where('#', Predicates.air())
-                    .where(' ', Predicates.any())
+                    .where('S', controller(blocks(definition.getBlock())))
+                    .where('#', air())
+                    .where(' ', any())
                     .where('X', blocks(CASING_BRONZE_BRICKS.get()).setMinGlobalLimited(6)
-                            .or(Predicates.abilities(PartAbility.STEAM_IMPORT_ITEMS).setPreviewCount(1))
-                            .or(Predicates.abilities(PartAbility.STEAM_EXPORT_ITEMS).setPreviewCount(1)))
+                            .or(abilities(PartAbility.STEAM_IMPORT_ITEMS).setPreviewCount(1))
+                            .or(abilities(PartAbility.STEAM_EXPORT_ITEMS).setPreviewCount(1)))
                     .where('F', blocks(FIREBOX_BRONZE.get())
-                            .or(Predicates.abilities(PartAbility.STEAM).setExactLimit(1)))
+                            .or(abilities(PartAbility.STEAM).setExactLimit(1)))
                     .build())
             .modelProperty(GTMachineModelProperties.RECIPE_LOGIC_STATUS, RecipeLogic.Status.IDLE)
             .model(createWorkableCasingMachineModel(GTCEu.id("block/casings/solid/machine_casing_bronze_plated_bricks"),
@@ -755,16 +756,16 @@ public class GTMultiMachines {
                                 .where('C', FusionReactorMachine.getCasingState(tier))
                                 .where('G', FUSION_GLASS.get())
                                 .where('K', FusionReactorMachine.getCoilState(tier))
-                                .where('W', GTMachines.FLUID_EXPORT_HATCH[tier], Direction.WEST)
-                                .where('E', GTMachines.FLUID_EXPORT_HATCH[tier], Direction.EAST)
-                                .where('S', GTMachines.FLUID_EXPORT_HATCH[tier], Direction.SOUTH)
-                                .where('N', GTMachines.FLUID_EXPORT_HATCH[tier], Direction.NORTH)
-                                .where('w', GTMachines.ENERGY_INPUT_HATCH[tier], Direction.WEST)
-                                .where('e', GTMachines.ENERGY_INPUT_HATCH[tier], Direction.EAST)
-                                .where('s', GTMachines.ENERGY_INPUT_HATCH[tier], Direction.SOUTH)
-                                .where('n', GTMachines.ENERGY_INPUT_HATCH[tier], Direction.NORTH)
-                                .where('U', GTMachines.FLUID_IMPORT_HATCH[tier], Direction.UP)
-                                .where('D', GTMachines.FLUID_IMPORT_HATCH[tier], Direction.DOWN)
+                                .where('W', FLUID_EXPORT_HATCH[tier], Direction.WEST)
+                                .where('E', FLUID_EXPORT_HATCH[tier], Direction.EAST)
+                                .where('S', FLUID_EXPORT_HATCH[tier], Direction.SOUTH)
+                                .where('N', FLUID_EXPORT_HATCH[tier], Direction.NORTH)
+                                .where('w', ENERGY_INPUT_HATCH[tier], Direction.WEST)
+                                .where('e', ENERGY_INPUT_HATCH[tier], Direction.EAST)
+                                .where('s', ENERGY_INPUT_HATCH[tier], Direction.SOUTH)
+                                .where('n', ENERGY_INPUT_HATCH[tier], Direction.NORTH)
+                                .where('U', FLUID_IMPORT_HATCH[tier], Direction.UP)
+                                .where('D', FLUID_IMPORT_HATCH[tier], Direction.DOWN)
                                 .where('#', Blocks.AIR.defaultBlockState());
 
                         shapeInfos.add(baseBuilder.shallowCopy()
@@ -790,8 +791,8 @@ public class GTMultiMachines {
                             Component.translatable("gtceu.machine.fluid_drilling_rig.description"),
                             Component.translatable("gtceu.machine.fluid_drilling_rig.depletion",
                                     FormattingUtil.formatNumbers(100.0 / FluidDrillMachine.getDepletionChance(tier))),
-                            Component.translatable("gtceu.universal.tooltip.energy_tier_range", GTValues.VNF[tier],
-                                    GTValues.VNF[tier + 1]),
+                            Component.translatable("gtceu.universal.tooltip.energy_tier_range", VNF[tier],
+                                    VNF[tier + 1]),
                             Component.translatable("gtceu.machine.fluid_drilling_rig.production",
                                     FluidDrillMachine.getRigMultiplier(tier),
                                     FormattingUtil.formatNumbers(FluidDrillMachine.getRigMultiplier(tier) * 1.5)))
@@ -868,7 +869,7 @@ public class GTMultiMachines {
                         tooltip.add(Component.translatable("gtceu.universal.tooltip.working_area_chunks",
                                 workingAreaChunks, workingAreaChunks));
                         tooltip.add(Component.translatable("gtceu.universal.tooltip.energy_tier_range",
-                                GTValues.VNF[tier], GTValues.VNF[tier + 1]));
+                                VNF[tier], VNF[tier + 1]));
                     })
                     .register(),
             EV, IV, LuV);
@@ -907,12 +908,12 @@ public class GTMultiMachines {
                     .aisle("XXXXX", "X   X", "X   X", "X   X", "XFSFX")
                     .aisle("XXXXX", "X   X", "X   X", "X   X", "XFFFX")
                     .aisle("XXXXX", "XXXXX", "XXXXX", "XXXXX", "XXXXX")
-                    .where('X', blocks(GTBlocks.PLASTCRETE.get())
-                            .or(blocks(GTBlocks.CLEANROOM_GLASS.get()))
+                    .where('X', blocks(PLASTCRETE.get())
+                            .or(blocks(CLEANROOM_GLASS.get()))
                             .or(abilities(PartAbility.PASSTHROUGH_HATCH).setMaxGlobalLimited(30, 3))
                             .or(abilities(PartAbility.INPUT_ENERGY).setMinGlobalLimited(1).setMaxGlobalLimited(3, 2))
                             .or(blocks(ConfigHolder.INSTANCE.machines.enableMaintenance ?
-                                    GTMachines.MAINTENANCE_HATCH.getBlock() : PLASTCRETE.get()).setExactLimit(1))
+                                    MAINTENANCE_HATCH.getBlock() : PLASTCRETE.get()).setExactLimit(1))
                             .or(blocks(Blocks.IRON_DOOR).setMaxGlobalLimited(8)))
                     .where('S', controller(blocks(definition.getBlock())))
                     .where(' ', any())
@@ -928,24 +929,24 @@ public class GTMultiMachines {
                         .aisle("XXXXX", "X   X", "G   G", "X   X", "XFSFX")
                         .aisle("XXXXX", "X   X", "G   G", "X   X", "XFFFX")
                         .aisle("XMXEX", "XXOXX", "XXRXX", "XXXXX", "XXXXX")
-                        .where('X', GTBlocks.PLASTCRETE)
-                        .where('G', GTBlocks.CLEANROOM_GLASS)
+                        .where('X', PLASTCRETE)
+                        .where('G', CLEANROOM_GLASS)
                         .where('S', GTMultiMachines.CLEANROOM.getBlock())
                         .where(' ', Blocks.AIR)
-                        .where('E', GTMachines.ENERGY_INPUT_HATCH[GTValues.LV], Direction.SOUTH)
-                        .where('I', GTMachines.ITEM_PASSTHROUGH_HATCH[GTValues.LV], Direction.NORTH)
-                        .where('L', GTMachines.FLUID_PASSTHROUGH_HATCH[GTValues.LV], Direction.NORTH)
-                        .where('H', GTMachines.HULL[GTValues.HV], Direction.NORTH)
-                        .where('D', GTMachines.DIODE[GTValues.HV], Direction.NORTH)
+                        .where('E', ENERGY_INPUT_HATCH[LV], Direction.SOUTH)
+                        .where('I', ITEM_PASSTHROUGH_HATCH[LV], Direction.NORTH)
+                        .where('L', FLUID_PASSTHROUGH_HATCH[LV], Direction.NORTH)
+                        .where('H', HULL[HV], Direction.NORTH)
+                        .where('D', DIODE[HV], Direction.NORTH)
                         .where('O',
                                 Blocks.IRON_DOOR.defaultBlockState().setValue(DoorBlock.FACING, Direction.NORTH)
                                         .setValue(DoorBlock.HALF, DoubleBlockHalf.LOWER))
                         .where('R', Blocks.IRON_DOOR.defaultBlockState().setValue(DoorBlock.FACING, Direction.NORTH)
                                 .setValue(DoorBlock.HALF, DoubleBlockHalf.UPPER));
                 if (ConfigHolder.INSTANCE.machines.enableMaintenance) {
-                    builder.where('M', GTMachines.MAINTENANCE_HATCH, Direction.SOUTH);
+                    builder.where('M', MAINTENANCE_HATCH, Direction.SOUTH);
                 } else {
-                    builder.where('M', GTBlocks.PLASTCRETE.get());
+                    builder.where('M', PLASTCRETE.get());
                 }
                 GTCEuAPI.CLEANROOM_FILTERS.values()
                         .forEach(block -> shapeInfo.add(builder.where('F', block.get()).build()));
@@ -995,7 +996,7 @@ public class GTMultiMachines {
     public static final MultiblockMachineDefinition ACTIVE_TRANSFORMER = REGISTRATE
             .multiblock("active_transformer", ActiveTransformerMachine::new)
             .rotationState(RotationState.ALL)
-            .recipeType(GTRecipeTypes.DUMMY_RECIPES)
+            .recipeType(DUMMY_RECIPES)
             .appearanceBlock(HIGH_POWER_CASING)
             .tooltips(Component.translatable("gtceu.machine.active_transformer.tooltip.0"),
                     Component.translatable("gtceu.machine.active_transformer.tooltip.1"))
@@ -1009,9 +1010,9 @@ public class GTMultiMachines {
                     .aisle("XXX", "XCX", "XXX")
                     .aisle("XXX", "XSX", "XXX")
                     .where('S', controller(blocks(definition.getBlock())))
-                    .where('X', blocks(GTBlocks.HIGH_POWER_CASING.get()).setMinGlobalLimited(12)
+                    .where('X', blocks(HIGH_POWER_CASING.get()).setMinGlobalLimited(12)
                             .or(ActiveTransformerMachine.getHatchPredicates()))
-                    .where('C', blocks(GTBlocks.SUPERCONDUCTING_COIL.get()))
+                    .where('C', blocks(SUPERCONDUCTING_COIL.get()))
                     .build())
             .workableCasingModel(GTCEu.id("block/casings/hpca/high_power_casing"),
                     GTCEu.id("block/multiblock/data_bank"))
@@ -1020,7 +1021,7 @@ public class GTMultiMachines {
     public static final MultiblockMachineDefinition POWER_SUBSTATION = REGISTRATE
             .multiblock("power_substation", PowerSubstationMachine::new)
             .rotationState(RotationState.ALL)
-            .recipeType(GTRecipeTypes.DUMMY_RECIPES)
+            .recipeType(DUMMY_RECIPES)
             .tooltips(Component.translatable("gtceu.machine.power_substation.tooltip.0"),
                     Component.translatable("gtceu.machine.power_substation.tooltip.1"),
                     Component.translatable("gtceu.machine.power_substation.tooltip.2",
@@ -1051,7 +1052,7 @@ public class GTMultiMachines {
                                     .or(abilities(PartAbility.OUTPUT_ENERGY, PartAbility.SUBSTATION_OUTPUT_ENERGY,
                                             PartAbility.OUTPUT_LASER).setMinGlobalLimited(1)))
                     .where('G', blocks(CASING_LAMINATED_GLASS.get()))
-                    .where('B', Predicates.powerSubstationBatteries())
+                    .where('B', powerSubstationBatteries())
                     .build())
             .shapeInfos(definition -> {
                 List<MultiblockShapeInfo> shapeInfo = new ArrayList<>();
@@ -1064,14 +1065,14 @@ public class GTMultiMachines {
                         .where('S', definition, Direction.NORTH)
                         .where('C', CASING_PALLADIUM_SUBSTATION)
                         .where('G', CASING_LAMINATED_GLASS)
-                        .where('I', GTMachines.ENERGY_INPUT_HATCH[HV], Direction.NORTH)
-                        .where('N', GTMachines.SUBSTATION_ENERGY_INPUT_HATCH[EV], Direction.NORTH)
-                        .where('O', GTMachines.ENERGY_OUTPUT_HATCH[HV], Direction.NORTH)
-                        .where('T', GTMachines.SUBSTATION_ENERGY_OUTPUT_HATCH[EV], Direction.NORTH)
+                        .where('I', ENERGY_INPUT_HATCH[HV], Direction.NORTH)
+                        .where('N', SUBSTATION_ENERGY_INPUT_HATCH[EV], Direction.NORTH)
+                        .where('O', ENERGY_OUTPUT_HATCH[HV], Direction.NORTH)
+                        .where('T', SUBSTATION_ENERGY_OUTPUT_HATCH[EV], Direction.NORTH)
                         .where('M',
                                 ConfigHolder.INSTANCE.machines.enableMaintenance ?
-                                        GTMachines.MAINTENANCE_HATCH.getBlock().defaultBlockState().setValue(
-                                                GTMachines.MAINTENANCE_HATCH.get().getRotationState().property,
+                                        MAINTENANCE_HATCH.getBlock().defaultBlockState().setValue(
+                                                MAINTENANCE_HATCH.get().getRotationState().property,
                                                 Direction.NORTH) :
                                         CASING_PALLADIUM_SUBSTATION.get().defaultBlockState());
 
@@ -1126,7 +1127,7 @@ public class GTMultiMachines {
                                     FormattingUtil.formatNumbers(
                                             100.0 / BedrockOreMinerMachine.getDepletionChance(tier))),
                             Component.translatable("gtceu.universal.tooltip.energy_tier_range",
-                                    GTValues.VNF[tier], GTValues.VNF[tier + 1]),
+                                    VNF[tier], VNF[tier + 1]),
                             Component.translatable("gtceu.machine.bedrock_ore_miner.production",
                                     BedrockOreMinerMachine.getRigMultiplier(tier),
                                     FormattingUtil.formatNumbers(
@@ -1152,7 +1153,7 @@ public class GTMultiMachines {
             MV, HV, EV);
 
     // Multiblock Tanks
-    public static final MachineDefinition WOODEN_TANK_VALVE = GTMachineUtils.registerTankValve(
+    public static final MachineDefinition WOODEN_TANK_VALVE = registerTankValve(
             "wooden_tank_valve", "Wooden Tank Valve", false,
             (builder, overlay) -> builder.sidedWorkableCasingModel(GTCEu.id("block/casings/wood_wall"), overlay));
     public static final MultiblockMachineDefinition WOODEN_MULTIBLOCK_TANK = registerMultiblockTank(
@@ -1161,7 +1162,7 @@ public class GTMultiMachines {
             new PropertyFluidFilter(340, false, false, false, false),
             (builder, overlay) -> builder.sidedWorkableCasingModel(GTCEu.id("block/casings/wood_wall"), overlay));
 
-    public static final MachineDefinition BRONZE_TANK_VALVE = GTMachineUtils.registerTankValve(
+    public static final MachineDefinition BRONZE_TANK_VALVE = registerTankValve(
             "bronze_tank_valve", "Bronze Tank Valve", true,
             (builder, overlay) -> builder
                     .workableCasingModel(GTCEu.id("block/casings/solid/machine_casing_bronze_plated_bricks"), overlay));
@@ -1172,7 +1173,7 @@ public class GTMultiMachines {
             (builder, overlay) -> builder
                     .workableCasingModel(GTCEu.id("block/casings/solid/machine_casing_bronze_plated_bricks"), overlay));
 
-    public static final MachineDefinition STEEL_TANK_VALVE = GTMachineUtils.registerTankValve(
+    public static final MachineDefinition STEEL_TANK_VALVE = registerTankValve(
             "steel_tank_valve", "Steel Tank Valve", true,
             (builder, overlay) -> builder.workableCasingModel(
                     GTCEu.id("block/casings/solid/machine_casing_solid_steel"), overlay));
@@ -1190,7 +1191,7 @@ public class GTMultiMachines {
             .appearanceBlock(CASING_ALUMINIUM_FROSTPROOF)
             .pattern((definition) -> FactoryBlockPattern.start()
                     .aisle("BCB", "BBB", "BBB", "BBB")
-                    .where('C', Predicates.controller(Predicates.blocks(definition.get())))
+                    .where('C', controller(blocks(definition.get())))
                     .where('B', CentralMonitorMachine.getMultiPredicate())
                     .build())
             .modelProperty(RecipeLogic.STATUS_PROPERTY, RecipeLogic.Status.IDLE)
