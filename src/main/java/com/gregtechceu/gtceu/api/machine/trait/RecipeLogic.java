@@ -300,7 +300,7 @@ public class RecipeLogic extends MachineTrait implements IEnhancedManaged, IWork
         } else {
             setWaiting(conditionResult.reason());
         }
-        if (isWaiting() /*|| isSuspend() */) {
+        if (isWaiting() /* || isSuspend() */) {
             regressRecipe();
         }
     }

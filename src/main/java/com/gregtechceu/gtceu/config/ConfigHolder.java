@@ -600,7 +600,6 @@ public class ConfigHolder {
         })
         public boolean parallelLCR = true;
 
-
         @Configurable
         @Configurable.Comment("Whether the Drums can input fluids from the output side (bottom).")
         public boolean allowDrumsInputFluidsFromOutputSide = false;
