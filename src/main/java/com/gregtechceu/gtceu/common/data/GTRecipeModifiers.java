@@ -279,13 +279,9 @@ public class GTRecipeModifiers {
         }
 
         int coilTier = coilMachine.getCoilTier();
-        var discountModifier = ModifierFunction.builder()
-                .durationMultiplier(1.0 / (0.75 + coilTier * 0.25))
-                .eutMultiplier(1.0 - coilTier * 0.05)
-                .build();
 
-        var oc = NON_PERFECT_OVERCLOCK_SUBTICK.getModifier(machine, recipe, coilMachine.getOverclockVoltage());
-
-        return oc.andThen(discountModifier);
+        return ModifierFunction.builder().durationMultiplier(1.0 / (0.75 + coilTier * 0.25)).build()
+                .andThen(NON_PERFECT_OVERCLOCK_SUBTICK.getModifier(machine, recipe, coilMachine.getOverclockVoltage()))
+                .andThen(ModifierFunction.builder().eutMultiplier(1.0 - coilTier * 0.05).build());
     }
 }
