@@ -54,32 +54,32 @@ public class FuelRecipes {
 
         LARGE_BOILER_RECIPES.recipeBuilder("biomass")
                 .inputFluids(Biomass.getFluid(40))
-                .duration(10)
+                .duration(20)
                 .save(provider);
 
         LARGE_BOILER_RECIPES.recipeBuilder("oil")
                 .inputFluids(Oil.getFluid(200))
-                .duration(10)
+                .duration(20)
                 .save(provider);
 
         LARGE_BOILER_RECIPES.recipeBuilder("oil_heavy")
                 .inputFluids(OilHeavy.getFluid(32))
-                .duration(10)
+                .duration(20)
                 .save(provider);
 
         LARGE_BOILER_RECIPES.recipeBuilder("sulfuric_heavy_fuel")
                 .inputFluids(SulfuricHeavyFuel.getFluid(32))
-                .duration(10)
+                .duration(20)
                 .save(provider);
 
         LARGE_BOILER_RECIPES.recipeBuilder("heavy_fuel")
                 .inputFluids(HeavyFuel.getFluid(16))
-                .duration(30)
+                .duration(60)
                 .save(provider);
 
         LARGE_BOILER_RECIPES.recipeBuilder("fish_oil")
                 .inputFluids(FishOil.getFluid(160))
-                .duration(10)
+                .duration(20)
                 .save(provider);
 
         // diesel generator fuels
