@@ -1,0 +1,156 @@
+package com.gregtechceu.gtceu.common.machine.trait;
+
+import com.gregtechceu.gtceu.api.capability.recipe.FluidRecipeCapability;
+import com.gregtechceu.gtceu.api.capability.recipe.IO;
+import com.gregtechceu.gtceu.api.capability.recipe.ItemRecipeCapability;
+import com.gregtechceu.gtceu.api.machine.feature.IRecipeLogicMachine;
+import com.gregtechceu.gtceu.api.machine.trait.RecipeLogic;
+import com.gregtechceu.gtceu.api.recipe.ActionResult;
+import com.gregtechceu.gtceu.api.recipe.GTRecipe;
+import com.gregtechceu.gtceu.api.recipe.LayeredRecipeHelper;
+import com.gregtechceu.gtceu.utils.FluidStackHashStrategy;
+import com.gregtechceu.gtceu.utils.ItemStackHashStrategy;
+
+import com.lowdragmc.lowdraglib.syncdata.annotation.DescSynced;
+import com.lowdragmc.lowdraglib.syncdata.annotation.Persisted;
+
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
+import it.unimi.dsi.fastutil.objects.Object2LongOpenCustomHashMap;
+import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+
+public class LayeredRecipeLogic extends RecipeLogic {
+
+    @Persisted
+    @DescSynced
+    @Getter
+    private List<LayeredRecipeHelper.Layer> layeredRecipe;
+
+    @Persisted
+    @DescSynced
+    @Getter
+    private int layeredRecipeLayerIndex = -1;
+
+    public LayeredRecipeLogic(IRecipeLogicMachine machine) {
+        super(machine);
+    }
+
+    @Override
+    public void onRecipeFinish() {
+        var finishedLastStep = false;
+        if (layeredRecipe != null && lastRecipe != null && lastRecipe.data.getBoolean("is_layer")) {
+            // we were doing a recipe layer
+            layeredRecipeLayerIndex++;
+            finishedLastStep = layeredRecipe.size() == layeredRecipeLayerIndex;
+        }
+
+        suspendAfterFinish = true;
+        super.onRecipeFinish();
+        setStatus(RecipeLogic.Status.IDLE);
+
+        if (finishedLastStep) {
+            layeredRecipe = null;
+            layeredRecipeLayerIndex = -1;
+        } else {
+            // TODO: attempt next layer immediately
+        }
+    }
+
+    @Override
+    public @NotNull Iterator<GTRecipe> searchRecipe() {
+        if (layeredRecipe != null) {
+            return Collections.singleton(layeredRecipe.get(layeredRecipeLayerIndex).recipe()).iterator();
+        }
+        return machine.getRecipeType().searchRecipe(machine, r -> {
+            // TODO: maybe add support for running non layered recipes as well
+            // ignore non layered recipes
+            if (!LayeredRecipeHelper.hasLayeredSteps(r)) return false;
+            return matchRecipe(r).isSuccess();
+        });
+    }
+
+    @Override
+    public void setupRecipe(GTRecipe recipe) {
+        if (LayeredRecipeHelper.hasLayeredSteps(recipe)) {
+            // we are starting a layered craft
+            layeredRecipe = LayeredRecipeHelper.getLayeredSteps(recipe);
+            layeredRecipeLayerIndex = 0;
+            recipe = layeredRecipe.get(0).recipe();
+        } else if (!recipe.data.getBoolean("is_layer")) {
+            // non layered recipe, should never happen
+            layeredRecipe = null;
+            layeredRecipeLayerIndex = -1;
+        }
+        // otherwise we are just doing a subsequent layer
+        super.setupRecipe(recipe);
+        recipeDirty = true; // always mark dirty, we have custom retry logic
+    }
+
+    @Override
+    public boolean checkMatchedRecipeAvailable(GTRecipe match) {
+        var isAlreadyModified = match.data.getBoolean("is_layer");
+        var modified = isAlreadyModified ? match : machine.fullModifyRecipe(match);
+        if (modified != null) {
+            var recipeMatch = checkRecipe(modified);
+            if (recipeMatch.isSuccess()) {
+                // TODO: fail the match if there are other inputs in the machine
+                setupRecipe(modified);
+            }
+
+            if (lastRecipe != null && getStatus() == RecipeLogic.Status.WORKING) {
+                lastOriginRecipe = null; // custom handling
+                lastFailedMatches = null;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    protected ActionResult checkRecipe(GTRecipe recipe) {
+        // normal match first
+        var normalMatch = super.checkRecipe(recipe);
+        if (!normalMatch.isSuccess()) return normalMatch;
+
+        var inputItems = new Object2LongOpenCustomHashMap<>(ItemStackHashStrategy.comparingAllButCount());
+        machine.getCapabilitiesFlat(IO.IN, ItemRecipeCapability.CAP).stream()
+                .flatMap(s -> s.getContents().stream())
+                .filter(ItemStack.class::isInstance).map(ItemStack.class::cast).filter(s -> !s.isEmpty())
+                .forEach(s -> inputItems.addTo(s, s.getCount()));
+
+        for (var rawContent : recipe.getInputContents(ItemRecipeCapability.CAP)) {
+            var content = ItemRecipeCapability.CAP.of(rawContent.getContent());
+            inputItems.keySet().stream().filter(content).forEach(inputItems::removeLong);
+        }
+        if (!inputItems.isEmpty()) {
+            // TODO: missing language key
+            return ActionResult.fail(Component.translatable("Layer inputs aren't the only inputs in the machine."),
+                    null, IO.IN);
+        }
+
+        var inputFluids = new Object2LongOpenCustomHashMap<>(FluidStackHashStrategy.comparingAllButAmount());
+        machine.getCapabilitiesFlat(IO.IN, FluidRecipeCapability.CAP).stream()
+                .flatMap(s -> s.getContents().stream())
+                .filter(FluidStack.class::isInstance).map(FluidStack.class::cast).filter(s -> !s.isEmpty())
+                .forEach(s -> inputFluids.addTo(s, s.getAmount()));
+
+        for (var rawContent : recipe.getInputContents(FluidRecipeCapability.CAP)) {
+            var content = FluidRecipeCapability.CAP.of(rawContent.getContent());
+            inputFluids.keySet().stream().filter(content).forEach(inputFluids::removeLong);
+        }
+        if (!inputFluids.isEmpty()) {
+            // TODO: missing language key
+            return ActionResult.fail(Component.translatable("Layer inputs aren't the only inputs in the machine."),
+                    null, IO.IN);
+        }
+
+        return ActionResult.SUCCESS;
+    }
+}

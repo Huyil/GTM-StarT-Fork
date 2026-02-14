@@ -1438,6 +1438,13 @@ public class GTRecipeBuilder {
         return this;
     }
 
+    public GTRecipeBuilder layeredRecipe(Consumer<LayeredRecipeInfo.Builder> config) {
+        var layered = new LayeredRecipeInfo.Builder(this);
+        config.accept(layered);
+        layered.apply();
+        return this;
+    }
+
     public void toJson(JsonObject json) {
         var ops = RegistryOps.create(JsonOps.INSTANCE, GTRegistries.builtinRegistry());
         JsonObject serialized = GTRecipeSerializer.CODEC.encodeStart(ops, buildRawRecipe())
@@ -1658,6 +1665,9 @@ public class GTRecipeBuilder {
                                           boolean isInput,
                                           Map<RecipeCapability<?>, List<Content>> table,
                                           int addedEntries) {
+        // Layered recipes may exceed input sizes
+        if (this.data.contains("layered_info")) return;
+
         var recipeCapabilityMax = isInput ? recipeType.maxInputs : recipeType.maxOutputs;
         if (!recipeCapabilityMax.containsKey(capability)) return;
 

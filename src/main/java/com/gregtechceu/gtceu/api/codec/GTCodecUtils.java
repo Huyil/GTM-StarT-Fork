@@ -8,14 +8,33 @@ import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
+import it.unimi.dsi.fastutil.ints.Int2IntArrayMap;
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.IntIntImmutablePair;
+import it.unimi.dsi.fastutil.ints.IntIntPair;
 import com.mojang.serialization.DynamicOps;
 
+import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.function.Supplier;
 
 public final class GTCodecUtils {
 
     private GTCodecUtils() {}
+
+    public static final Codec<IntIntPair> INT_INT_PAIR_CODEC = Codec.INT.listOf().comapFlatMap(
+            integers -> integers.size() == 2 ?
+                    DataResult.success(new IntIntImmutablePair(integers.get(0), integers.get(1))) :
+                    DataResult.error(() -> "Invalid pair size."),
+            pair -> List.of(pair.keyInt(), pair.valueInt()));
+
+    public static final Codec<Int2IntMap> INT2INT_MAP_CODEC = INT_INT_PAIR_CODEC.listOf().xmap(
+            pairs -> new Int2IntArrayMap(
+                    pairs.stream().collect(Collectors.toUnmodifiableMap(IntIntPair::keyInt, IntIntPair::valueInt))),
+            map -> map.int2IntEntrySet().stream()
+                    .map(entry -> new IntIntImmutablePair(entry.getIntKey(), entry.getIntValue()))
+                    .collect(Collectors.toUnmodifiableList()));
 
     public static final Codec<Long> NON_NEGATIVE_LONG = longRangeWithMessage(0, Long.MAX_VALUE,
             (val) -> "Value must be non-negative: " + val);
