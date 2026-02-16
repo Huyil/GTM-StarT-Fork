@@ -1043,6 +1043,13 @@ public class TagPrefix {
     @Setter
     private int maxStackSize = 64;
 
+    @Setter
+    private boolean isFallingBlock = false;
+
+    public boolean isFallingBlock() {
+        return isFallingBlock;
+    }
+
     @Getter
     private final List<MaterialStack> secondaryMaterials = new ArrayList<>();
 
@@ -1157,6 +1164,11 @@ public class TagPrefix {
 
     public TagPrefix enableRecycling() {
         this.generateRecycling = true;
+        return this;
+    }
+
+    public TagPrefix fallingBlock() {
+        this.isFallingBlock(true);
         return this;
     }
 
