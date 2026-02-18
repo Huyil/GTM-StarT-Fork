@@ -501,11 +501,8 @@ public class GTCraftingComponents {
                     .add(OpV, GTItems.ELECTRIC_PISTON_OpV.asStack());
         }
 
-        EMITTER = CraftingComponent.of("emitter", GTItems.EMITTER_LV.asStack());
-        // if (ConfigHolder.INSTANCE.machines.ulvComponentsEnabled) {
-        // PISTON.add(ULV, GTItems.ELECTRIC_EMITTER_ULV.asStack());
-        // }
-        EMITTER.add(LV, GTItems.EMITTER_LV.asStack())
+        EMITTER = CraftingComponent.of("emitter", GTItems.EMITTER_LV.asStack())
+                .add(LV, GTItems.EMITTER_LV.asStack())
                 .add(MV, GTItems.EMITTER_MV.asStack())
                 .add(HV, GTItems.EMITTER_HV.asStack())
                 .add(EV, GTItems.EMITTER_EV.asStack())
@@ -522,11 +519,8 @@ public class GTCraftingComponents {
                     .add(OpV, GTItems.EMITTER_OpV.asStack());
         }
 
-        SENSOR = CraftingComponent.of("sensor", GTItems.SENSOR_LV.asStack());
-        // if (ConfigHolder.INSTANCE.machines.ulvComponentsEnabled) {
-        // SENSOR.add(ULV, GTItems.SENSOR_ULV.asStack());
-        // }
-        SENSOR.add(LV, GTItems.SENSOR_LV.asStack())
+        SENSOR = CraftingComponent.of("sensor", GTItems.SENSOR_LV.asStack())
+                .add(LV, GTItems.SENSOR_LV.asStack())
                 .add(MV, GTItems.SENSOR_MV.asStack())
                 .add(HV, GTItems.SENSOR_HV.asStack())
                 .add(EV, GTItems.SENSOR_EV.asStack())
@@ -542,11 +536,8 @@ public class GTCraftingComponents {
                     .add(OpV, GTItems.SENSOR_OpV.asStack());
         }
 
-        SENSOR_EMITTER_GEM = CraftingComponent.of("sensor_emitter_gem", gem, Quartzite);
-        // if (ConfigHolder.INSTANCE.machines.ulvComponentsEnabled) {
-        // SENSOR_EMITTER_GEM.add(ULV, gem, Quartz);
-        // }
-        SENSOR_EMITTER_GEM.add(LV, gem, Quartzite)
+        SENSOR_EMITTER_GEM = CraftingComponent.of("sensor_emitter_gem", gem, Quartzite)
+                .add(LV, gem, Quartzite)
                 .add(MV, gemFlawless, Emerald)
                 .add(HV, gem, EnderEye)
                 .add(EV, GTItems.QUANTUM_EYE.asStack())
@@ -595,11 +586,8 @@ public class GTCraftingComponents {
                     .add(OpV, GTItems.ROBOT_ARM_OpV.asStack());
         }
 
-        FIELD_GENERATOR = CraftingComponent.of("field_generator", GTItems.FIELD_GENERATOR_LV.asStack());
-        // if (ConfigHolder.INSTANCE.machines.ulvComponentsEnabled) {
-        // FIELD_GENERATOR.add(ULV, GTItems.FIELD_GENERATOR_ULV.asStack());
-        // }
-        FIELD_GENERATOR.add(LV, GTItems.FIELD_GENERATOR_LV.asStack())
+        FIELD_GENERATOR = CraftingComponent.of("field_generator", GTItems.FIELD_GENERATOR_LV.asStack())
+                .add(LV, GTItems.FIELD_GENERATOR_LV.asStack())
                 .add(MV, GTItems.FIELD_GENERATOR_MV.asStack())
                 .add(HV, GTItems.FIELD_GENERATOR_HV.asStack())
                 .add(EV, GTItems.FIELD_GENERATOR_EV.asStack())
