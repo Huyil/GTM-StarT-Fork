@@ -5,6 +5,7 @@ import com.gregtechceu.gtceu.api.GTCEuAPI;
 import com.gregtechceu.gtceu.common.data.GTBlocks;
 import com.gregtechceu.gtceu.common.data.GTItems;
 import com.gregtechceu.gtceu.common.data.GTMachines;
+import com.gregtechceu.gtceu.config.ConfigHolder;
 import com.gregtechceu.gtceu.data.recipe.event.CraftingComponentModificationEvent;
 import com.gregtechceu.gtceu.integration.kjs.GTCEuStartupEvents;
 import com.gregtechceu.gtceu.integration.kjs.events.CraftingComponentsEventJS;
@@ -440,8 +441,11 @@ public class GTCraftingComponents {
                 .add(UV, toolHeadBuzzSaw, Duranium)
                 .add(UHV, toolHeadBuzzSaw, Duranium);
 
-        MOTOR = CraftingComponent.of("motor", GTItems.ELECTRIC_MOTOR_LV.asStack())
-                .add(LV, GTItems.ELECTRIC_MOTOR_LV.asStack())
+        MOTOR = CraftingComponent.of("motor", GTItems.ELECTRIC_MOTOR_LV.asStack());
+        if (ConfigHolder.INSTANCE.machines.ulvComponentsEnabled) {
+            MOTOR.add(ULV, GTItems.ELECTRIC_MOTOR_ULV.asStack());
+        }
+        MOTOR.add(LV, GTItems.ELECTRIC_MOTOR_LV.asStack())
                 .add(MV, GTItems.ELECTRIC_MOTOR_MV.asStack())
                 .add(HV, GTItems.ELECTRIC_MOTOR_HV.asStack())
                 .add(EV, GTItems.ELECTRIC_MOTOR_EV.asStack())
@@ -457,8 +461,11 @@ public class GTCraftingComponents {
                     .add(OpV, GTItems.ELECTRIC_MOTOR_OpV.asStack());
         }
 
-        PUMP = CraftingComponent.of("pump", GTItems.ELECTRIC_PUMP_LV.asStack())
-                .add(LV, GTItems.ELECTRIC_PUMP_LV.asStack())
+        PUMP = CraftingComponent.of("pump", GTItems.ELECTRIC_PUMP_LV.asStack());
+        if (ConfigHolder.INSTANCE.machines.ulvComponentsEnabled) {
+            PUMP.add(ULV, GTItems.ELECTRIC_PUMP_ULV.asStack());
+        }
+        PUMP.add(LV, GTItems.ELECTRIC_PUMP_LV.asStack())
                 .add(MV, GTItems.ELECTRIC_PUMP_MV.asStack())
                 .add(HV, GTItems.ELECTRIC_PUMP_HV.asStack())
                 .add(EV, GTItems.ELECTRIC_PUMP_EV.asStack())
@@ -474,8 +481,11 @@ public class GTCraftingComponents {
                     .add(OpV, GTItems.ELECTRIC_PUMP_OpV.asStack());
         }
 
-        PISTON = CraftingComponent.of("piston", GTItems.ELECTRIC_PISTON_LV.asStack())
-                .add(LV, GTItems.ELECTRIC_PISTON_LV.asStack())
+        PISTON = CraftingComponent.of("piston", GTItems.ELECTRIC_PISTON_LV.asStack());
+        if (ConfigHolder.INSTANCE.machines.ulvComponentsEnabled) {
+            PISTON.add(ULV, GTItems.ELECTRIC_PISTON_ULV.asStack());
+        }
+        PISTON.add(LV, GTItems.ELECTRIC_PISTON_LV.asStack())
                 .add(MV, GTItems.ELECTRIC_PISTON_MV.asStack())
                 .add(HV, GTItems.ELECTRIC_PISTON_HV.asStack())
                 .add(EV, GTItems.ELECTRIC_PISTON_EV.asStack())
@@ -491,8 +501,11 @@ public class GTCraftingComponents {
                     .add(OpV, GTItems.ELECTRIC_PISTON_OpV.asStack());
         }
 
-        EMITTER = CraftingComponent.of("emitter", GTItems.EMITTER_LV.asStack())
-                .add(LV, GTItems.EMITTER_LV.asStack())
+        EMITTER = CraftingComponent.of("emitter", GTItems.EMITTER_LV.asStack());
+        // if (ConfigHolder.INSTANCE.machines.ulvComponentsEnabled) {
+        // PISTON.add(ULV, GTItems.ELECTRIC_EMITTER_ULV.asStack());
+        // }
+        EMITTER.add(LV, GTItems.EMITTER_LV.asStack())
                 .add(MV, GTItems.EMITTER_MV.asStack())
                 .add(HV, GTItems.EMITTER_HV.asStack())
                 .add(EV, GTItems.EMITTER_EV.asStack())
@@ -509,8 +522,11 @@ public class GTCraftingComponents {
                     .add(OpV, GTItems.EMITTER_OpV.asStack());
         }
 
-        SENSOR = CraftingComponent.of("sensor", GTItems.SENSOR_LV.asStack())
-                .add(LV, GTItems.SENSOR_LV.asStack())
+        SENSOR = CraftingComponent.of("sensor", GTItems.SENSOR_LV.asStack());
+        // if (ConfigHolder.INSTANCE.machines.ulvComponentsEnabled) {
+        // SENSOR.add(ULV, GTItems.SENSOR_ULV.asStack());
+        // }
+        SENSOR.add(LV, GTItems.SENSOR_LV.asStack())
                 .add(MV, GTItems.SENSOR_MV.asStack())
                 .add(HV, GTItems.SENSOR_HV.asStack())
                 .add(EV, GTItems.SENSOR_EV.asStack())
@@ -526,8 +542,11 @@ public class GTCraftingComponents {
                     .add(OpV, GTItems.SENSOR_OpV.asStack());
         }
 
-        SENSOR_EMITTER_GEM = CraftingComponent.of("sensor_emitter_gem", gem, Quartzite)
-                .add(LV, gem, Quartzite)
+        SENSOR_EMITTER_GEM = CraftingComponent.of("sensor_emitter_gem", gem, Quartzite);
+        // if (ConfigHolder.INSTANCE.machines.ulvComponentsEnabled) {
+        // SENSOR_EMITTER_GEM.add(ULV, gem, Quartz);
+        // }
+        SENSOR_EMITTER_GEM.add(LV, gem, Quartzite)
                 .add(MV, gemFlawless, Emerald)
                 .add(HV, gem, EnderEye)
                 .add(EV, GTItems.QUANTUM_EYE.asStack())
@@ -536,8 +555,11 @@ public class GTCraftingComponents {
                 .add(ZPM, GTItems.QUANTUM_STAR.asStack())
                 .add(UV, GTItems.GRAVI_STAR.asStack());
 
-        CONVEYOR = CraftingComponent.of("conveyor", GTItems.CONVEYOR_MODULE_LV.asStack())
-                .add(LV, GTItems.CONVEYOR_MODULE_LV.asStack())
+        CONVEYOR = CraftingComponent.of("conveyor", GTItems.CONVEYOR_MODULE_LV.asStack());
+        if (ConfigHolder.INSTANCE.machines.ulvComponentsEnabled) {
+            CONVEYOR.add(ULV, GTItems.CONVEYOR_MODULE_ULV.asStack());
+        }
+        CONVEYOR.add(LV, GTItems.CONVEYOR_MODULE_LV.asStack())
                 .add(MV, GTItems.CONVEYOR_MODULE_MV.asStack())
                 .add(HV, GTItems.CONVEYOR_MODULE_HV.asStack())
                 .add(EV, GTItems.CONVEYOR_MODULE_EV.asStack())
@@ -553,8 +575,11 @@ public class GTCraftingComponents {
                     .add(OpV, GTItems.CONVEYOR_MODULE_OpV.asStack());
         }
 
-        ROBOT_ARM = CraftingComponent.of("robot_arm", GTItems.ROBOT_ARM_LV.asStack())
-                .add(LV, GTItems.ROBOT_ARM_LV.asStack())
+        ROBOT_ARM = CraftingComponent.of("robot_arm", GTItems.ROBOT_ARM_LV.asStack());
+        if (ConfigHolder.INSTANCE.machines.ulvComponentsEnabled) {
+            ROBOT_ARM.add(ULV, GTItems.ROBOT_ARM_ULV.asStack());
+        }
+        ROBOT_ARM.add(LV, GTItems.ROBOT_ARM_LV.asStack())
                 .add(MV, GTItems.ROBOT_ARM_MV.asStack())
                 .add(HV, GTItems.ROBOT_ARM_HV.asStack())
                 .add(EV, GTItems.ROBOT_ARM_EV.asStack())
@@ -570,8 +595,11 @@ public class GTCraftingComponents {
                     .add(OpV, GTItems.ROBOT_ARM_OpV.asStack());
         }
 
-        FIELD_GENERATOR = CraftingComponent.of("field_generator", GTItems.FIELD_GENERATOR_LV.asStack())
-                .add(LV, GTItems.FIELD_GENERATOR_LV.asStack())
+        FIELD_GENERATOR = CraftingComponent.of("field_generator", GTItems.FIELD_GENERATOR_LV.asStack());
+        // if (ConfigHolder.INSTANCE.machines.ulvComponentsEnabled) {
+        // FIELD_GENERATOR.add(ULV, GTItems.FIELD_GENERATOR_ULV.asStack());
+        // }
+        FIELD_GENERATOR.add(LV, GTItems.FIELD_GENERATOR_LV.asStack())
                 .add(MV, GTItems.FIELD_GENERATOR_MV.asStack())
                 .add(HV, GTItems.FIELD_GENERATOR_HV.asStack())
                 .add(EV, GTItems.FIELD_GENERATOR_EV.asStack())
