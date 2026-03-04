@@ -29,7 +29,7 @@ import java.util.List;
 public class LayeredRecipeUIHelper {
 
     public static GTRecipeTypeUI createRecipeUI(GTRecipeType recipeType) {
-        return new GTRecipeTypeUI(recipeType) {
+        var ui = new GTRecipeTypeUI(recipeType) {
 
             @Override
             public IEditableUI<WidgetGroup, RecipeHolder> createEditableUITemplate(boolean isSteam,
@@ -51,6 +51,8 @@ public class LayeredRecipeUIHelper {
                 }, (container, recipeHolder) -> {});
             }
         };
+        ui.setUiBuilder(LayeredRecipeUIHelper::buildLayeredUI);
+        return ui;
     }
 
     public static void buildLayeredUI(GTRecipe rootRecipe, WidgetGroup widgetGroup) {

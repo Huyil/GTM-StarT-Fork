@@ -7,6 +7,7 @@ import com.gregtechceu.gtceu.api.recipe.category.GTRecipeCategory;
 import com.gregtechceu.gtceu.api.recipe.chance.boost.ChanceBoostFunction;
 import com.gregtechceu.gtceu.api.recipe.lookup.GTRecipeLookup;
 import com.gregtechceu.gtceu.api.recipe.ui.GTRecipeTypeUI;
+import com.gregtechceu.gtceu.api.recipe.ui.LayeredRecipeUIHelper;
 import com.gregtechceu.gtceu.api.registry.GTRegistries;
 import com.gregtechceu.gtceu.api.sound.SoundEntry;
 import com.gregtechceu.gtceu.data.recipe.builder.GTRecipeBuilder;
@@ -95,6 +96,8 @@ public class GTRecipeType implements RecipeType<GTRecipe> {
     private final List<ICustomRecipeLogic> customRecipeLogicRunners = new ArrayList<>();
     @Getter
     private int minRecipeConditions = 0;
+    @Getter
+    private boolean layered;
 
     public GTRecipeType(ResourceLocation registryName, String group, RecipeType<?>... proxyRecipes) {
         this.registryName = registryName;
@@ -115,6 +118,13 @@ public class GTRecipeType implements RecipeType<GTRecipe> {
         setXEIVisible(false);
         syntheticCategory = new GTRecipeCategory(registryName.withSuffix("_synthetic").getPath(), this);
         GTRegistries.RECIPE_CATEGORIES.register(syntheticCategory.registryKey, syntheticCategory);
+        return this;
+    }
+
+    public GTRecipeType setLayered() {
+        enableSyntheticCategory();
+        recipeUI = LayeredRecipeUIHelper.createRecipeUI(this);
+        layered = true;
         return this;
     }
 
@@ -314,6 +324,10 @@ public class GTRecipeType implements RecipeType<GTRecipe> {
     public void buildRepresentativeRecipes() {
         for (ICustomRecipeLogic logic : customRecipeLogicRunners) {
             logic.buildRepresentativeRecipes();
+        }
+
+        if (layered) {
+            LayeredRecipeHelper.buildRepresentativeRecipes(this);
         }
     }
 

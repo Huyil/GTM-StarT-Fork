@@ -1439,13 +1439,14 @@ public class GTRecipeBuilder {
     }
 
     public GTRecipeBuilder layeredRecipe(Consumer<LayeredRecipeInfo.Builder> config) {
+        if (!recipeType.isLayered()) {
+            GTCEu.LOGGER.error("Can't use layeredRecipe on a non-layered recipe type");
+            return this;
+        }
         var layered = new LayeredRecipeInfo.Builder(this);
         config.accept(layered);
         layered.apply();
-
-        var newOnSave = (BiConsumer<GTRecipeBuilder, Consumer<FinishedRecipe>>) LayeredRecipeHelper::onSaveLayeredRecipe;
-        if (onSave != null) newOnSave = newOnSave.andThen(onSave);
-        return onSave(newOnSave);
+        return this;
     }
 
     public void toJson(JsonObject json) {
@@ -1480,6 +1481,10 @@ public class GTRecipeBuilder {
     }
 
     public FinishedRecipe build() {
+        if (data.contains("layered_info")) {
+            LayeredRecipeHelper.applyLayeredRecipeModifications(this);
+        }
+
         return new FinishedRecipe() {
 
             @Override

@@ -8,7 +8,6 @@ import com.gregtechceu.gtceu.data.recipe.builder.LayeredRecipeInfo;
 
 import com.lowdragmc.lowdraglib.syncdata.payload.ObjectTypedPayload;
 
-import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
@@ -27,7 +26,6 @@ import java.util.ArrayList;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -72,7 +70,7 @@ public class LayeredRecipeHelper {
                 .toList();
     }
 
-    public static void onSaveLayeredRecipe(GTRecipeBuilder builder, Consumer<FinishedRecipe> consumer) {
+    public static void applyLayeredRecipeModifications(GTRecipeBuilder builder) {
         if (!builder.data.contains("layered_info")) return;
 
         var layers = calculateRecipeSteps(builder.buildRawRecipe());
@@ -92,6 +90,17 @@ public class LayeredRecipeHelper {
         builder.data.remove("is_layer");
         builder.data.put("layered_steps", serializedSteps);
         builder.data.put("layered_xei", serializedXei);
+    }
+
+    public static void buildRepresentativeRecipes(GTRecipeType recipeType) {
+        assert recipeType.isLayered();
+
+        var category = recipeType.getSyntheticCategory();
+        for (var recipe : recipeType.getRecipesInCategory(recipeType.getCategory())) {
+            var original = LayeredRecipeHelper.getXeiLayeredRecipe(recipe);
+            if (original == null) continue;
+            category.addRecipe(original);
+        }
     }
 
     private static void resetRecipeBuilder(GTRecipeBuilder builder, ResourceLocation id, GTRecipeType recipeType) {
