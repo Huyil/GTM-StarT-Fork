@@ -276,7 +276,7 @@ public class RecipeLogic extends MachineTrait implements IEnhancedManaged, IWork
     public void handleRecipeWorking() {
         assert lastRecipe != null;
         var conditionResult = RecipeHelper.checkConditions(lastRecipe, this);
-        if (conditionResult.isSuccess()) {
+        if (conditionResult.isSuccess() && machine.testRecipeTick()) {
             var handleTick = handleTickRecipe(lastRecipe);
             if (handleTick.isSuccess()) {
                 setStatus(Status.WORKING);
