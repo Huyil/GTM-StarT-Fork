@@ -292,7 +292,6 @@ public abstract class WorkableMultiblockMachine extends MultiblockControllerMach
         return IWorkableMultiController.super.testRecipeTick();
     }
 
-
     @Override
     public void onWaiting() {
         for (IMultiPart part : getParts()) {
