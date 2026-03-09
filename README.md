@@ -15,10 +15,67 @@ This is a community-maintained fork of [GregTech CEu: Modern](https://github.com
 **Original Repository:** [GregTechCEu/GregTech-Modern](https://github.com/GregTechCEu/GregTech-Modern)
 
 ### Fork Status
+This fork has diverged from upstream and does **not track versions 8.x.x and later**.
+
+Development is now independent. Upstream fixes or improvements may be selectively
+ported when they make sense for this fork, but version parity with upstream is
+not a goal.
+
+This fork should be considered a separate project with its own design goals.
 
 ### Fork Goals
+#### Project Goals
+- Maintain a version of GTm tailored for the needs of the Star Technology modpack.
+- Improve configurability and pack-developer control.
+- Keep mechanics consistent and intuitive for players.
+- Prioritize maintainability over heavy mixins or fragile patches from addons.
 
-### Changes from Upstream
+#### Development Goals
+- Revert or adjust upstream features that do not fit the intended gameplay design.
+- Introduce new features that would otherwise require large external modifications.
+- Improve internal APIs to make extending the mod easier.
+- Add general quality-of-life improvements and bug fixes.
+
+### Changes from Upstream (non-exhaustive list)
+#### New Features
+- Electric versions of Blast Furnaces and Smokers
+- Multiblocks can require specific energy hatch amperage (2A / 4A / 16A)
+- Multiblocks can support layered inputs (stepped recipes)
+- Advanced redstone detectors can optionally output strong redstone signals
+- ULV components added (configurable)
+
+#### Gameplay & Balance Changes
+- LCR coil benefits and parallel LCR support (configurable)
+- Chance boosting now scales with recipe tier instead of speed overclocks (configurable)
+- Steam boiler balance adjustments
+- Large Packer size changed from 6-long to 5-long
+
+#### Configurability Improvements
+- Multiblocks stalling on power loss is now configurable
+- Super tanks acting as drums is now configurable
+- ULV components can be enabled/disabled via config
+
+#### Restored / Reverted Upstream Changes
+- Chance boosting restored to base recipes
+- Reverted to older bauxite (rutile) processing line
+- Restored long rod extruder mold
+- Soft mallets can pause machines again
+- Reverted Maceration Tower mob grinder behavior
+- Reverted some upstream texture changes
+- Reverted some Z-fighting fixes that worsened rendering issues
+
+#### Technical / API Improvements
+- TagPrefix blocks can easily use falling block behavior
+- Disabled auto generating of recycling recipes after KubeJS recipe event which was causing recycling recipes to not be removable through KubeJS
+
+#### Bug Fixes
+- Fixed voltage display not handling MAX+X values correctly
+- Fixed 2A energy hatches using incorrect 1A overlays
+
+#### UI Changes
+- Voltage display format adjusted (EU/t and amperage order for clarity)
+- Fluid drills and miners added to XEI diagrams
+- Auto-push buttons moved to the right side of the machine UI
 
 ## Credits
 
@@ -42,31 +99,13 @@ This fork is based on the excellent work of the GregTech CEu: Modern development
 
 ## For Developers
 
-To add this fork as a dependency to your project, add the following to your `build.gradle`:
+To add this fork as a dependency to your project, you have to use mavenlocal.
 
-```groovy
-repositories {
-    maven {
-        name = 'GTCEu Maven'
-        url = 'https://maven.gtceu.com'
-        content {
-            includeGroup 'com.gregtechceu.gtceu'
-        }
-    }
-}
-```
+1. Fork and clone this repository locally
+2. After the gradle setup is finalized, run the `publishing/publishToMavenLocal` task
+3. In your project, make sure you have `mavenLocal()` added in your `build.gradle` `repositories` section
+4. Refresh the project, and the dependency should work
 
-Then, you can add it as a dependency, with `${mc_version}` being your Minecraft version target and `${gtm_version}` being the version you want to use:
-
-```groovy
-dependencies {
-    // Forge (see below block as well if you use Forge Gradle)
-    implementation fg.deobf("com.gregtechceu.gtceu:gtceu-${mc_version}:${gtm_version}")
-
-    // Architectury
-    modImplementation "com.gregtechceu.gtceu:gtceu-${mc_version}:${gtm_version}"
-}
-```
 
 ### IDE Requirements (when using IntelliJ IDEA)
 
