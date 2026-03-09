@@ -42,7 +42,7 @@ This fork should be considered a separate project with its own design goals.
 - Multiblocks can require specific energy hatch amperage (2A / 4A / 16A)
 - Multiblocks can support layered inputs (stepped recipes)
 - Advanced redstone detectors can optionally output strong redstone signals
-- ULV components added (configurable)
+- ULV components added
 
 #### Gameplay & Balance Changes
 - LCR coil benefits and parallel LCR support (configurable)
