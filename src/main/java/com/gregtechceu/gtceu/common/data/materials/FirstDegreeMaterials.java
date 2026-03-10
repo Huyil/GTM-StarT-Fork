@@ -106,7 +106,7 @@ public class FirstDegreeMaterials {
                 .components(Tin, 1, Copper, 3)
                 .toolStats(ToolProperty.Builder.of(3.0F, 2.0F, 192, 2)
                         .enchantability(18).addTypes(GTToolType.MORTAR).build())
-                .armorStats(ArmorProperty.Builder.of(17, new int[] { 3, 7, 6, 2 })
+                .armorStats(ArmorProperty.Builder.of(17, new int[] { 3, 7, 5, 2 })
                         .enchantability(8).build())
                 .rotorStats(115, 105, 2.5f, 192)
                 .fluidPipeProperties(1696, 20, true)
