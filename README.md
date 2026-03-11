@@ -84,6 +84,7 @@ This fork should be considered a separate project with its own design goals.
 - Fluid drills and miners added to XEI diagrams
 - Auto-push buttons moved to the right side of the machine UI
 - Mega Blast Chiller ow uses the vacuum freezer overlay
+- Improved filter slot in item busses
 
 ## Credits
 
