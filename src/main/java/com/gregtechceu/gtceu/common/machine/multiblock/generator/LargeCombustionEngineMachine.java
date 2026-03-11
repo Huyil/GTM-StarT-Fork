@@ -221,11 +221,8 @@ public class LargeCombustionEngineMachine extends WorkableElectricMultiblockMach
             recipe = iterator.hasNext() ? iterator.next() : null;
             if (recipe == null) return null;
         }
-        FluidStack requiredFluidInput = RecipeHelper.getInputFluids(recipe).get(0);
 
-        long ocAmount = getMaxVoltage() / recipe.getOutputEUt().getTotalEU();
-        int neededAmount = GTMath.saturatedCast(ocAmount * requiredFluidInput.getAmount());
-        return ChatFormatting.RED + FormattingUtil.formatNumbers(neededAmount) + "mB";
+        return ChatFormatting.RED + FormattingUtil.formatNumbers(RecipeHelper.getInputFluids(recipe).get(0)) + "mB";
     }
 
     @Override
