@@ -1,6 +1,5 @@
 package com.gregtechceu.gtceu.integration.rei.recipe;
 
-import com.gregtechceu.gtceu.GTCEu;
 import com.gregtechceu.gtceu.api.machine.MachineDefinition;
 import com.gregtechceu.gtceu.api.recipe.GTRecipeType;
 import com.gregtechceu.gtceu.api.recipe.category.GTRecipeCategory;
@@ -50,11 +49,14 @@ public class GTRecipeREICategory extends ModularUIDisplayCategory<GTRecipeDispla
         List<GTRecipeCategory> subCategories = new ArrayList<>();
         // run main categories first
         for (GTRecipeCategory category : GTRegistries.RECIPE_CATEGORIES) {
-            if (!category.shouldRegisterDisplays()) continue;
             var type = category.getRecipeType();
             if (category == type.getCategory()) {
                 type.buildRepresentativeRecipes();
-            } else {
+            }
+            if (!category.shouldRegisterDisplays()) {
+                continue;
+            }
+            if (category != type.getCategory()) {
                 subCategories.add(category);
                 continue;
             }
@@ -78,7 +80,7 @@ public class GTRecipeREICategory extends ModularUIDisplayCategory<GTRecipeDispla
         for (MachineDefinition machine : GTRegistries.MACHINES) {
             for (GTRecipeType type : machine.getRecipeTypes()) {
                 for (GTRecipeCategory category : type.getCategories()) {
-                    if (!category.isXEIVisible() && !GTCEu.isDev()) continue;
+                    if (!category.isXEIVisible()) continue;
                     registry.addWorkstations(machineCategory(category), EntryStacks.of(machine.asStack()));
                 }
             }

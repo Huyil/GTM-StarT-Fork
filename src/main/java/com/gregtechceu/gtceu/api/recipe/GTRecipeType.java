@@ -115,7 +115,7 @@ public class GTRecipeType implements RecipeType<GTRecipe> {
     public GTRecipeType enableSyntheticCategory() {
         if (syntheticCategory != null) return this;
 
-        setXEIVisible(false);
+        category.setForceXEIHidden(true);
         syntheticCategory = new GTRecipeCategory(registryName.withSuffix("_synthetic").getPath(), this);
         GTRegistries.RECIPE_CATEGORIES.register(syntheticCategory.registryKey, syntheticCategory);
         return this;

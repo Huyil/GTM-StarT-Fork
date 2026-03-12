@@ -29,6 +29,8 @@ public class GTRecipeCategoryBuilder extends BuilderBase<GTRecipeCategory> {
     @Setter
     private transient boolean isXEIVisible;
     @Setter
+    private transient boolean forceXEIHidden;
+    @Setter
     private transient String langValue;
 
     public GTRecipeCategoryBuilder(ResourceLocation id) {
@@ -37,6 +39,7 @@ public class GTRecipeCategoryBuilder extends BuilderBase<GTRecipeCategory> {
         recipeType = null;
         icon = null;
         isXEIVisible = true;
+        forceXEIHidden = false;
         langValue = null;
     }
 
@@ -61,6 +64,7 @@ public class GTRecipeCategoryBuilder extends BuilderBase<GTRecipeCategory> {
     public GTRecipeCategory register() {
         var category = GTRecipeCategories.register(name, recipeType)
                 .setIcon(icon)
+                .setForceXEIHidden(forceXEIHidden)
                 .setXEIVisible(isXEIVisible);
         return value = category;
     }

@@ -619,6 +619,19 @@ public class GTRecipeBuilder {
         return output(ItemRecipeCapability.CAP, ingredient);
     }
 
+    public GTRecipeBuilder outputItems(Ingredient... outputs) {
+        List<Ingredient> ingredients = new ArrayList<>();
+        for (int i = 0; i < outputs.length; i++) {
+            var ingredient = outputs[i];
+            if (missingIngredientError(i, false, ItemRecipeCapability.CAP, ingredient::isEmpty)) {
+                return this;
+            } else {
+                ingredients.add(ingredient);
+            }
+        }
+        return output(ItemRecipeCapability.CAP, ingredients.toArray(Ingredient[]::new));
+    }
+
     public GTRecipeBuilder outputItemRanged(IntProviderIngredient provider) {
         return outputItems(provider);
     }
