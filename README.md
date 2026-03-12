@@ -78,13 +78,14 @@ This fork should be considered a separate project with its own design goals.
 - Fixed AOE on mining hammer using N+1 durability when mining N blocks
 - Fixed idle and paused overlay for assembler not being the same height as the active overlay
 - Fixed torch recipe using creosote consuming the fluid containers
+- Fix combustion generators displaying wrong and scaling lubricant usage
 
 #### UI and Texture Changes
 - Voltage display format adjusted (EU/t and amperage order for clarity)
 - Fluid drills and miners added to XEI diagrams
 - Auto-push buttons moved to the right side of the machine UI
 - Mega Blast Chiller ow uses the vacuum freezer overlay
-- Improved filter slot in item busses
+- Improved filter slot in item buses
 
 ## Credits
 
