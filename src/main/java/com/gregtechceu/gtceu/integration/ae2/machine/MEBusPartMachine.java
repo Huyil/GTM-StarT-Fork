@@ -13,16 +13,16 @@ import com.lowdragmc.lowdraglib.syncdata.field.ManagedFieldHolder;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.Direction;
-
-import appeng.api.networking.*;
-import appeng.api.networking.security.IActionSource;
-import lombok.Getter;
-import lombok.Setter;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.BlockHitResult;
+
+import appeng.api.networking.*;
+import appeng.api.networking.security.IActionSource;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.EnumSet;
 
@@ -105,14 +105,17 @@ public abstract class MEBusPartMachine extends ItemBusPartMachine implements IGr
 
     /// Let either only the front facing or all sides be exposed
     @Override
-    protected InteractionResult onScrewdriverClick(Player playerIn, InteractionHand hand, Direction gridSide, BlockHitResult hitResult) {
+    protected InteractionResult onScrewdriverClick(Player playerIn, InteractionHand hand, Direction gridSide,
+                                                   BlockHitResult hitResult) {
         var superResult = super.onScrewdriverClick(playerIn, hand, gridSide, hitResult);
         if (superResult != InteractionResult.PASS) return superResult;
         if (io == IO.BOTH) return InteractionResult.PASS;
         if (playerIn.isShiftKeyDown()) {
             exposeAllSides = !exposeAllSides;
-            getMainNode().setExposedOnSides(exposeAllSides ? EnumSet.allOf(Direction.class) : EnumSet.of(getFrontFacing()));
-            playerIn.sendSystemMessage(Component.translatable("gtceu.machine.me.io.expose.description", exposeAllSides));
+            getMainNode()
+                    .setExposedOnSides(exposeAllSides ? EnumSet.allOf(Direction.class) : EnumSet.of(getFrontFacing()));
+            playerIn.sendSystemMessage(
+                    Component.translatable("gtceu.machine.me.io.expose.description", exposeAllSides));
             return InteractionResult.sidedSuccess(playerIn.level().isClientSide);
         }
         return InteractionResult.PASS;
