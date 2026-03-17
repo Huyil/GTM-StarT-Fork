@@ -85,7 +85,7 @@ This fork should be considered a separate project with its own design goals.
 - Fixed combustion generators displaying incorrect information fuel usage
 - Fixed glass bottle recipe in extruder not registering
 - Fixed extra line for tools that don't have enchantments
-- Fixed batter buffers showing the input overlay on the sides
+- Fixed battery buffers showing the input overlay on the sides
 
 #### UI and Texture Changes
 - Voltage display format adjusted (EU/t and amperage order for clarity)
