@@ -265,7 +265,7 @@ public class GTRecipeModifiers {
         };
 
         GTRecipe copy = baseModifier.apply(recipe);
-        var ocModifier = NON_PERFECT_OVERCLOCK.getModifier(machine, copy, coilMachine.getOverclockVoltage());
+        var ocModifier = NON_PERFECT_OVERCLOCK_SUBTICK.getModifier(machine, copy, coilMachine.getOverclockVoltage());
         var parallelModifier = ModifierFunction.builder()
                 .modifyAllContents(ContentModifier.multiplier(parallels))
                 .parallels(parallels)
