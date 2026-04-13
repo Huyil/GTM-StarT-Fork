@@ -252,9 +252,9 @@ public class ConfigHolder {
 
             @Configurable
             @Configurable.Comment({ "The minimum interval between ME Hatch/Bus interact ME network.",
-                    "It may cause lag if the interval is too small.", "Default: 2 ticks" })
+                    "It may cause lag if the interval is too small.", "Default: 1 tick" })
             @Configurable.Range(min = 1)
-            public int minUpdateIntervals = 2;
+            public int minUpdateIntervals = 1;
 
             @Configurable
             @Configurable.Comment({ "The energy consumption of ME Hatch/Bus.", "Default: 4.0AE/t" })
@@ -655,6 +655,16 @@ public class ConfigHolder {
                 "Default: false"
         })
         public boolean multiblocksStallOnPowerFail = false;
+
+        @Configurable
+        @Configurable.Comment({ "Default update rate of redstone covers in ticks", "Default: 20 ticks" })
+        @Configurable.Range(min = 1)
+        public int coverDefaultTicksPerCycle = 20;
+
+        @Configurable
+        @Configurable.Comment({ "Minimum update rate of redstone covers in ticks", "Default: 1 tick" })
+        @Configurable.Range(min = 1)
+        public int coverMinTicksPerCycle = 1;
 
         @Configurable
         @Configurable.Comment("Small Steam Boiler Options")

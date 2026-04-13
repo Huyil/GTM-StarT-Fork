@@ -9,6 +9,7 @@ import com.gregtechceu.gtceu.api.gui.GuiTextures;
 import com.gregtechceu.gtceu.api.gui.widget.IntInputWidget;
 import com.gregtechceu.gtceu.api.gui.widget.LongInputWidget;
 import com.gregtechceu.gtceu.api.gui.widget.ToggleButtonWidget;
+import com.gregtechceu.gtceu.config.ConfigHolder;
 import com.gregtechceu.gtceu.utils.GTMath;
 
 import com.lowdragmc.lowdraglib.gui.widget.LabelWidget;
@@ -49,8 +50,6 @@ public class AdvancedEnergyDetectorCover extends EnergyDetectorCover implements 
 
     private static final int DEFAULT_MIN_PERCENT = 33;
     private static final int DEFAULT_MAX_PERCENT = 66;
-    private static final int DEFAULT_TICKS_PER_CYCLE = 20;
-    private static final int MIN_TICKS_PER_CYCLE = 2;
 
     @Persisted
     @Getter
@@ -79,12 +78,13 @@ public class AdvancedEnergyDetectorCover extends EnergyDetectorCover implements 
         super(definition, coverHolder, attachedSide);
         this.minValue = DEFAULT_MIN_PERCENT;
         this.maxValue = DEFAULT_MAX_PERCENT;
-        this.ticksPerCycle = DEFAULT_TICKS_PER_CYCLE;
+        this.ticksPerCycle = ConfigHolder.INSTANCE.machines.coverDefaultTicksPerCycle;
         this.usePercent = true;
     }
 
     public void setTicksPerCycle(int ticksPerCycle) {
-        this.ticksPerCycle = Mth.clamp(ticksPerCycle, MIN_TICKS_PER_CYCLE, ticksPerCycle);
+        this.ticksPerCycle = Mth.clamp(ticksPerCycle, ConfigHolder.INSTANCE.machines.coverMinTicksPerCycle,
+                ticksPerCycle);
     }
 
     @Override
@@ -165,7 +165,7 @@ public class AdvancedEnergyDetectorCover extends EnergyDetectorCover implements 
         minValueInput = new LongInputWidget(40, 50, 176 - 40 - 10, 20, this::getMinValue, this::setMinValue);
         maxValueInput = new LongInputWidget(40, 75, 176 - 40 - 10, 20, this::getMaxValue, this::setMaxValue);
         group.addWidget(new IntInputWidget(80, 100, 176 - 80 - 10, 20, this::getTicksPerCycle, this::setTicksPerCycle)
-                .setMin(MIN_TICKS_PER_CYCLE));
+                .setMin(ConfigHolder.INSTANCE.machines.coverMinTicksPerCycle));
 
         initializeMinMaxInputs(usePercent);
         group.addWidget(minValueInput);
