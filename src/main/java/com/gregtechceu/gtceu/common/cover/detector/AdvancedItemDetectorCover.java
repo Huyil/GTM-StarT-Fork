@@ -9,6 +9,7 @@ import com.gregtechceu.gtceu.api.cover.filter.ItemFilter;
 import com.gregtechceu.gtceu.api.gui.GuiTextures;
 import com.gregtechceu.gtceu.api.gui.widget.IntInputWidget;
 import com.gregtechceu.gtceu.api.gui.widget.ToggleButtonWidget;
+import com.gregtechceu.gtceu.config.ConfigHolder;
 import com.gregtechceu.gtceu.utils.RedstoneUtil;
 
 import com.lowdragmc.lowdraglib.gui.widget.LabelWidget;
@@ -48,8 +49,7 @@ public class AdvancedItemDetectorCover extends ItemDetectorCover implements IUIC
 
     private static final int DEFAULT_MIN = 64;
     private static final int DEFAULT_MAX = 512;
-    private static final int DEFAULT_TICKS_PER_CYCLE = 20;
-    private static final int MIN_TICKS_PER_CYCLE = 2;
+
     @Persisted
     @Getter
     private int minValue, maxValue;
@@ -78,7 +78,7 @@ public class AdvancedItemDetectorCover extends ItemDetectorCover implements IUIC
 
         this.minValue = DEFAULT_MIN;
         this.maxValue = DEFAULT_MAX;
-        this.ticksPerCycle = DEFAULT_TICKS_PER_CYCLE;
+        this.ticksPerCycle = ConfigHolder.INSTANCE.machines.coverDefaultTicksPerCycle;
 
         filterHandler = FilterHandlers.item(this);
     }
@@ -134,7 +134,8 @@ public class AdvancedItemDetectorCover extends ItemDetectorCover implements IUIC
     }
 
     public void setTicksPerCycle(int ticksPerCycle) {
-        this.ticksPerCycle = Mth.clamp(ticksPerCycle, MIN_TICKS_PER_CYCLE, ticksPerCycle);
+        this.ticksPerCycle = Mth.clamp(ticksPerCycle, ConfigHolder.INSTANCE.machines.coverMinTicksPerCycle,
+                ticksPerCycle);
     }
 
     //////////////////////////////////////
@@ -159,7 +160,7 @@ public class AdvancedItemDetectorCover extends ItemDetectorCover implements IUIC
         group.addWidget(new IntInputWidget(80, 50, 176 - 80 - 10, 20, this::getMinValue, this::setMinValue));
         group.addWidget(new IntInputWidget(80, 75, 176 - 80 - 10, 20, this::getMaxValue, this::setMaxValue));
         group.addWidget(new IntInputWidget(80, 100, 176 - 80 - 10, 20, this::getTicksPerCycle, this::setTicksPerCycle)
-                .setMin(MIN_TICKS_PER_CYCLE));
+                .setMin(ConfigHolder.INSTANCE.machines.coverMinTicksPerCycle));
 
         // Invert Redstone Output Toggle:
         group.addWidget(new ToggleButtonWidget(

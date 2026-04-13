@@ -8,6 +8,7 @@ import com.gregtechceu.gtceu.api.gui.GuiTextures;
 import com.gregtechceu.gtceu.api.gui.widget.IntInputWidget;
 import com.gregtechceu.gtceu.api.gui.widget.ToggleButtonWidget;
 import com.gregtechceu.gtceu.common.machine.trait.LayeredRecipeLogic;
+import com.gregtechceu.gtceu.config.ConfigHolder;
 
 import com.lowdragmc.lowdraglib.gui.widget.LabelWidget;
 import com.lowdragmc.lowdraglib.gui.widget.TextBoxWidget;
@@ -32,9 +33,6 @@ public class LayeredStepDetectorCover extends DetectorCover implements IUICover 
     public static final ManagedFieldHolder MANAGED_FIELD_HOLDER = new ManagedFieldHolder(
             LayeredStepDetectorCover.class, DetectorCover.MANAGED_FIELD_HOLDER);
 
-    private static final int DEFAULT_TICKS_PER_CYCLE = 20;
-    private static final int MIN_TICKS_PER_CYCLE = 2;
-
     @Persisted
     @DescSynced
     @Getter
@@ -47,7 +45,7 @@ public class LayeredStepDetectorCover extends DetectorCover implements IUICover 
 
     public LayeredStepDetectorCover(CoverDefinition definition, ICoverable coverHolder, Direction attachedSide) {
         super(definition, coverHolder, attachedSide);
-        this.ticksPerCycle = DEFAULT_TICKS_PER_CYCLE;
+        this.ticksPerCycle = ConfigHolder.INSTANCE.machines.coverDefaultTicksPerCycle;
     }
 
     @Override
@@ -57,7 +55,8 @@ public class LayeredStepDetectorCover extends DetectorCover implements IUICover 
     }
 
     public void setTicksPerCycle(int ticksPerCycle) {
-        this.ticksPerCycle = Mth.clamp(ticksPerCycle, MIN_TICKS_PER_CYCLE, ticksPerCycle);
+        this.ticksPerCycle = Mth.clamp(ticksPerCycle, ConfigHolder.INSTANCE.machines.coverMinTicksPerCycle,
+                ticksPerCycle);
     }
 
     @Override
@@ -90,7 +89,7 @@ public class LayeredStepDetectorCover extends DetectorCover implements IUICover 
                 .setHoverTooltips(Component.translatable("cover.advanced_detector.ticks_per_cycle.tooltip")));
 
         group.addWidget(new IntInputWidget(80, 50, 176 - 80 - 10, 20, this::getTicksPerCycle, this::setTicksPerCycle)
-                .setMin(MIN_TICKS_PER_CYCLE));
+                .setMin(ConfigHolder.INSTANCE.machines.coverMinTicksPerCycle));
 
         group.addWidget(new ToggleButtonWidget(
                 9, 20, 20, 20,
