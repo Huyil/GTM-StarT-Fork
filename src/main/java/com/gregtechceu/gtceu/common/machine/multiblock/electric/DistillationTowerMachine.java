@@ -255,10 +255,24 @@ public class DistillationTowerMachine extends WorkableElectricMultiblockMachine
                 return handleIO;
             }
 
+            var voidMode = getMachine().getVoidingMode();
+
+            if (voidMode == VoidingMode.VOID_ALL) {
+                workingRecipe = null;
+
+                return ActionResult.SUCCESS;
+            }
+
             var items = recipe.getOutputContents(ItemRecipeCapability.CAP);
-            if (!items.isEmpty()) {
+            if (!items.isEmpty() && voidMode != VoidingMode.VOID_ITEMS) {
                 Map<RecipeCapability<?>, List<Content>> out = Map.of(ItemRecipeCapability.CAP, items);
                 RecipeHelper.handleRecipe(this.machine, recipe, io, out, chanceCaches, false, false);
+            }
+
+            if (voidMode == VoidingMode.VOID_FLUIDS) {
+                workingRecipe = null;
+
+                return ActionResult.SUCCESS;
             }
 
             if (applyFluidOutputs(recipe, FluidAction.EXECUTE)) {
