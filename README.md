@@ -48,6 +48,9 @@ This fork should be considered a separate project with its own design goals.
 - Added assembler recipes for casings that don't have one
 - Added machine mode cover
 - ME stocking hatches can now have configurable cycle durations
+- Paginated Tooltips
+- Bottom Tooltips (Inserted after paginated tooltips)
+- Added `eu_to_start` recipe condition & recipe modifier
 
 #### Gameplay & Balance Changes
 - LCR coil benefits and parallel LCR support (configurable)
@@ -100,6 +103,7 @@ This fork should be considered a separate project with its own design goals.
 - Fixed battery buffers showing the input overlay on the sides
 - Fixed "water bottle" fluid being registered in EMI
 - Fixed hammer drops when the output is a TagPrefix that isn't an ore
+- Fixed `Void Mode` not working on `DistillattionTower`
 
 #### UI and Texture Changes
 - Voltage display format adjusted (EU/t and amperage order for clarity)
