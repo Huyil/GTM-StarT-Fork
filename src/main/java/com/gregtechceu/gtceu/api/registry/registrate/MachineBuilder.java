@@ -629,7 +629,9 @@ public class MachineBuilder<DEFINITION extends MachineDefinition> extends Builde
                             .append(c2))
                     .orElse(Component.empty());
 
-            tooltips.add(Component.translatable("gtceu.machine.available_recipe_map_1.tooltip", combined));
+            if (!combined.toString().isEmpty()) {
+                tooltips.add(Component.translatable("gtceu.machine.available_recipe_map_1.tooltip", combined));
+            }
         }
 
         definition.setTooltipBuilder((itemStack, components) -> {
