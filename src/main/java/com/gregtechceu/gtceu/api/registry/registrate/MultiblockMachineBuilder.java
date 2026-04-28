@@ -363,7 +363,7 @@ public class MultiblockMachineBuilder extends MachineBuilder<MultiblockMachineDe
     }
 
     @Override
-    public <T extends Component> MultiblockMachineBuilder paginatedTooltips(List<T>... pages) {
+    public MultiblockMachineBuilder paginatedTooltips(List<? extends Component>... pages) {
         return (MultiblockMachineBuilder) super.paginatedTooltips(pages);
     }
 

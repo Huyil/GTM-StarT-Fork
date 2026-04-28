@@ -412,7 +412,7 @@ public class MachineBuilder<DEFINITION extends MachineDefinition> extends Builde
         return this;
     }
 
-    public <T extends Component> MachineBuilder<DEFINITION> paginatedTooltips(List<T>... pages) {
+    public MachineBuilder<DEFINITION> paginatedTooltips(List<? extends Component>... pages) {
         for (List<? extends Component> page : pages) {
             if (page != null) {
                 paginatedTooltips.add(new ArrayList<>(page.stream().filter(Objects::nonNull).toList()));
