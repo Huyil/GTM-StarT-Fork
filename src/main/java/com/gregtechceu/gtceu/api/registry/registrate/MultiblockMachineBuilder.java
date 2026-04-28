@@ -356,6 +356,21 @@ public class MultiblockMachineBuilder extends MachineBuilder<MultiblockMachineDe
         return (MultiblockMachineBuilder) super.conditionalTooltip(component, condition);
     }
 
+    @Override
+    public MultiblockMachineBuilder paginatedTooltips(List<? extends Component>... pages) {
+        return (MultiblockMachineBuilder) super.paginatedTooltips(pages);
+    }
+
+    @Override
+    public MultiblockMachineBuilder bottomTooltips(@Nullable Component... components) {
+        return (MultiblockMachineBuilder) super.bottomTooltips(components);
+    }
+
+    @Override
+    public MultiblockMachineBuilder bottomTooltips(List<? extends @Nullable Component> components) {
+        return (MultiblockMachineBuilder) super.bottomTooltips(components);
+    }
+
     @Tolerate
     public MultiblockMachineBuilder partSorter(Comparator<IMultiPart> sorter) {
         this.partSorter = $ -> sorter;
