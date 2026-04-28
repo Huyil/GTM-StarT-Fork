@@ -390,6 +390,7 @@ public class MachineBuilder<DEFINITION extends MachineDefinition> extends Builde
         return tooltips(Arrays.asList(components));
     }
 
+    @HideFromJS
     public MachineBuilder<DEFINITION> tooltips(List<? extends @Nullable Component> components) {
         tooltips.addAll(components.stream().filter(Objects::nonNull).toList());
         return this;
@@ -405,7 +406,13 @@ public class MachineBuilder<DEFINITION extends MachineDefinition> extends Builde
         return this;
     }
 
-    public MachineBuilder<DEFINITION> paginatedTooltips(List<? extends Component>... pages) {
+    public MachineBuilder<DEFINITION> paginatedTooltipPage(@Nullable Component... components) {
+        paginatedTooltips.add(Arrays.asList(components));
+
+        return this;
+    }
+
+    public <T extends Component> MachineBuilder<DEFINITION> paginatedTooltips(List<T>... pages) {
         for (List<? extends Component> page : pages) {
             if (page != null) {
                 paginatedTooltips.add(new ArrayList<>(page.stream().filter(Objects::nonNull).toList()));
@@ -419,6 +426,7 @@ public class MachineBuilder<DEFINITION extends MachineDefinition> extends Builde
         return bottomTooltips(Arrays.asList(components));
     }
 
+    @HideFromJS
     public MachineBuilder<DEFINITION> bottomTooltips(List<? extends @Nullable Component> components) {
         bottomTooltips.addAll(components.stream().filter(Objects::nonNull).toList());
 
