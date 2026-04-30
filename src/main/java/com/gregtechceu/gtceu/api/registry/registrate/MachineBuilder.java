@@ -80,6 +80,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.function.*;
+import java.util.stream.Collectors;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -386,11 +387,11 @@ public class MachineBuilder<DEFINITION extends MachineDefinition> extends Builde
         return this;
     }
 
+    @HideFromJS
     public MachineBuilder<DEFINITION> tooltips(@Nullable Component... components) {
         return tooltips(Arrays.asList(components));
     }
 
-    @HideFromJS
     public MachineBuilder<DEFINITION> tooltips(List<? extends @Nullable Component> components) {
         tooltips.addAll(components.stream().filter(Objects::nonNull).toList());
         return this;
@@ -406,27 +407,22 @@ public class MachineBuilder<DEFINITION extends MachineDefinition> extends Builde
         return this;
     }
 
-    public MachineBuilder<DEFINITION> paginatedTooltipPage(@Nullable Component... components) {
-        paginatedTooltips.add(Arrays.asList(components));
-
-        return this;
-    }
-
-    public MachineBuilder<DEFINITION> paginatedTooltips(List<? extends Component>... pages) {
+    public MachineBuilder<DEFINITION> paginatedTooltips(List<? extends List<? extends Component>> pages) {
         for (var page : pages) {
             if (page != null) {
-                paginatedTooltips.add(new ArrayList<>(page.stream().filter(Objects::nonNull).toList()));
+                paginatedTooltips
+                        .add(page.stream().filter(Objects::nonNull).collect(Collectors.toCollection(ArrayList::new)));
             }
         }
 
         return this;
     }
 
+    @HideFromJS
     public MachineBuilder<DEFINITION> bottomTooltips(@Nullable Component... components) {
         return bottomTooltips(Arrays.asList(components));
     }
 
-    @HideFromJS
     public MachineBuilder<DEFINITION> bottomTooltips(List<? extends @Nullable Component> components) {
         bottomTooltips.addAll(components.stream().filter(Objects::nonNull).toList());
 

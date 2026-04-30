@@ -336,12 +336,12 @@ public class MultiblockMachineBuilder extends MachineBuilder<MultiblockMachineDe
         return (MultiblockMachineBuilder) super.workableSteamHullModel(isHighPressure, workableModel);
     }
 
+    @HideFromJS
     @Override
     public MultiblockMachineBuilder tooltips(@Nullable Component... components) {
         return (MultiblockMachineBuilder) super.tooltips(components);
     }
 
-    @HideFromJS
     @Override
     public MultiblockMachineBuilder tooltips(List<? extends @Nullable Component> components) {
         return (MultiblockMachineBuilder) super.tooltips(components);
@@ -358,21 +358,16 @@ public class MultiblockMachineBuilder extends MachineBuilder<MultiblockMachineDe
     }
 
     @Override
-    public MultiblockMachineBuilder paginatedTooltipPage(@Nullable Component... components) {
-        return (MultiblockMachineBuilder) super.paginatedTooltipPage(components);
-    }
-
-    @Override
-    public MultiblockMachineBuilder paginatedTooltips(List<? extends Component>... pages) {
+    public MultiblockMachineBuilder paginatedTooltips(List<? extends List<? extends Component>> pages) {
         return (MultiblockMachineBuilder) super.paginatedTooltips(pages);
     }
 
+    @HideFromJS
     @Override
     public MultiblockMachineBuilder bottomTooltips(@Nullable Component... components) {
         return (MultiblockMachineBuilder) super.bottomTooltips(components);
     }
 
-    @HideFromJS
     @Override
     public MultiblockMachineBuilder bottomTooltips(List<? extends @Nullable Component> components) {
         return (MultiblockMachineBuilder) super.bottomTooltips(components);
