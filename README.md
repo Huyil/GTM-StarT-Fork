@@ -50,6 +50,8 @@ This fork should be considered a separate project with its own design goals.
 - ME stocking hatches can now have configurable cycle durations
 - Paginated Tooltips
 - Bottom Tooltips (Inserted after paginated tooltips)
+- Automated generation of modifier list & description per modifier per machine
+- Automated generation of recipe types per machine, if there is more then 1
 - Added `eu_to_start` recipe condition & recipe modifier
 
 #### Gameplay & Balance Changes
@@ -104,6 +106,7 @@ This fork should be considered a separate project with its own design goals.
 - Fixed "water bottle" fluid being registered in EMI
 - Fixed hammer drops when the output is a TagPrefix that isn't an ore
 - Fixed `Void Mode` not working on `DistillattionTower`
+- `.tooltips` not working correctly in kubejs
 
 #### UI and Texture Changes
 - Voltage display format adjusted (EU/t and amperage order for clarity)
