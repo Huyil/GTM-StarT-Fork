@@ -263,6 +263,16 @@ public class GTMultiMachines {
             })
             .workableCasingModel(GTCEu.id("block/casings/solid/machine_casing_inert_ptfe"),
                     GTCEu.id("block/multiblock/large_chemical_reactor"))
+            .additionalDisplay((controller, components) -> {
+                if (controller instanceof CoilWorkableElectricMultiblockMachine coilMachine && controller.isFormed()) {
+                    var coilTier = coilMachine.getCoilTier();
+
+                    components.add(Component.translatable("gtceu.multiblock.chemical_reactor.speed",
+                            75 + coilTier * 25));
+                    components.add(Component.translatable("gtceu.multiblock.chemical_reactor.energy",
+                            100 - 5 * coilTier));
+                }
+            })
             .register();
 
     public static MultiblockMachineDefinition EXTREME_CHEMICAL_REACTOR = ConfigHolder.INSTANCE.machines
@@ -304,6 +314,17 @@ public class GTMultiMachines {
                             })
                             .workableCasingModel(GTCEu.id("block/casings/solid/machine_casing_inert_ptfe"),
                                     GTCEu.id("block/multiblock/large_chemical_reactor"))
+                            .additionalDisplay((controller, components) -> {
+                                if (controller instanceof CoilWorkableElectricMultiblockMachine coilMachine &&
+                                        controller.isFormed()) {
+                                    var coilTier = coilMachine.getCoilTier();
+
+                                    components.add(Component.translatable("gtceu.multiblock.chemical_reactor.speed",
+                                            75 + coilTier * 25));
+                                    components.add(Component.translatable("gtceu.multiblock.chemical_reactor.energy",
+                                            100 - 5 * coilTier));
+                                }
+                            })
                             .register() :
                     null;
 

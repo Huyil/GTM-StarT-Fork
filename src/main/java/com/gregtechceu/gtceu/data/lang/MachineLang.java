@@ -928,6 +928,8 @@ public class MachineLang {
         provider.add("gtceu.multiblock.ore_rig.ore_amount", "Drilling Rate: %s");
         provider.add("gtceu.multiblock.pyrolyse_oven.speed", "Processing Speed: %s%%");
         provider.add("gtceu.multiblock.cracking_unit.energy", "Energy Usage: %s%%");
+        provider.add("gtceu.multiblock.chemical_reactor.speed", "Processing Speed: %s%%");
+        provider.add("gtceu.multiblock.chemical_reactor.energy", "Energy Usage: %s%%");
         provider.add("gtceu.multiblock.power_substation.stored", "§7Stored: %s §7EU");
         provider.add("gtceu.multiblock.power_substation.capacity", "§7Capacity: %s §7EU");
         provider.add("gtceu.multiblock.power_substation.passive_drain", "§7Passive Drain: %s §7EU/t");
