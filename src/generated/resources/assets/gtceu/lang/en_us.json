@@ -2839,6 +2839,7 @@
   "gtceu.machine.high_performance_computation_array.tooltip.0": "Just your average Supercomputer",
   "gtceu.machine.high_performance_computation_array.tooltip.1": "Used to generate §fComputation§7 (and heat).",
   "gtceu.machine.high_performance_computation_array.tooltip.2": "Requires HPCA components to generate §fCWU/t§7 (Compute Work Units).",
+  "gtceu.machine.high_performance_computation_array.tooltip.3": "Energy usage is calculated by the consumption of the components scaled by how much computation is used.",
   "gtceu.machine.hp_steam_alloy_smelter.tooltip": "§7Combination Smelter",
   "gtceu.machine.hp_steam_compressor.tooltip": "§7Compressing Items",
   "gtceu.machine.hp_steam_extractor.tooltip": "§7Extracting your first Rubber",

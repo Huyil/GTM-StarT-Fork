@@ -63,7 +63,9 @@ public class GTResearchMachines {
             .rotationState(RotationState.NON_Y_AXIS)
             .recipeType(GTRecipeTypes.RESEARCH_STATION_RECIPES)
             .appearanceBlock(ADVANCED_COMPUTER_CASING)
-            .tooltips(LangHandler.getMultiLang("gtceu.machine.research_station.tooltip"))
+            .tooltipBuilder((itemStack, components) -> {
+                components.addAll(LangHandler.getMultiLang("gtceu.machine.research_station.tooltip"));
+            })
             .pattern(definition -> FactoryBlockPattern.start()
                     .aisle("XXX", "VVV", "PPP", "PPP", "PPP", "VVV", "XXX")
                     .aisle("XXX", "VAV", "AAA", "AAA", "AAA", "VAV", "XXX")
@@ -201,7 +203,9 @@ public class GTResearchMachines {
             // good API addition for packdevs
             .appearanceBlock(COMPUTER_CASING)
             .recipeType(GTRecipeTypes.DUMMY_RECIPES)
-            .tooltips(LangHandler.getMultiLang("gtceu.machine.high_performance_computation_array.tooltip"))
+            .tooltipBuilder((itemStack, components) -> {
+                components.addAll(LangHandler.getMultiLang("gtceu.machine.high_performance_computation_array.tooltip"));
+            })
             .pattern(definition -> FactoryBlockPattern.start()
                     .aisle("AA", "CC", "CC", "CC", "AA")
                     .aisle("VA", "XV", "XV", "XV", "VA")

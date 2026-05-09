@@ -694,7 +694,8 @@ public class MachineLang {
         multiLang(provider, "gtceu.machine.high_performance_computation_array.tooltip",
                 "Just your average Supercomputer",
                 "Used to generate §fComputation§7 (and heat).",
-                "Requires HPCA components to generate §fCWU/t§7 (Compute Work Units).");
+                "Requires HPCA components to generate §fCWU/t§7 (Compute Work Units).",
+                "Energy usage is calculated by the consumption of the components scaled by how much computation is used.");
         provider.add("gtceu.multiblock.hpca.description",
                 "The High Performance Computing Array (HPCA) is a multiblock structure used for creating Compute Work Units (CWU/t) for more complex Assembly Line Research Data. The structure has a flexible 3x3 area which can be filled in any way with HPCA components. Different components can provide different amounts of Computation, Cooling, as well as Energy Cost, Coolant Cost, and Heat Production. When used with a Bridge Component, the HPCA can connect to Network Switches for combining and routing Computation from multiple sources to one or more destinations.");
 
