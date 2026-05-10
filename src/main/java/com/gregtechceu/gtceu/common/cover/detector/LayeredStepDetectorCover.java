@@ -33,6 +33,11 @@ public class LayeredStepDetectorCover extends DetectorCover implements IUICover 
     public static final ManagedFieldHolder MANAGED_FIELD_HOLDER = new ManagedFieldHolder(
             LayeredStepDetectorCover.class, DetectorCover.MANAGED_FIELD_HOLDER);
 
+    @Override
+    public ManagedFieldHolder getFieldHolder() {
+        return MANAGED_FIELD_HOLDER;
+    }
+
     @Persisted
     @DescSynced
     @Getter
