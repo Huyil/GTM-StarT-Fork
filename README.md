@@ -94,6 +94,7 @@ This fork should be considered a separate project with its own design goals.
 - Made several ME part classes public for use in addons
 - Added `OpticalComputationMachine` to enable proper use of CWU in other multiblocks and correct display in Jade
 - UI slots now have lower priority than multiblock parts for multiblocks that support both a UI and I/O parts
+- Research Station and `OpticalComputationMachine` machines account for CWU discount based on OC in XEI recipe viewer
 
 #### Bug Fixes
 - Fixed voltage display not handling MAX+X values correctly
