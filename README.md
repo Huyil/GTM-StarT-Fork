@@ -128,6 +128,13 @@ This fork should be considered a separate project with its own design goals.
 - Added abbreviations to multiblock names
 - Changed some multiblock controller overlays to use proper transparent backgrounds
 
+## Versioning system
+
+This fork follows the older versioning system of GTm (ex. 1.6.4) with some rules.
+The versioning is loosely based on the update cycles of Star Technology. 
+The second number represents the major version (`1.7.x` -> Theta update, `1.8.x` -> Iota update, etc.), while the third number represents the minor version (0-indexed, where `1.7.0` -> Theta 1, `1.7.1` -> Theta 2, etc.).
+In case of this mod being updated for hotfix updates, this is represented by adding a lowercase letter of the Latin alphabet, incremented for every time it was updated in hotfix updates (ex. `1.7.0a`, `1.7.0b`).
+
 ## Credits
 
 ### Fork Development Team
