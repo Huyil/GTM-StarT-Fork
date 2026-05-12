@@ -51,7 +51,7 @@ This fork should be considered a separate project with its own design goals.
 - ME stocking hatches now have configurable cycle durations
 - Paginated tooltips
 - Bottom tooltips (inserted after paginated tooltips)
-- Automated generation of modifier list and description per modifier per machine
+- Automatic capabilities (recipe modifiers) tooltip for machines
 - Automated generation of recipe types tooltip for machines, if there is more than one
 - Added `eu_to_start` recipe condition and recipe modifier
 - Multiblocks now display the reason why they are not forming
