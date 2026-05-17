@@ -24,7 +24,8 @@ public class ModifierLang {
         provider.add("gtceu.modifier.parallel_hatch.name", "%sParallel Hatch:");
         multiLang(provider, "gtceu.modifier.parallel_hatch.description",
                 "  §7Enables the use of parallel hatches.",
-                "  §7Parallel hatches allow a machine to run multiples of the same recipe at once.");
+                "  §7Parallel hatches allow a machine to run multiples of the same recipe at once.",
+                "  §7However, for each speed overclock your recipe duration will increase by 2x.");
 
         provider.add("gtceu.modifier.batch_mode.name", "%sBatch Mode:");
         multiLang(provider, "gtceu.modifier.batch_mode.description",
