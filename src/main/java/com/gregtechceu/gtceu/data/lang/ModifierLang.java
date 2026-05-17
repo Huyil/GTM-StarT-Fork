@@ -9,28 +9,29 @@ public class ModifierLang {
     protected static void init(RegistrateLangProvider provider) {
         provider.add("gtceu.modifier.oc_perfect.name", "%sPerfect Overclock:");
         provider.add("gtceu.modifier.oc_perfect.description",
-                "  §7It makes the recipe faster without increasing total energy use.");
+                "  §7Overclocks now 4x the speed for each voltage instead of the usual 2x.");
 
         provider.add("gtceu.modifier.oc_perfect_subtick.name", "%sPerfect Overclock Subtick:");
         multiLang(provider, "gtceu.modifier.oc_perfect_subtick.description",
-                "  §7It makes the recipe faster without increasing total energy use.",
-                "  §7If the recipe time goes under 1 tick,",
-                "  §7it turns into parallel outputs with no extra energy cost.");
+                "  §7Overclocks now 4x the speed for each voltage instead of the usual 2x.",
+                "  §7If the recipe time goes under 1 tick additional overclocks",
+                "  §7are converted into parallels, respecting perfect overclock mechanics.");
 
         provider.add("gtceu.modifier.oc_non_perfect_subtick.name", "%sSubtick:");
         provider.add("gtceu.modifier.oc_non_perfect_subtick.description",
-                "  §7If the recipe time goes under 1 tick, it turns into parallel outputs.");
+                "  §7If the recipe time goes under 1 tick addtional overclocks are converted into parallels.");
 
         provider.add("gtceu.modifier.parallel_hatch.name", "%sParallel Hatch:");
         multiLang(provider, "gtceu.modifier.parallel_hatch.description",
                 "  §7Enables the use of parallel hatches.",
-                "  §7Which run the recipe X amounts of time.");
+                "  §7Parallel hatches allow a machine to run multiples of the same recipe at once.");
 
         provider.add("gtceu.modifier.batch_mode.name", "%sBatch Mode:");
         multiLang(provider, "gtceu.modifier.batch_mode.description",
                 "  §7Enables the use of Batch Mode.",
-                "  §7The configured batch mode duration will be divided by recipe time.",
-                "  §7Then it will use that to get the actual parallel to multiply to the current amount.");
+                "  §7If the recipe duration goes below 5 seconds Batch Mode will activate.",
+                "  §7When Batch Mode is active recipe durations will not go below 5 seconds.",
+                "  §7Instead the time is converted into parallel recipes, thus boosting performance.");
 
         provider.add("gtceu.modifier.cracker_oc.name", "%sCracker Overclock:");
         provider.add("gtceu.modifier.cracker_oc.description",
@@ -54,17 +55,17 @@ public class ModifierLang {
 
         provider.add("gtceu.modifier.chemical_reactor_oc.name", "%sChemical Overclock:");
         multiLang(provider, "gtceu.modifier.chemical_reactor_oc.description",
-                "  §7Starting at §6Cupronickel, §7every coil after increases speed by §f25%%.",
-                "  §7Energy usage is also decreased by §f5%% §7per tier.");
+                "  §7Starting after §6Kanthal§7, every coil increases speed by §f25%%§7. §6Cupronickel §7coils are §f25%%§7 slower.",
+                "  §7Starting after §6Cupronickel§7, energy usage is also decreased by §f5%%§7.");
 
         provider.add("gtceu.modifier.consume_eu_to_start.name", "%sConsume EU to start:");
-        provider.add("gtceu.modifier.consume_eu_to_start.description", "  §7Needs X EU to start the recipe.");
+        provider.add("gtceu.modifier.consume_eu_to_start.description", "  §7Recipes require a certain amount of EU to start.");
 
         provider.add("gtceu.modifier.fusion_overclock.name", "%sFusion Overclock:");
         multiLang(provider, "gtceu.modifier.fusion_overclock.description",
-                "  §7Unlike most machines Fusion Reactors can not overclock by increasing the energy hatches on them.",
-                "  §7Instead the way to overclock Fusion Reactors is to use the next tier of reactor.",
-                "  §7Each overclock is special as it only doubles the energy cost while halfing the duration. §b[2:2]",
+                "  §7Unlike most machines Fusion Reactors do not overclock by upgrading the energy hatches on them.",
+                "  §7To overclock Fusion Reactors you instead have to build the next tier.",
+                "  §7Each overclock doubles the energy cost while halfing the duration. §b[2:2]",
                 "  §7Example Reactors and their Tiers:",
                 "    §fMK1 §7= §dLuV",
                 "    §fMK2 §7= §cZPM",
