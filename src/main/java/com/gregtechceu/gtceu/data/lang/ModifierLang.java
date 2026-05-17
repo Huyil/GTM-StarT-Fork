@@ -65,7 +65,7 @@ public class ModifierLang {
         multiLang(provider, "gtceu.modifier.fusion_overclock.description",
                 "  §7Unlike most machines Fusion Reactors do not overclock by upgrading the energy hatches on them.",
                 "  §7To overclock Fusion Reactors you instead have to build the next tier.",
-                "  §7Each overclock doubles the energy cost while halfing the duration. §b[2:2]",
+                "  §7Each overclock doubles the energy cost while halving the duration. §b[2:2]",
                 "  §7Example Reactors and their Tiers:",
                 "    §fMK1 §7= §dLuV",
                 "    §fMK2 §7= §cZPM",
