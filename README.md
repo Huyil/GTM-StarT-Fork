@@ -83,6 +83,7 @@ This fork should be considered a separate project with its own design goals.
 - Reverted maceration tower mob grinder behavior
 - Reverted some upstream texture changes
 - Reverted some Z-fighting fixes that worsened rendering issues
+- Restored older distinct bus behavior
 
 #### Technical / API Improvements
 - TagPrefix blocks can now easily use falling block behavior
@@ -95,6 +96,7 @@ This fork should be considered a separate project with its own design goals.
 - Added `OpticalComputationMachine` to enable proper use of CWU in other multiblocks and correct display in Jade
 - UI slots now have lower priority than multiblock parts for multiblocks that support both a UI and I/O parts
 - Research Station and `OpticalComputationMachine` machines account for CWU discount based on OC in XEI recipe viewer
+- Refactored `RecipeRunner` to integrate older distinct bus behavior with colored inputs
 
 #### Bug Fixes
 - Fixed voltage display not handling MAX+X values correctly
@@ -119,6 +121,7 @@ This fork should be considered a separate project with its own design goals.
 - Fixed `No energy` tooltip icon appearing in machines when it shouldn't
 - Fixed Advanced Detector Cover data not persisting
 - Fixed Pattern Buffers and Proxies acting as output buses/hatches when they don't have an output handler
+- Fixed Configurable Maintenance Hatch being able to set recipe duration to 0t
 
 #### UI & Texture Changes
 - Voltage display format adjusted (EU/t and amperage order clarified)
@@ -128,6 +131,7 @@ This fork should be considered a separate project with its own design goals.
 - Improved filter slot in item buses
 - Added abbreviations to multiblock names
 - Changed some multiblock controller overlays to use proper transparent backgrounds
+- Voltages in component names are now colored
 
 ## Versioning system
 
