@@ -14,12 +14,11 @@ import com.gregtechceu.gtceu.utils.ItemStackHashStrategy;
 
 import com.lowdragmc.lowdraglib.syncdata.annotation.DescSynced;
 import com.lowdragmc.lowdraglib.syncdata.annotation.Persisted;
+import com.lowdragmc.lowdraglib.syncdata.field.ManagedFieldHolder;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
-
-import com.lowdragmc.lowdraglib.syncdata.field.ManagedFieldHolder;
 import net.minecraftforge.fluids.FluidStack;
 
 import it.unimi.dsi.fastutil.objects.Object2LongOpenCustomHashMap;
@@ -50,7 +49,8 @@ public class LayeredRecipeLogic extends RecipeLogic {
     @Persisted
     protected GTRecipe lastOriginLayeredRecipe;
 
-    public static final ManagedFieldHolder MANAGED_FIELD_HOLDER = new ManagedFieldHolder(LayeredRecipeLogic.class, RecipeLogic.MANAGED_FIELD_HOLDER);
+    public static final ManagedFieldHolder MANAGED_FIELD_HOLDER = new ManagedFieldHolder(LayeredRecipeLogic.class,
+            RecipeLogic.MANAGED_FIELD_HOLDER);
 
     public LayeredRecipeLogic(IRecipeLogicMachine machine) {
         super(machine);
@@ -77,7 +77,7 @@ public class LayeredRecipeLogic extends RecipeLogic {
     }
 
     public GTRecipe getNextLayeredRecipe() {
-        if (layeredRecipeLayerIndex < 0) {
+        if (layeredRecipeLayerIndex < 0 || layeredRecipe.isEmpty()) {
             return null;
         }
         if (lastRecipe == null) {
@@ -127,30 +127,35 @@ public class LayeredRecipeLogic extends RecipeLogic {
 
     @Override
     public void onRecipeFinish() {
+        machine.afterWorking();
+        if (lastRecipe == null) return;
+
         var finishedLastStep = false;
-        if (!layeredRecipe.isEmpty() && lastRecipe != null && lastRecipe.data.getBoolean("is_layer")) {
+        if (!layeredRecipe.isEmpty() && lastRecipe.data.getBoolean("is_layer")) {
             // we were doing a recipe layer
             layeredRecipeLayerIndex++;
-            finishedLastStep = layeredRecipe.size() == layeredRecipeLayerIndex;
-        }
-
-        var prevConsecutiveRecipes = 0;
-        var prevSuspendAfterFinish = suspendAfterFinish;
-        suspendAfterFinish = true;
-        super.onRecipeFinish();
-        suspendAfterFinish = prevSuspendAfterFinish;
-
-        if (suspendAfterFinish) {
-            if (finishedLastStep) {
+            if (layeredRecipe.size() == layeredRecipeLayerIndex) {
                 layeredRecipe = List.of();
                 layeredRecipeLayerIndex = -1;
+                finishedLastStep = true;
             }
+        }
+
+        runAttempt = 0;
+        runDelay = 0;
+        consecutiveRecipes++;
+        handleRecipeIO(lastRecipe, IO.OUT);
+
+        if (suspendAfterFinish) {
             setStatus(Status.SUSPEND);
+            consecutiveRecipes = 0;
+            progress = 0;
+            duration = 0;
+            isActive = false;
+            lastRecipe = null;
             return;
         }
 
-        setStatus(Status.IDLE);
-        consecutiveRecipes = prevConsecutiveRecipes + 1;
         if (finishedLastStep) {
             // try the first step again, but attempt to modify
             GTRecipe retryRecipe = null;
@@ -163,19 +168,24 @@ public class LayeredRecipeLogic extends RecipeLogic {
             if (retryRecipe != null && checkRecipe(retryRecipe).isSuccess()) {
                 layeredRecipeLayerIndex = 0;
                 setupRecipe(retryRecipe);
-            } else {
-                layeredRecipe = List.of();
-                layeredRecipeLayerIndex = -1;
+                return;
             }
-            return;
+        } else {
+            // try the subsequent step, which is already transformed
+            var nextStepRecipe = layeredRecipe.get(layeredRecipeLayerIndex);
+            var recipeMatch = checkRecipe(nextStepRecipe);
+            if (recipeMatch.isSuccess()) {
+                setupRecipe(nextStepRecipe);
+                return;
+            }
         }
 
-        // already transformed
-        var nextStepRecipe = layeredRecipe.get(layeredRecipeLayerIndex);
-        var recipeMatch = checkRecipe(nextStepRecipe);
-        if (recipeMatch.isSuccess()) {
-            setupRecipe(nextStepRecipe);
-        }
+        setStatus(Status.IDLE);
+        lastRecipe = null; // never rely on lastRecipe checks
+        consecutiveRecipes = 0;
+        progress = 0;
+        duration = 0;
+        isActive = false;
     }
 
     @Override
