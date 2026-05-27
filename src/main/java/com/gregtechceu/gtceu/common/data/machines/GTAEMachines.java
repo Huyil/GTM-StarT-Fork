@@ -26,6 +26,7 @@ public class GTAEMachines {
                     Component.translatable("gtceu.machine.item_bus.import.tooltip"),
                     Component.translatable("gtceu.machine.me.item_import.tooltip"),
                     Component.translatable("gtceu.machine.me.copy_paste.tooltip"),
+                    Component.translatable("gtuce.machine.me.expose_sides.tooltip"),
                     Component.translatable("gtceu.part_sharing.enabled"))
             .register();
 
@@ -41,6 +42,7 @@ public class GTAEMachines {
                     Component.translatable("gtceu.machine.me.stocking_item.tooltip.0"),
                     Component.translatable("gtceu.machine.me_import_item_hatch.configs.tooltip"),
                     Component.translatable("gtceu.machine.me.copy_paste.tooltip"),
+                    Component.translatable("gtuce.machine.me.expose_sides.tooltip"),
                     Component.translatable("gtceu.machine.me.stocking_item.tooltip.1"),
                     Component.translatable("gtceu.part_sharing.enabled"))
             .register();
@@ -56,6 +58,7 @@ public class GTAEMachines {
                     Component.translatable("gtceu.machine.item_bus.export.tooltip"),
                     Component.translatable("gtceu.machine.me.item_export.tooltip"),
                     Component.translatable("gtceu.machine.me.export.tooltip"),
+                    Component.translatable("gtuce.machine.me.expose_sides.tooltip"),
                     Component.translatable("gtceu.part_sharing.enabled"))
             .register();
 
@@ -70,6 +73,7 @@ public class GTAEMachines {
                     Component.translatable("gtceu.machine.fluid_hatch.import.tooltip"),
                     Component.translatable("gtceu.machine.me.fluid_import.tooltip"),
                     Component.translatable("gtceu.machine.me.copy_paste.tooltip"),
+                    Component.translatable("gtuce.machine.me.expose_sides.tooltip"),
                     Component.translatable("gtceu.part_sharing.enabled"))
             .register();
 
@@ -85,6 +89,7 @@ public class GTAEMachines {
                     Component.translatable("gtceu.machine.me.stocking_fluid.tooltip.0"),
                     Component.translatable("gtceu.machine.me_import_fluid_hatch.configs.tooltip"),
                     Component.translatable("gtceu.machine.me.copy_paste.tooltip"),
+                    Component.translatable("gtuce.machine.me.expose_sides.tooltip"),
                     Component.translatable("gtceu.machine.me.stocking_fluid.tooltip.1"),
                     Component.translatable("gtceu.part_sharing.enabled"))
             .register();
@@ -100,6 +105,7 @@ public class GTAEMachines {
                     Component.translatable("gtceu.machine.fluid_hatch.export.tooltip"),
                     Component.translatable("gtceu.machine.me.fluid_export.tooltip"),
                     Component.translatable("gtceu.machine.me.export.tooltip"),
+                    Component.translatable("gtuce.machine.me.expose_sides.tooltip"),
                     Component.translatable("gtceu.part_sharing.enabled"))
             .register();
     public static final MachineDefinition ME_PATTERN_BUFFER = REGISTRATE
@@ -114,6 +120,7 @@ public class GTAEMachines {
                     Component.translatable("block.gtceu.pattern_buffer.desc.0"),
                     Component.translatable("block.gtceu.pattern_buffer.desc.1"),
                     Component.translatable("block.gtceu.pattern_buffer.desc.2"),
+                    Component.translatable("gtuce.machine.me.expose_sides.tooltip"),
                     Component.translatable("gtceu.part_sharing.enabled"))
             .register();
     public static final MachineDefinition ME_PATTERN_BUFFER_PROXY = REGISTRATE
@@ -128,6 +135,7 @@ public class GTAEMachines {
                     Component.translatable("block.gtceu.pattern_buffer_proxy.desc.0"),
                     Component.translatable("block.gtceu.pattern_buffer_proxy.desc.1"),
                     Component.translatable("block.gtceu.pattern_buffer_proxy.desc.2"),
+                    Component.translatable("gtuce.machine.me.expose_sides.tooltip"),
                     Component.translatable("gtceu.part_sharing.enabled"))
             .register();
 
