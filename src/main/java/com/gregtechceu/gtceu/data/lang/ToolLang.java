@@ -17,7 +17,7 @@ public class ToolLang {
         provider.add("death.attack.gtceu.radiation", "%s glows with joy now");
         provider.add("death.attack.gtceu.turbine", "%s put their head into a turbine");
         provider.add("death.attack.gtceu.explosion", "%s exploded");
-        provider.add("death.attack.gtceu.explosion.player", "%s exploded with help of %s");
+        provider.add("death.attack.gtceu.explosion.player", "%s exploded with the help of %s");
         provider.add("death.attack.gtceu.heat.player", "%s was boiled alive by %s");
         provider.add("death.attack.gtceu.pickaxe", "%s got mined by %s");
         provider.add("death.attack.gtceu.shovel", "%s got dug up by %s");
@@ -28,7 +28,7 @@ public class ToolLang {
         provider.add("death.attack.gtceu.mining_hammer", "%s was mistaken for Ore by %s");
         provider.add("death.attack.gtceu.spade", "%s got excavated by %s");
         provider.add("death.attack.gtceu.wrench", "%s gave %s a whack with the Wrench!");
-        provider.add("death.attack.gtceu.file", "%s has been filed D for 'Dead' by %s");
+        provider.add("death.attack.gtceu.file", "%s has been filed 'D' for 'Dead' by %s");
         provider.add("death.attack.gtceu.crowbar", "%s lost half a life to %s");
         provider.add("death.attack.gtceu.screwdriver", "%s has screwed with %s for the last time!");
         provider.add("death.attack.gtceu.mortar", "%s was ground to dust by %s");
@@ -53,7 +53,7 @@ public class ToolLang {
         provider.add("death.attack.gtceu.medical_condition/poison",
                 "%s forgot that poisonous materials are, in fact, poisonous");
         provider.add("death.attack.gtceu.medical_condition/silicosis",
-                "%s didn't die of tuberculosis. it was silicosis.");
+                "%s didn't die of tuberculosis. It was silicosis.");
         provider.add("death.attack.gtceu.medical_condition/arsenicosis", "%s got arsenic poisoning");
         provider.add("death.attack.gtceu.medical_condition/berylliosis", "%s mined emeralds a bit too greedily");
         provider.add("death.attack.gtceu.medical_condition/carcinogen", "%s got leukemia");

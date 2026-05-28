@@ -385,7 +385,7 @@ public class LangHandler {
                         §bExample: §6*dusts/gold | (gtceu:circuits & !*lv)
                         This matches all gold dusts or all circuits except LV ones""");
         provider.add("cover.tag_filter.test_slot.info",
-                "Insert a item to test if it matches the filter expression");
+                "Insert an item to test if it matches the filter expression");
         provider.add("cover.tag_filter.matches", "Item matches");
         provider.add("cover.tag_filter.matches_not", "Item does not match");
         provider.add("cover.fluid_filter.title", "Fluid Filter");
@@ -1515,7 +1515,7 @@ public class LangHandler {
         multiLang(provider, "gtceu.placeholder_info.select",
                 "Returns the argument at the specified index (starting from 0)",
                 "Usage:",
-                "  {select <index> [arg1] [arg2] [arg3] ... -> argument at the specified index");
+                "  {select <index> [arg1] [arg2] [arg3] ...} -> argument at the specified index");
         multiLang(provider, "gtceu.placeholder_info.redstone",
                 "Returns the redstone signal strength or sets the redstone output strength",
                 "Usage:",
