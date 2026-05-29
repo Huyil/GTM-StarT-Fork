@@ -6043,5 +6043,6 @@
     "metaarmor.qts.boosted_jump.enabled": "QuarkTech™ Suite: Прыгучесть включена",
     "metaarmor.qts.step_assist.disabled": "QuarkTech™ Suite: Автоподъём выключен",
     "metaarmor.qts.step_assist.enabled": "QuarkTech™ Suite: Автоподъём включен",
+    "gtceu.machine.me.expose_sides.tooltip": "Используйте отвёртку, чтобы включить или выключить сквозной пропуск каналов МЭ.",
     "item.gtceu.wireless_transmitter_cover": "Беспроводной передатчик"
 }
