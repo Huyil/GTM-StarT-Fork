@@ -25,8 +25,7 @@ jobs:
       VERSION_SUFFIX: "PR-${{ github.event.number }}"
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+      - run: git fetch origin develop --no-tags --depth=1
       - name: Check Path Filter
         uses: dorny/paths-filter@v3
         id: filter

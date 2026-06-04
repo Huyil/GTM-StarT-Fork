@@ -23,8 +23,7 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # do a full checkout instead of a shallow clone of HEAD so spotless's ratchetFrom works
+      - run: git fetch origin main --no-tags --depth=1
       - name: Setup Build
         uses: ./.github/actions/build_setup
       - name: Get Mod Version
