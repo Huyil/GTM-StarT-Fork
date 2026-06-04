@@ -19,7 +19,7 @@ concurrency:
 
 jobs:
   test:
-    if: github.event_name == 'push' || contains(github.event.pull_request.labels.*.name, 'build')
+    if: github.event_name == 'push' || contains(github.event.pull_request.labels.*.name, 'test')
     runs-on: ubuntu-latest
     env:
       VERSION_SUFFIX: "PR-${{ github.event.number }}"
