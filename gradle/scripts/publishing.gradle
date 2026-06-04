@@ -11,7 +11,7 @@ publishing {
     repositories {
         // Add repositories to publish to here.
         maven {
-            url = "https://maven.gtceu.com"
+            url = "https://repo.expandium.net/releases"
             credentials {
                 username = System.getenv("MAVEN_USER")
                 password = System.getenv("MAVEN_PASSWORD")

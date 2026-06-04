@@ -1,8 +1,12 @@
 name: Test pull request on push
 
 on:
+  push:
+    branches:
+      - develop
   pull_request:
     paths: ['**']
+    types: [opened, synchronize, reopened, labeled]
 
 permissions:
   contents: read
@@ -15,11 +19,13 @@ concurrency:
 
 jobs:
   test:
+    if: github.event_name == 'push' || contains(github.event.pull_request.labels.*.name, 'test')
     runs-on: ubuntu-latest
     env:
       VERSION_SUFFIX: "PR-${{ github.event.number }}"
     steps:
       - uses: actions/checkout@v4
+      - run: git fetch origin develop --no-tags --depth=1
       - name: Check Path Filter
         uses: dorny/paths-filter@v3
         id: filter
