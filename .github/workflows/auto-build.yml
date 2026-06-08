@@ -15,7 +15,7 @@ jobs:
     env:
       GITHUB_TOKEN: ${{ github.token }}
       PUBLISH: ${{ !contains(github.event.commits[0].message, '[no-snapshot]') }}
-      MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
+      MAVEN_PASSWORD: ${{ secrets.MAVEN_TOKEN }}
       MAVEN_USER: ${{ secrets.MAVEN_USER }}
       SNAPSHOT: true
       CI: true
