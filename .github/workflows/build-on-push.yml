@@ -53,6 +53,50 @@ jobs:
           name: Full Package
           path: build/libs/*
           retention-days: 15
+      - name: Send Discord notification
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          BRANCH_NAME: ${{ github.event.pull_request.head.ref || github.ref_name }}
+        run: |
+          # Calculate expiry date (retention-days from now)
+          EXPIRY_DATE=$(date -u -d "+30 days" "+%Y-%m-%dT%H:%M:%SZ" 2>/dev/null || date -u -v+30d "+%Y-%m-%dT%H:%M:%SZ")
+          EXPIRY_UNIX=$(date -u -d "+30 days" "+%s" 2>/dev/null || date -u -v+30d "+%s")
+          
+          RUN_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          ARTIFACT_NAME="Star Technology-1.20.1-${BRANCH_NAME}"
+
+          curl -s -X POST "$DISCORD_WEBHOOK_URL" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"embeds\": [{
+                \"title\": \"✅ Build Ready: ${ARTIFACT_NAME}\",
+                \"description\": \"A new build has been compiled and uploaded.\",
+                \"color\": 5763719,
+                \"fields\": [
+                  {
+                    \"name\": \"📦 Download Artifact\",
+                    \"value\": \"[View on GitHub Actions](${RUN_URL})\",
+                    \"inline\": false
+                  },
+                  {
+                    \"name\": \"⏳ Expires\",
+                    \"value\": \"<t:${EXPIRY_UNIX}:F> (<t:${EXPIRY_UNIX}:R>)\",
+                    \"inline\": false
+                  },
+                  {
+                    \"name\": \"🌿 Branch\",
+                    \"value\": \"\`${BRANCH_NAME}\`\",
+                    \"inline\": true
+                  },
+                  {
+                    \"name\": \"🔁 Run\",
+                    \"value\": \"[#${{ github.run_number }}](${RUN_URL})\",
+                    \"inline\": true
+                  }
+                ],
+                \"timestamp\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"
+              }]
+            }"
       - name: Upload Main Jar
         if: steps.filter.outputs.code == 'true'
         uses: actions/upload-artifact@v4.0.0
