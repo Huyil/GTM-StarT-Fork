@@ -69,7 +69,7 @@ jobs:
           EXPIRY_UNIX=$(date -u -d "+30 days" "+%s" 2>/dev/null || date -u -v+30d "+%s")
           
           RUN_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          ARTIFACT_NAME="Star Technology-1.20.1-${{ env.BRANCH_NAME }}"
+          ARTIFACT_NAME="GTm-StarT-Fork-${{ env.BRANCH_NAME }}"
 
           RESPONSE=$(curl -s -X POST "$DISCORD_WEBHOOK_URL" \
             -H "Content-Type: application/json" \
@@ -112,7 +112,7 @@ jobs:
             echo "Response: $(echo "$RESPONSE" | head -n-1)"
             exit 1
           fi
-          
+
       - name: Upload Main Jar
         if: steps.filter.outputs.code == 'true'
         uses: actions/upload-artifact@v4.0.0
