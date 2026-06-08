@@ -95,6 +95,10 @@ tasks.withType(JavaCompile).configureEach {
     options.compilerArgs << "-Aquiet=true" // Suppress mixin notes
 }
 
+tasks.named("compileJava") {
+    dependsOn(tasks.named("spotlessApply"))
+}
+
 lombok {
     version = "1.18.38"
 }

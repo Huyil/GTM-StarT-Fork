@@ -2,7 +2,7 @@ name: Latest Build
 
 on:
   push:
-    branches: [main]
+    branches: [develop]
     paths: ['src/**', '**/*.gradle', 'gradle.properties']
 
 concurrency:
@@ -23,8 +23,7 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # do a full checkout instead of a shallow clone of HEAD so spotless's ratchetFrom works
+      - run: git fetch origin main --no-tags --depth=1
       - name: Setup Build
         uses: ./.github/actions/build_setup
       - name: Get Mod Version
@@ -35,9 +34,9 @@ jobs:
         run: echo "VERSION_SUFFIX=$(echo "${{ github.sha }}" | cut -c 1-7)" >> $GITHUB_ENV
       - name: Build
         run: ./gradlew build
-#      - name: Publish to Maven
-#        if: ${{ github.repository_owner == 'StarT-Dev-Team' && env.PUBLISH == 'true' }}
-#        run: ./gradlew publish
+      - name: Publish to Maven
+        if: ${{ github.repository_owner == 'StarT-Dev-Team' && env.PUBLISH == 'true' }}
+        run: ./gradlew publish
       - name: Rename Jars
         if: ${{ env.PUBLISH == 'true' }}
         run: for file in build/libs/*; do mv "$file" "${file/SHOT/SHOT+$(date --utc '+%Y%m%d-%H%M%S')-${{ env.VERSION_SUFFIX }}}"; done;
@@ -49,6 +48,67 @@ jobs:
           path: build/libs/*
           if-no-files-found: error
           retention-days: 90
+      - name: Send Discord notification
+        shell: bash
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.discord_webhook_url }}
+          BRANCH_NAME: ${{ github.ref_name }}
+        run: |
+          # Only send notification if webhook URL is provided
+          if [ -z "$DISCORD_WEBHOOK_URL" ]; then
+            echo "⚠️ Discord webhook URL not provided, skipping notification"
+            exit 0
+          fi
+
+          # Calculate expiry date (retention-days from now)
+          EXPIRY_DATE=$(date -u -d "+30 days" "+%Y-%m-%dT%H:%M:%SZ" 2>/dev/null || date -u -v+30d "+%Y-%m-%dT%H:%M:%SZ")
+          EXPIRY_UNIX=$(date -u -d "+30 days" "+%s" 2>/dev/null || date -u -v+30d "+%s")
+          
+          RUN_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          ARTIFACT_NAME="GTm-StarT-Fork-${{ env.BRANCH_NAME }}"
+
+          RESPONSE=$(curl -s -X POST "$DISCORD_WEBHOOK_URL" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"embeds\": [{
+                \"title\": \"✅ Build Ready: ${ARTIFACT_NAME}\",
+                \"description\": \"A new build has been compiled and uploaded.\",
+                \"color\": 5763719,
+                \"fields\": [
+                  {
+                    \"name\": \"📦 Download Artifact\",
+                    \"value\": \"[View on GitHub Actions](${RUN_URL})\",
+                    \"inline\": false
+                  },
+                  {
+                    \"name\": \"⏳ Expires\",
+                    \"value\": \"<t:${EXPIRY_UNIX}:F> (<t:${EXPIRY_UNIX}:R>)\",
+                    \"inline\": false
+                  },
+                  {
+                    \"name\": \"🌿 Branch\",
+                    \"value\": \"\`${{ env.BRANCH_NAME }}\`\",
+                    \"inline\": true
+                  },
+                  {
+                    \"name\": \"🔁 Run\",
+                    \"value\": \"[#${{ github.run_number }}](${RUN_URL})\",
+                    \"inline\": true
+                  }
+                ],
+                \"timestamp\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"
+              }]
+            }" -w "\n%{http_code}")
+          
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+          if [ "$HTTP_CODE" = "204" ]; then
+            echo "✅ Discord notification sent successfully"
+          else
+            echo "❌ Failed to send Discord notification (HTTP $HTTP_CODE)"
+            echo "Response: $(echo "$RESPONSE" | head -n-1)"
+            exit 1
+          fi
+
       - name: Changelog
         id: changelog
         if: ${{ env.PUBLISH == 'true' }}
@@ -66,7 +126,7 @@ jobs:
           name: '${{ github.ref_name }}-${{ steps.ver.outputs.version}} SNAPSHOT ${{ env.VERSION_SUFFIX }}'
           prerelease: true
           body: |
-            The latest build of GTM for Minecraft ${{ github.ref_name }}.
-            Please report any [issues](https://github.com/GregTechCEu/GregTech-Modern/issues).
+            The latest build of GTm StarT Fork.
+            Please report any [issues](https://github.com/StarT-Dev-Team/GTM-StarT-Fork/issues).
             ${{ steps.changelog.outputs.changelog }}
           files: build/libs/*.jar
