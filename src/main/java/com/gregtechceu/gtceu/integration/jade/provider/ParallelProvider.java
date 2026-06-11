@@ -58,6 +58,14 @@ public class ParallelProvider implements IBlockComponentProvider, IServerDataPro
                     iTooltip.add(Component.translatable(keySubtick, subticks));
                 }
             }
+
+            var minParallel = blockAccessor.getServerData().getInt("minParallel");
+            if (minParallel > 1) {
+                var component = Component.literal(FormattingUtil.formatNumbers(minParallel))
+                        .withStyle(ChatFormatting.DARK_PURPLE);
+                var key = "gtceu.multiblock.min_parallel";
+                iTooltip.add(Component.translatable(key, component));
+            }
         }
     }
 
@@ -66,7 +74,10 @@ public class ParallelProvider implements IBlockComponentProvider, IServerDataPro
         if (blockAccessor.getBlockEntity() instanceof MetaMachineBlockEntity blockEntity) {
             if (blockEntity.getMetaMachine() instanceof IParallelHatch parallelHatch) {
                 compoundTag.putInt("parallel", parallelHatch.getCurrentParallel());
+                compoundTag.putInt("minParallel", parallelHatch.getMinimumParallel());
             } else if (blockEntity.getMetaMachine() instanceof IMultiController controller) {
+                var parallelHatch = controller.getParallelHatch().orElse(null);
+
                 if (controller instanceof IRecipeLogicMachine rlm &&
                         rlm.getRecipeLogic().isActive() &&
                         rlm.getRecipeLogic().getLastRecipe() != null) {
@@ -74,11 +85,14 @@ public class ParallelProvider implements IBlockComponentProvider, IServerDataPro
                     compoundTag.putInt("batch", rlm.getRecipeLogic().getLastRecipe().batchParallels);
                     compoundTag.putInt("subtickParallel", rlm.getRecipeLogic().getLastRecipe().subtickParallels);
                     compoundTag.putBoolean("exact", true);
-                } else {
-                    controller.getParallelHatch()
-                            .ifPresent(parallelHatch -> compoundTag.putInt("parallel",
-                                    parallelHatch.getCurrentParallel()));
+                } else if (parallelHatch != null) {
+                    compoundTag.putInt("parallel", parallelHatch.getCurrentParallel());
                 }
+
+                if (parallelHatch != null) {
+                    compoundTag.putInt("minParallel", parallelHatch.getMinimumParallel());
+                }
+
             }
         }
     }

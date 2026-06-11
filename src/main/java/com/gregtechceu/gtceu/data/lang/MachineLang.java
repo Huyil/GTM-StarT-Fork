@@ -598,6 +598,8 @@ public class MachineLang {
 
         // Parallel
         provider.add("gtceu.multiblock.parallelizable.tooltip", "Can parallelize with Parallel Control Hatches.");
+        provider.add("gtceu.gui.title.parallel_hatch.max_parallel", "Maximum Parallel");
+        provider.add("gtceu.gui.title.parallel_hatch.min_parallel", "Minimum Parallel");
 
         provider.add("gtceu.machine.parallel_hatch_mk5.tooltip", "Allows to run up to 4 recipes in parallel.");
         provider.add("gtceu.machine.parallel_hatch_mk6.tooltip", "Allows to run up to 16 recipes in parallel.");
