@@ -48,6 +48,7 @@ public class GTJadePlugin implements IWailaPlugin {
         registration.registerBlockDataProvider(new BatteryStorageInfoProvider(), BlockEntity.class);
         registration.registerBlockDataProvider(new LDPEndpointProvider(), BlockEntity.class);
         if (GTCEu.Mods.isAE2Loaded()) {
+            registration.registerBlockDataProvider(new MEGridConnectedProvider(), BlockEntity.class);
             registration.registerBlockDataProvider(new MEPatternBufferProvider(), BlockEntity.class);
             registration.registerBlockDataProvider(new MEPatternBufferProxyProvider(), BlockEntity.class);
         }
@@ -82,6 +83,7 @@ public class GTJadePlugin implements IWailaPlugin {
         registration.registerBlockComponent(new BatteryStorageInfoProvider(), Block.class);
         registration.registerBlockComponent(new LDPEndpointProvider(), Block.class);
         if (GTCEu.Mods.isAE2Loaded()) {
+            registration.registerBlockComponent(new MEGridConnectedProvider(), Block.class);
             registration.registerBlockComponent(new MEPatternBufferProvider(), Block.class);
             registration.registerBlockComponent(new MEPatternBufferProxyProvider(), Block.class);
         }
