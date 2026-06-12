@@ -7,12 +7,17 @@ import it.unimi.dsi.fastutil.chars.Char2ObjectArrayMap;
 import it.unimi.dsi.fastutil.chars.Char2ObjectMap;
 import it.unimi.dsi.fastutil.chars.CharArrayList;
 import it.unimi.dsi.fastutil.chars.CharList;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.registries.ForgeRegistries;
+
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class FactoryBlockPattern {
 
@@ -125,6 +130,26 @@ public class FactoryBlockPattern {
             this.symbolMap.put(symbol, blockMatcher);
         } else {
             this.symbolMap.put(symbol, new TraceabilityPredicate(blockMatcher).sort());
+        }
+        return this;
+    }
+
+    public FactoryBlockPattern whereDict(Map<?, ?> dict) {
+        for (Map.Entry<?, ?> entry : dict.entrySet()) {
+            String symbol = entry.getKey().toString();
+            Object value = entry.getValue();
+            
+            if (value instanceof TraceabilityPredicate) {
+                this.where(symbol, (TraceabilityPredicate) value);
+            } else if (value instanceof String) {
+                this.where(symbol, Predicates.blocks(
+                    ForgeRegistries.BLOCKS.getValue(new ResourceLocation((String) value))
+                ));
+            } else {
+                throw new IllegalArgumentException(
+                    "whereDict: value for key '" + symbol + "' must be a String block ID or TraceabilityPredicate, got: " + value.getClass().getName()
+                );
+            }
         }
         return this;
     }
