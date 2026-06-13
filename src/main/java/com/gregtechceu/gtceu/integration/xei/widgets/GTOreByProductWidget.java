@@ -183,7 +183,7 @@ public class GTOreByProductWidget extends WidgetGroup {
 
                 xeiChance = (float) boostedChance / chance.maxChance;
 
-                overlay = chance.createOverlay(false, MIN_OC_TIER, tier,
+                overlay = chance.createOverlay(false, MIN_OC_TIER, tier, false,
                         hideOC ? (entry, recipeTier, chanceTier) -> boostedChance : ChanceBoostFunction.OVERCLOCK);
             }
             if (itemOutputs.get(slotIndex).isEmpty()) {
