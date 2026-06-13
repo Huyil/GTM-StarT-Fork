@@ -454,12 +454,18 @@ public class GTRecipeWidget extends WidgetGroup {
                             widget -> {
                                 var index = WidgetUtils.widgetIdIndex(widget);
                                 if (index >= 0 && index < contents.size()) {
+                                    boolean hideOC = recipe.getType() == GTRecipeTypes.MACERATOR_RECIPES &&
+                                            tier < GTValues.HV;
                                     var content = contents.get(index);
+                                    int boostedChance = hideOC ? 0 : recipe.getType().getChanceFunction()
+                                            .getBoostedChance(content, minTier, tier);
+
                                     cap.applyWidgetInfo(widget, index, true, io, null, recipe.getType(), recipe,
                                             content,
                                             null, minTier, tier);
                                     widget.setOverlay(content.createOverlay(index >= nonTickCount, minTier, tier,
-                                            true, recipe.getType().getChanceFunction()));
+                                            !hideOC, hideOC ? (entry, recipeTier, chanceTier) -> boostedChance :
+                                                    recipe.getType().getChanceFunction()));
                                 }
                             });
                 }
