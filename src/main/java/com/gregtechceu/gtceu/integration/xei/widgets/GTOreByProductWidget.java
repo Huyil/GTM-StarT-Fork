@@ -122,6 +122,8 @@ public class GTOreByProductWidget extends WidgetGroup {
     }
 
     public void setRecipe() {
+        this.widgets.clear();
+
         WidgetGroup group = new WidgetGroup();
 
         group.setId(ORE_CONTENT_GROUP_ID);
