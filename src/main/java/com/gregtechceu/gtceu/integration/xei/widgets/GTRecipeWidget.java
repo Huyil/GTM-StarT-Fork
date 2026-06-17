@@ -239,7 +239,8 @@ public class GTRecipeWidget extends WidgetGroup {
         }
 
         if (EUt.isInput()) {
-            LabelWidget voltageTextWidget = new LabelWidget(getVoltageXOffset() - xOffset, getSize().height - 10,
+            LabelWidget voltageTextWidget = new LabelWidget(getVoltageXOffset(tier, getSize().width) - xOffset,
+                    getSize().height - 10,
                     tierText).setTextColor(-1).setDropShadow(false);
             if (recipe.recipeType.isOffsetVoltageText()) {
                 voltageTextWidget.setSelfPositionY(getSize().height - recipe.recipeType.getVoltageTextOffset());
@@ -285,8 +286,8 @@ public class GTRecipeWidget extends WidgetGroup {
                         .setHoverTooltips("click to copy: " + recipe.id));
     }
 
-    private int getVoltageXOffset() {
-        int x = getSize().width - switch (tier) {
+    public static int getVoltageXOffset(int tier, int width) {
+        int x = width - switch (tier) {
             case ULV, LuV, ZPM, UHV, UEV, UXV -> 20;
             case OpV, MAX -> 22;
             case UIV -> 18;
@@ -334,7 +335,7 @@ public class GTRecipeWidget extends WidgetGroup {
         }
 
         voltageTextWidget.setText(tierText);
-        voltageTextWidget.setSelfPositionX(getVoltageXOffset() - xOffset);
+        voltageTextWidget.setSelfPositionX(getVoltageXOffset(tier, getSize().width) - xOffset);
 
         var minVoltageTier = GTUtil.getTierByVoltage(inputEUt.voltage());
         long euTotal = inputEUt.getTotalEU();
@@ -536,12 +537,18 @@ public class GTRecipeWidget extends WidgetGroup {
                             widget -> {
                                 var index = WidgetUtils.widgetIdIndex(widget);
                                 if (index >= 0 && index < contents.size()) {
+                                    boolean hideOC = recipe.getType() == GTRecipeTypes.MACERATOR_RECIPES &&
+                                            tier < GTValues.HV;
                                     var content = contents.get(index);
+                                    int boostedChance = hideOC ? 0 : recipe.getType().getChanceFunction()
+                                            .getBoostedChance(content, minTier, tier);
+
                                     cap.applyWidgetInfo(widget, index, true, io, null, recipe.getType(), recipe,
                                             content,
                                             null, minTier, tier);
                                     widget.setOverlay(content.createOverlay(index >= nonTickCount, minTier, tier,
-                                            recipe.getType().getChanceFunction()));
+                                            !hideOC, hideOC ? (entry, recipeTier, chanceTier) -> boostedChance :
+                                                    recipe.getType().getChanceFunction()));
                                 }
                             });
                 }

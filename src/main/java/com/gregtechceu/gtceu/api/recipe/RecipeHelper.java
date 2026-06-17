@@ -255,7 +255,7 @@ public class RecipeHelper {
             } else if (!condition.check(recipe, recipeLogic)) {
                 return ActionResult.fail(Component.translatable("gtceu.recipe_logic.condition_fails")
                         .append(": ")
-                        .append(condition.getTooltips()), null, null);
+                        .append(condition.getTooltips()), false, null, null);
             }
         }
 
@@ -270,7 +270,7 @@ public class RecipeHelper {
             }
 
             if (!passed) {
-                return ActionResult.fail(component, null, null);
+                return ActionResult.fail(component, false, null, null);
             }
         }
         return ActionResult.SUCCESS;
