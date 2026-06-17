@@ -1181,7 +1181,8 @@ public class LangHandler {
         provider.add("gtceu.multiblock.universal.distinct.info",
                 "If enabled, each Item Input Bus will be treated as fully distinct from each other for recipe lookup. Useful for things like Programmed Circuits, Extruder Shapes, etc.");
         provider.add("gtceu.multiblock.parallel", "Performing up to %d Recipes in Parallel");
-        provider.add("gtceu.multiblock.min_parallel", "Requires at least %d Recipes in Parallel");
+        provider.add("gtceu.multiblock.exaxctly_parallel", "Performing exactly %d Recipes in Parallel");
+        provider.add("gtceu.multiblock.between_parallel", "Performing between %d and %d Recipes in Parallel");
         provider.add("gtceu.multiblock.parallel.exact", "- %dx from Parallels");
         provider.add("gtceu.multiblock.multiple_recipemaps.header", "Machine Mode:");
         provider.add("gtceu.multiblock.multiple_recipemaps.tooltip",
