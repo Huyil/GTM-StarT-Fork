@@ -57,7 +57,6 @@ public class GTRecipeWidget extends WidgetGroup {
     @Getter
     private final int xOffset;
     private final GTRecipe recipe;
-    private final List<LabelWidget> recipeParaTexts = new ArrayList<>();
     private LabelWidget recipeDurationText = null;
     private LabelWidget recipeTotalEUText = null;
     private LabelWidget recipeVoltageText = null;
