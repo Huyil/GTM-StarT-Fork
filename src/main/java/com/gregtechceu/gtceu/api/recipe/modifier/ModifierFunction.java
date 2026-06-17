@@ -2,10 +2,7 @@ package com.gregtechceu.gtceu.api.recipe.modifier;
 
 import com.gregtechceu.gtceu.api.capability.recipe.EURecipeCapability;
 import com.gregtechceu.gtceu.api.capability.recipe.RecipeCapability;
-import com.gregtechceu.gtceu.api.recipe.GTRecipe;
-import com.gregtechceu.gtceu.api.recipe.LayeredRecipeHelper;
-import com.gregtechceu.gtceu.api.recipe.RecipeCondition;
-import com.gregtechceu.gtceu.api.recipe.RecipeHelper;
+import com.gregtechceu.gtceu.api.recipe.*;
 import com.gregtechceu.gtceu.api.recipe.content.Content;
 import com.gregtechceu.gtceu.api.recipe.content.ContentModifier;
 import com.gregtechceu.gtceu.api.recipe.ingredient.EnergyStack;
@@ -45,6 +42,11 @@ public interface ModifierFunction {
     ModifierFunction IDENTITY = recipe -> recipe;
 
     static ModifierFunction cancel(Component reason) {
+        return cancel(reason, true);
+    }
+
+    static ModifierFunction cancel(Component reasonComponent, boolean preventCache) {
+        var reason = new RecipeFailureReason(reasonComponent, preventCache);
         return new ModifierFunction() {
 
             @Override
@@ -53,7 +55,7 @@ public interface ModifierFunction {
             }
 
             @Override
-            public Component getFailReason() {
+            public RecipeFailureReason getFailReason() {
                 return reason;
             }
         };
@@ -94,9 +96,10 @@ public interface ModifierFunction {
         return apply(recipe);
     }
 
-    static final Component DEFAULT_FAILURE = Component.translatable("gtceu.recipe_modifier.default_fail");
+    RecipeFailureReason DEFAULT_FAILURE = new RecipeFailureReason(
+            Component.translatable("gtceu.recipe_modifier.default_fail"), false);
 
-    default Component getFailReason() {
+    default RecipeFailureReason getFailReason() {
         return DEFAULT_FAILURE;
     }
 

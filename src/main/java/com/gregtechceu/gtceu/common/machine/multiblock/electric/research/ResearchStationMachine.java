@@ -134,7 +134,7 @@ public class ResearchStationMachine extends OpticalComputationMachine {
                 if (recipeMatch.isSuccess()) {
                     setupRecipe(modified);
                 } else {
-                    setWaiting(recipeMatch.reason());
+                    setWaiting(recipeMatch.reasonComponent());
                 }
                 if (lastRecipe != null && getStatus() == Status.WORKING) {
                     lastOriginRecipe = match;
