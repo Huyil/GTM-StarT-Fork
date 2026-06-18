@@ -270,6 +270,22 @@ public class GTRecipeBuilder {
         return this;
     }
 
+    public GTRecipeBuilder EUtV(int tier) {
+        return EUt((tier >= 0) ? GTValues.V[tier] : -GTValues.V[-tier]);
+    }
+
+    public GTRecipeBuilder EUtVA(int tier) {
+        return EUt((tier >= 0) ? GTValues.VA[tier] : -GTValues.VA[-tier]);
+    }
+
+    public GTRecipeBuilder EUtVH(int tier) {
+        return EUt((tier >= 0) ? GTValues.VH[tier] : -GTValues.VH[-tier]);
+    }
+
+    public GTRecipeBuilder EUtVHA(int tier) {
+        return EUt((tier >= 0) ? GTValues.VHA[tier] : -GTValues.VHA[-tier]);
+    }
+
     public GTRecipeBuilder outputEU(long eu) {
         return outputEU(eu, 1);
     }

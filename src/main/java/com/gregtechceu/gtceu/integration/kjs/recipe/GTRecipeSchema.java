@@ -215,6 +215,30 @@ public interface GTRecipeSchema {
             return EUt(EnergyStack.WithIO.fromVA(voltage, amperage));
         }
 
+        private GTRecipeJS tieredEUtBuilderMethod(int[] values, int tier) {
+            return EUt(new EnergyStack.WithIO(new EnergyStack(values[Math.abs(tier)]), (tier >= 0) ? IO.IN : IO.OUT));
+        }
+
+        private GTRecipeJS tieredEUtBuilderMethod(long[] values, int tier) {
+            return EUt(new EnergyStack.WithIO(new EnergyStack(values[Math.abs(tier)]), (tier >= 0) ? IO.IN : IO.OUT));
+        }
+
+        public GTRecipeJS EUtV(int tier) {
+            return tieredEUtBuilderMethod(GTValues.V, tier);
+        }
+
+        public GTRecipeJS EUtVA(int tier) {
+            return tieredEUtBuilderMethod(GTValues.VA, tier);
+        }
+
+        public GTRecipeJS EUtVH(int tier) {
+            return tieredEUtBuilderMethod(GTValues.VH, tier);
+        }
+
+        public GTRecipeJS EUtVHA(int tier) {
+            return tieredEUtBuilderMethod(GTValues.VHA, tier);
+        }
+
         public GTRecipeJS outputEU(EnergyStack eu) {
             return output(EURecipeCapability.CAP, eu);
         }
