@@ -137,7 +137,7 @@ public class GTRecipeModifiers {
             return ModifierFunction.builder()
                     .modifyAllContents(ContentModifier.multiplier(parallels))
                     .eutMultiplier(parallels)
-                    .parallels(parallels)
+                    .parallels(parallels, GTParallelTypes.HATCH)
                     .build();
         }
         return ModifierFunction.IDENTITY;
@@ -156,7 +156,7 @@ public class GTRecipeModifiers {
                         .inputModifier(ContentModifier.multiplier(parallel))
                         .outputModifier(ContentModifier.multiplier(parallel))
                         .durationMultiplier(parallel)
-                        .batchParallels(parallel)
+                        .parallels(parallel, GTParallelTypes.BATCH)
                         .build();
             }
         }
@@ -306,7 +306,7 @@ public class GTRecipeModifiers {
 
         var parallelModifier = ModifierFunction.builder()
                 .modifyAllContents(ContentModifier.multiplier(parallels))
-                .parallels(parallels)
+                .parallels(parallels, GTParallelTypes.MULTI_SMELTER)
                 .build();
 
         // apply subtick the overclocks after

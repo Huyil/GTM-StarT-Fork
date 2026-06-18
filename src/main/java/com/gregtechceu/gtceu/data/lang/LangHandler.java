@@ -1183,7 +1183,15 @@ public class LangHandler {
         provider.add("gtceu.multiblock.parallel", "Performing up to %d Recipes in Parallel");
         provider.add("gtceu.multiblock.exaxctly_parallel", "Performing exactly %d Recipes in Parallel");
         provider.add("gtceu.multiblock.between_parallel", "Performing between %d and %d Recipes in Parallel");
-        provider.add("gtceu.multiblock.parallel.exact", "- %dx from Parallels");
+
+        provider.add("gtceu.parallel_type.unknown", "- %dx from Unknown");
+        provider.add("gtceu.parallel_type.hatch", "- %dx from Parallel Hatch");
+        provider.add("gtceu.parallel_type.batch", "- %dx from Batching");
+        provider.add("gtceu.parallel_type.subtick", "- %dx from Subtick Parallels");
+        provider.add("gtceu.parallel_type.steam", "- %dx from Steam Parallels");
+        provider.add("gtceu.parallel_type.multi_smelter", "- %dx from Multi Smelter Parallels");
+        provider.add("gtceu.parallel_type.generator", "- %dx from Generator Parallels");
+
         provider.add("gtceu.multiblock.multiple_recipemaps.header", "Machine Mode:");
         provider.add("gtceu.multiblock.multiple_recipemaps.tooltip",
                 "Screwdriver the controller to change which machine mode to use.");
