@@ -14,11 +14,13 @@ import com.lowdragmc.lowdraglib.gui.widget.LabelWidget;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 public interface IDisplayUIMachine extends IUIMachine, IMultiController {
 
-    default void addDisplayText(List<Component> textList) {
+    default void addDisplayText(@NotNull List<Component> textList) {
         for (var part : this.getParts()) {
             part.addMultiText(textList);
         }

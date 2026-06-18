@@ -122,15 +122,22 @@ public class GTRecipeModifiers {
      */
     public static @NotNull ModifierFunction hatchParallel(@NotNull MetaMachine machine, @NotNull GTRecipe recipe) {
         if (machine instanceof IMultiController controller && controller.isFormed()) {
-            int parallels = controller.getParallelHatch()
-                    .map(hatch -> ParallelLogic.getParallelAmount(machine, recipe, hatch.getCurrentParallel()))
-                    .orElse(1);
+            var hatch = controller.getParallelHatch();
+            if (hatch.isEmpty()) return ModifierFunction.IDENTITY;
 
-            if (parallels == 1) return ModifierFunction.IDENTITY;
+            int parallels = ParallelLogic.getParallelAmount(machine, recipe, hatch.get().getCurrentParallel());
+            if (parallels < hatch.get().getMinimumParallel()) {
+                return ModifierFunction
+                        .cancel(Component.translatable("gtceu.recipe_modifier.cant_perform_at_min_parallel"));
+            }
+            if (parallels == 1) {
+                return ModifierFunction.IDENTITY;
+            }
+
             return ModifierFunction.builder()
                     .modifyAllContents(ContentModifier.multiplier(parallels))
                     .eutMultiplier(parallels)
-                    .parallels(parallels)
+                    .parallels(parallels, GTParallelTypes.HATCH)
                     .build();
         }
         return ModifierFunction.IDENTITY;
@@ -149,7 +156,7 @@ public class GTRecipeModifiers {
                         .inputModifier(ContentModifier.multiplier(parallel))
                         .outputModifier(ContentModifier.multiplier(parallel))
                         .durationMultiplier(parallel)
-                        .batchParallels(parallel)
+                        .parallels(parallel, GTParallelTypes.BATCH)
                         .build();
             }
         }
@@ -299,7 +306,7 @@ public class GTRecipeModifiers {
 
         var parallelModifier = ModifierFunction.builder()
                 .modifyAllContents(ContentModifier.multiplier(parallels))
-                .parallels(parallels)
+                .parallels(parallels, GTParallelTypes.MULTI_SMELTER)
                 .build();
 
         // apply subtick the overclocks after
@@ -316,7 +323,9 @@ public class GTRecipeModifiers {
             return RecipeModifier.nullWrongType(CoilWorkableElectricMultiblockMachine.class, machine);
         }
 
-        if (RecipeHelper.getRecipeEUtTier(recipe) > coilMachine.getTier()) return ModifierFunction.NULL;
+        if (RecipeHelper.getRecipeEUtTier(recipe) > coilMachine.getTier()) {
+            return ModifierFunction.cancel(Component.translatable("gtceu.recipe_modifier.insufficient_voltage"));
+        }
 
         int coilTier = coilMachine.getCoilTier();
 

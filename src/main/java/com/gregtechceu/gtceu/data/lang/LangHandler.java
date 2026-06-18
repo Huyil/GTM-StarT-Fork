@@ -963,9 +963,16 @@ public class LangHandler {
         provider.add("gtceu.recipe.eu", "Usage: %s EU/t");
         provider.add("gtceu.recipe.eu_inverted", "Generation: %s EU/t");
         provider.add("gtceu.recipe.eu.total", "%s EU/t");
+        provider.add("gtceu.recipe.eu.pure", "%s EU");
         provider.add("gtceu.recipe.eu.amp_notation", "%s A @ %s");
-        provider.add("gtceu.recipe.duration", "Duration: %s secs");
-        provider.add("gtceu.recipe.total_duration", "Total Duration: %s secs");
+        provider.add("gtceu.recipe.duration", "Duration: %ss");
+        provider.add("gtceu.recipe.duration.hour", "%s Hour");
+        provider.add("gtceu.recipe.duration.hours", "%s Hours");
+        provider.add("gtceu.recipe.duration.minute", "%s Minute");
+        provider.add("gtceu.recipe.duration.minutes", "%s Minutes");
+        provider.add("gtceu.recipe.duration.second", "%s Second");
+        provider.add("gtceu.recipe.duration.seconds", "%s Seconds");
+        provider.add("gtceu.recipe.total_duration", "Total Duration: %ss");
         provider.add("gtceu.recipe.voltage", "Voltage: %s V @ %s A");
         provider.add("gtceu.recipe.total_eu", "Total Usage: %s EU/t");
         provider.add("gtceu.recipe.not_consumed", "Does not get consumed in the process");
@@ -1174,7 +1181,17 @@ public class LangHandler {
         provider.add("gtceu.multiblock.universal.distinct.info",
                 "If enabled, each Item Input Bus will be treated as fully distinct from each other for recipe lookup. Useful for things like Programmed Circuits, Extruder Shapes, etc.");
         provider.add("gtceu.multiblock.parallel", "Performing up to %d Recipes in Parallel");
-        provider.add("gtceu.multiblock.parallel.exact", "- %dx from Parallels");
+        provider.add("gtceu.multiblock.exaxctly_parallel", "Performing exactly %d Recipes in Parallel");
+        provider.add("gtceu.multiblock.between_parallel", "Performing between %d and %d Recipes in Parallel");
+
+        provider.add("gtceu.parallel_type.unknown", "- %dx from Unknown");
+        provider.add("gtceu.parallel_type.hatch", "- %dx from Parallel Hatch");
+        provider.add("gtceu.parallel_type.batch", "- %dx from Batching");
+        provider.add("gtceu.parallel_type.subtick", "- %dx from Subtick Parallels");
+        provider.add("gtceu.parallel_type.steam", "- %dx from Steam Parallels");
+        provider.add("gtceu.parallel_type.multi_smelter", "- %dx from Multi Smelter Parallels");
+        provider.add("gtceu.parallel_type.generator", "- %dx from Generator Parallels");
+
         provider.add("gtceu.multiblock.multiple_recipemaps.header", "Machine Mode:");
         provider.add("gtceu.multiblock.multiple_recipemaps.tooltip",
                 "Screwdriver the controller to change which machine mode to use.");
@@ -1282,6 +1299,7 @@ public class LangHandler {
         provider.add("config.jade.plugin_gtceu.data_bank", "[GTCEu] Data Bank Info");
         provider.add("config.jade.plugin_gtceu.transformer", "[GTCEu] Transformer Info");
         provider.add("config.jade.plugin_gtceu.stained_color", "[GTCEu] Stained Block Info");
+        provider.add("config.jade.plugin_gtceu.me_grid_connected", "[GTCEu] Grid Connected Machine Info");
         provider.add("config.jade.plugin_gtceu.me_pattern_buffer", "[GTCEu] Pattern Buffer Info");
         provider.add("config.jade.plugin_gtceu.me_pattern_buffer_proxy", "[GTCEu] Pattern Buffer Proxy Info");
         provider.add("config.jade.plugin_gtceu.energy_converter_provider", "[GTCEu] Energy Converter Mode");
