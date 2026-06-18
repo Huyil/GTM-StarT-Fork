@@ -22,40 +22,51 @@ import snownee.jade.api.config.IPluginConfig;
 
 public class ParallelProvider implements IBlockComponentProvider, IServerDataProvider<BlockAccessor> {
 
+    private void tooltipHatch(ITooltip tooltip, CompoundTag tag) {
+        var hatchParallel = tag.getInt("hatchParallel");
+        if (hatchParallel <= 0) return;
+
+        var hatchMinParallel = tag.getInt("hatchMinParallel");
+
+        var parallels = Component.literal(FormattingUtil.formatNumbers(hatchParallel))
+                .withStyle(ChatFormatting.DARK_PURPLE);
+        var minParallels = Component.literal(FormattingUtil.formatNumbers(hatchMinParallel))
+                .withStyle(ChatFormatting.DARK_PURPLE);
+
+        if (hatchMinParallel == hatchParallel) {
+            tooltip.add(Component.translatable("gtceu.multiblock.exaxctly_parallel", parallels));
+        } else if (hatchMinParallel == 1) {
+            tooltip.add(Component.translatable("gtceu.multiblock.parallel", parallels));
+        } else {
+            tooltip.add(Component.translatable("gtceu.multiblock.between_parallel", minParallels, parallels));
+        }
+    }
+
+    private void tooltipRecipe(ITooltip tooltip, CompoundTag tag) {
+        var parallel = tag.getInt("parallel");
+        if (parallel <= 1) return;
+
+        var parallelsByType = GTRecipeSerializer.PARALLELS_BY_TYPE_CODEC
+                .parse(NbtOps.INSTANCE, tag.get("parallelsByType")).result().orElse(null);
+        if (parallelsByType == null) return;
+
+        var runs = Component.literal(FormattingUtil.formatNumbers(parallel))
+                .withStyle(ChatFormatting.DARK_PURPLE);
+        tooltip.add(Component.translatable("gtceu.multiblock.total_runs", runs));
+        for (var entry : parallelsByType.reference2IntEntrySet()) {
+            if (entry.getIntValue() <= 1) continue;
+            tooltip.add(entry.getKey().format(entry.getIntValue()));
+        }
+    }
+
     @Override
     public void appendTooltip(ITooltip tooltip, BlockAccessor blockAccessor, IPluginConfig iPluginConfig) {
         var tag = blockAccessor.getServerData();
-        if (!tag.getBoolean("exact")) {
-            var hatchParallel = tag.getInt("hatchParallel");
-            var hatchMinParallel = tag.getInt("hatchMinParallel");
 
-            var parallels = Component.literal(FormattingUtil.formatNumbers(hatchParallel))
-                    .withStyle(ChatFormatting.DARK_PURPLE);
-            var minParallels = Component.literal(FormattingUtil.formatNumbers(hatchMinParallel))
-                    .withStyle(ChatFormatting.DARK_PURPLE);
-
-            if (hatchMinParallel == hatchParallel) {
-                tooltip.add(Component.translatable("gtceu.multiblock.exaxctly_parallel", parallels));
-            } else if (hatchMinParallel == 1) {
-                tooltip.add(Component.translatable("gtceu.multiblock.parallel", parallels));
-            } else {
-                tooltip.add(Component.translatable("gtceu.multiblock.between_parallel", minParallels, parallels));
-            }
+        if (tag.getBoolean("exact")) {
+            tooltipRecipe(tooltip, tag);
         } else {
-            var parallel = tag.getInt("parallel");
-            var parallelsByType = GTRecipeSerializer.PARALLELS_BY_TYPE_CODEC
-                    .parse(NbtOps.INSTANCE, tag.get("parallelsByType")).result().orElse(null);
-
-            if (parallel <= 1 || parallelsByType == null) return;
-
-            var runs = Component.literal(FormattingUtil.formatNumbers(parallel))
-                    .withStyle(ChatFormatting.DARK_PURPLE);
-            tooltip.add(Component.translatable("gtceu.multiblock.total_runs", runs));
-            for (var entry : parallelsByType.reference2IntEntrySet()) {
-                if (entry.getIntValue() <= 1) continue;
-                tooltip.add(entry.getKey().format(entry.getIntValue()));
-
-            }
+            tooltipHatch(tooltip, tag);
         }
     }
 
@@ -66,7 +77,6 @@ public class ParallelProvider implements IBlockComponentProvider, IServerDataPro
                 tag.putInt("hatchParallel", parallelHatch.getCurrentParallel());
                 tag.putInt("hatchMinParallel", parallelHatch.getMinimumParallel());
             } else if (blockEntity.getMetaMachine() instanceof IMultiController controller) {
-
                 if (controller instanceof IRecipeLogicMachine rlm &&
                         rlm.getRecipeLogic().isActive() &&
                         rlm.getRecipeLogic().getLastRecipe() != null) {
