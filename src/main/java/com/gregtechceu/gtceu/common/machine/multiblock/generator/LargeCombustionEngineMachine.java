@@ -21,6 +21,7 @@ import com.gregtechceu.gtceu.api.recipe.modifier.ModifierFunction;
 import com.gregtechceu.gtceu.api.recipe.modifier.ParallelLogic;
 import com.gregtechceu.gtceu.api.recipe.modifier.RecipeModifier;
 import com.gregtechceu.gtceu.common.data.GTMaterials;
+import com.gregtechceu.gtceu.common.data.GTParallelTypes;
 import com.gregtechceu.gtceu.data.recipe.builder.GTRecipeBuilder;
 import com.gregtechceu.gtceu.utils.FormattingUtil;
 
@@ -140,7 +141,7 @@ public class LargeCombustionEngineMachine extends WorkableElectricMultiblockMach
                     .inputModifier(ContentModifier.multiplier(actualParallel))
                     .outputModifier(ContentModifier.multiplier(actualParallel))
                     .eutMultiplier(eutMultiplier)
-                    .parallels(actualParallel)
+                    .parallels(actualParallel, GTParallelTypes.GENERATOR)
                     .build();
         }
         return ModifierFunction.NULL;

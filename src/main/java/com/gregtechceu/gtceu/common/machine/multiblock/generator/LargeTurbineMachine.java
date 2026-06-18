@@ -16,6 +16,7 @@ import com.gregtechceu.gtceu.api.recipe.ingredient.EnergyStack;
 import com.gregtechceu.gtceu.api.recipe.modifier.ModifierFunction;
 import com.gregtechceu.gtceu.api.recipe.modifier.ParallelLogic;
 import com.gregtechceu.gtceu.api.recipe.modifier.RecipeModifier;
+import com.gregtechceu.gtceu.common.data.GTParallelTypes;
 import com.gregtechceu.gtceu.utils.FormattingUtil;
 
 import net.minecraft.ChatFormatting;
@@ -170,7 +171,7 @@ public class LargeTurbineMachine extends WorkableElectricMultiblockMachine imple
                 .inputModifier(ContentModifier.multiplier(actualParallel))
                 .outputModifier(ContentModifier.multiplier(actualParallel))
                 .eutMultiplier(eutMultiplier)
-                .parallels(actualParallel)
+                .parallels(actualParallel, GTParallelTypes.GENERATOR)
                 .durationMultiplier(holderEfficiency)
                 .build();
     }

@@ -6,9 +6,12 @@ import com.gregtechceu.gtceu.api.recipe.*;
 import com.gregtechceu.gtceu.api.recipe.content.Content;
 import com.gregtechceu.gtceu.api.recipe.content.ContentModifier;
 import com.gregtechceu.gtceu.api.recipe.ingredient.EnergyStack;
+import com.gregtechceu.gtceu.common.data.GTParallelTypes;
 
 import net.minecraft.network.chat.Component;
 
+import it.unimi.dsi.fastutil.objects.Reference2IntArrayMap;
+import it.unimi.dsi.fastutil.objects.Reference2IntMap;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.jetbrains.annotations.Contract;
@@ -123,8 +126,7 @@ public interface ModifierFunction {
     final class FunctionBuilder {
 
         private int parallels = 1;
-        private int subtickParallels = 1;
-        private int batchParallels = 1;
+        private final Reference2IntMap<ParallelType> parallelsByType = new Reference2IntArrayMap<>();
         private int addOCs = 0;
         private int addBaseOCs = 0;
         private ContentModifier eutModifier = ContentModifier.IDENTITY;
@@ -136,6 +138,24 @@ public interface ModifierFunction {
         private final List<RecipeCondition<?>> addedConditions = new ArrayList<>();
 
         public FunctionBuilder() {}
+
+        public FunctionBuilder parallels(int parallels, ParallelType type) {
+            parallelsByType.put(type, parallels);
+            this.parallels *= parallels;
+            return this;
+        }
+
+        public FunctionBuilder parallels(int parallels) {
+            return parallels(parallels, GTParallelTypes.UNKNOWN);
+        }
+
+        public FunctionBuilder batchParallels(int parallels) {
+            return parallels(parallels, GTParallelTypes.BATCH);
+        }
+
+        public FunctionBuilder subtickParallels(int parallels) {
+            return parallels(parallels, GTParallelTypes.SUBTICK);
+        }
 
         public FunctionBuilder conditions(RecipeCondition<?>... conditions) {
             addedConditions.addAll(Arrays.asList(conditions));
@@ -186,10 +206,11 @@ public interface ModifierFunction {
                         newConditions, new ArrayList<>(recipe.ingredientActions),
                         recipe.data.copy(), recipe.duration, recipe.recipeCategory);
                 copied.parallels = recipe.parallels * parallels;
-                copied.subtickParallels = recipe.subtickParallels * subtickParallels;
+                copied.parallelsByType = new Reference2IntArrayMap<>(recipe.parallelsByType);
+                parallelsByType.forEach((type, count) -> copied.parallelsByType.compute(type,
+                        (_k, prev) -> prev == null ? count : prev * count));
                 copied.ocLevel = recipe.ocLevel + addOCs;
                 copied.baseOcLevel = recipe.baseOcLevel + addBaseOCs;
-                copied.batchParallels = recipe.batchParallels * batchParallels;
                 if (recipe.data.getBoolean("duration_is_total_cwu")) {
                     copied.duration = (int) Math.max(1, (recipe.duration * (1f - 0.025f * addOCs)));
                 } else {

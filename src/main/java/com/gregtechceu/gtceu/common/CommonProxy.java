@@ -158,6 +158,7 @@ public class CommonProxy {
         GTItems.init();
         GTDimensionMarkers.init();
         ChanceLogic.init();
+        GTParallelTypes.init();
         WaypointManager.init();
         AddonFinder.getAddons().forEach(IGTAddon::initializeAddon);
 
