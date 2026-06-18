@@ -24,16 +24,28 @@ public class ParallelProvider implements IBlockComponentProvider, IServerDataPro
     public void appendTooltip(ITooltip iTooltip, BlockAccessor blockAccessor, IPluginConfig iPluginConfig) {
         if (blockAccessor.getServerData().contains("parallel")) {
             int parallel = blockAccessor.getServerData().getInt("parallel");
-            if (!blockAccessor.getServerData().getBoolean("exact") && parallel > 1) {
+
+            if (!blockAccessor.getServerData().getBoolean("exact")) {
+                int minParallel = blockAccessor.getServerData().getInt("minParallel");
+
                 Component parallels = Component.literal(FormattingUtil.formatNumbers(parallel))
                         .withStyle(ChatFormatting.DARK_PURPLE);
-                String key = "gtceu.multiblock.parallel";
-                iTooltip.add(Component.translatable(key, parallels));
+                Component minParallels = Component.literal(FormattingUtil.formatNumbers(minParallel))
+                        .withStyle(ChatFormatting.DARK_PURPLE);
+
+                if (minParallel == parallel)
+                    iTooltip.add(Component.translatable("gtceu.multiblock.exaxctly_parallel", parallels));
+                else if (minParallel == 1)
+                    iTooltip.add(Component.translatable("gtceu.multiblock.parallel", parallels));
+                else
+                    iTooltip.add(Component.translatable("gtceu.multiblock.between_parallel", minParallels, parallels));
             } else {
                 int batch = blockAccessor.getServerData().getInt("batch");
                 int subtickParallel = blockAccessor.getServerData().getInt("subtickParallel");
                 int totalRuns = parallel * batch * subtickParallel;
+
                 if (totalRuns == 1) return;
+
                 Component runs = Component.literal(FormattingUtil.formatNumbers(totalRuns))
                         .withStyle(ChatFormatting.DARK_PURPLE);
                 String key = "gtceu.multiblock.total_runs";
@@ -57,14 +69,6 @@ public class ParallelProvider implements IBlockComponentProvider, IServerDataPro
                     String keySubtick = "gtceu.multiblock.subtick_parallels";
                     iTooltip.add(Component.translatable(keySubtick, subticks));
                 }
-            }
-
-            var minParallel = blockAccessor.getServerData().getInt("minParallel");
-            if (minParallel > 1) {
-                var component = Component.literal(FormattingUtil.formatNumbers(minParallel))
-                        .withStyle(ChatFormatting.DARK_PURPLE);
-                var key = "gtceu.multiblock.min_parallel";
-                iTooltip.add(Component.translatable(key, component));
             }
         }
     }
