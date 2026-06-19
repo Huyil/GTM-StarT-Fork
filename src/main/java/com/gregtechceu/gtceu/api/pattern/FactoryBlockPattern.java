@@ -138,11 +138,11 @@ public class FactoryBlockPattern {
             String symbol = entry.getKey().toString();
             Object value = entry.getValue();
 
-            if (value instanceof TraceabilityPredicate) {
-                this.where(symbol, (TraceabilityPredicate) value);
-            } else if (value instanceof String) {
+            if (value instanceof TraceabilityPredicate predicate) {
+                this.where(symbol, (TraceabilityPredicate) predicate);
+            } else if (value instanceof String blockId) {
                 this.where(symbol, Predicates.blocks(
-                        ForgeRegistries.BLOCKS.getValue(new ResourceLocation((String) value))));
+                        ForgeRegistries.BLOCKS.getValue(new ResourceLocation((String) blockId))));
             } else {
                 var valueKind = value == null ? "null" : value.getClass().getName();
                 throw new IllegalArgumentException(
