@@ -215,28 +215,44 @@ public interface GTRecipeSchema {
             return EUt(EnergyStack.WithIO.fromVA(voltage, amperage));
         }
 
-        private GTRecipeJS tieredEUtBuilderMethod(int[] values, int tier) {
-            return EUt(new EnergyStack.WithIO(new EnergyStack(values[Math.abs(tier)]), (tier >= 0) ? IO.IN : IO.OUT));
+        private GTRecipeJS tieredEUtBuilderMethod(int[] values, int tier, boolean isGenerator) {
+            return EUt(new EnergyStack.WithIO(new EnergyStack(values[Math.abs(tier)]), (isGenerator) ? IO.IN : IO.OUT));
         }
 
-        private GTRecipeJS tieredEUtBuilderMethod(long[] values, int tier) {
-            return EUt(new EnergyStack.WithIO(new EnergyStack(values[Math.abs(tier)]), (tier >= 0) ? IO.IN : IO.OUT));
+        private GTRecipeJS tieredEUtBuilderMethod(long[] values, int tier, boolean isGenerator) {
+            return EUt(new EnergyStack.WithIO(new EnergyStack(values[Math.abs(tier)]), (isGenerator) ? IO.IN : IO.OUT));
+        }
+
+        public GTRecipeJS EUtV(int tier, boolean isGenerator) {
+            return tieredEUtBuilderMethod(GTValues.V, tier, isGenerator);
         }
 
         public GTRecipeJS EUtV(int tier) {
-            return tieredEUtBuilderMethod(GTValues.V, tier);
+            return EUtV(tier, tier < 0);
+        }
+
+        public GTRecipeJS EUtVA(int tier, boolean isGenerator) {
+            return tieredEUtBuilderMethod(GTValues.VA, tier, isGenerator);
         }
 
         public GTRecipeJS EUtVA(int tier) {
-            return tieredEUtBuilderMethod(GTValues.VA, tier);
+            return EUtV(tier, tier < 0);
+        }
+
+        public GTRecipeJS EUtVH(int tier, boolean isGenerator) {
+            return tieredEUtBuilderMethod(GTValues.VH, tier, isGenerator);
         }
 
         public GTRecipeJS EUtVH(int tier) {
-            return tieredEUtBuilderMethod(GTValues.VH, tier);
+            return EUtV(tier, tier < 0);
+        }
+
+        public GTRecipeJS EUtVHA(int tier, boolean isGenerator) {
+            return tieredEUtBuilderMethod(GTValues.VHA, tier, isGenerator);
         }
 
         public GTRecipeJS EUtVHA(int tier) {
-            return tieredEUtBuilderMethod(GTValues.VHA, tier);
+            return EUtV(tier, tier < 0);
         }
 
         public GTRecipeJS outputEU(EnergyStack eu) {
