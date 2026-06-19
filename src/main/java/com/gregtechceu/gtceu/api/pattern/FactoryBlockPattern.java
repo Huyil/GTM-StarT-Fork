@@ -144,10 +144,11 @@ public class FactoryBlockPattern {
                 this.where(symbol, Predicates.blocks(
                         ForgeRegistries.BLOCKS.getValue(new ResourceLocation((String) value))));
             } else {
+                var valueKind = value == null ? "null" : value.getClass().getName();
                 throw new IllegalArgumentException(
                         "whereDict: value for key '" + symbol +
                                 "' must be a String block ID or TraceabilityPredicate, got: " +
-                                value.getClass().getName());
+                            valueKind);
             }
         }
         return this;
