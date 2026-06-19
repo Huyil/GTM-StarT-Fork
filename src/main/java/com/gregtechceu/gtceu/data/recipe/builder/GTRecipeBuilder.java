@@ -272,7 +272,7 @@ public class GTRecipeBuilder {
 
     private GTRecipeBuilder tieredEUtBuilderMethod(int[] values, int tier, boolean isGenerator) {
         if (tier >= values.length) {
-            GTCEu.LOGGER.error("Invalid voltage tier: {}", id); 
+            GTCEu.LOGGER.error("Invalid voltage tier {} for recipe: {}", tier, id); 
         }
         int sign = (isGenerator) ? -1 : 1;
         return EUt(sign * values[tier]);
@@ -280,7 +280,7 @@ public class GTRecipeBuilder {
 
     private GTRecipeBuilder tieredEUtBuilderMethod(long[] values, int tier, boolean isGenerator) {
         if (tier >= values.length) {
-            GTCEu.LOGGER.error("Invalid voltage tier: {}", id); 
+            GTCEu.LOGGER.error("Invalid voltage tier {} for recipe: {}", tier, id); 
         }
         int sign = (isGenerator) ? -1 : 1;
         return EUt(sign * values[tier]);
