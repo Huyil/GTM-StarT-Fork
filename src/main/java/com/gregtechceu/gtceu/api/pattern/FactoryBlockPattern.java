@@ -142,7 +142,7 @@ public class FactoryBlockPattern {
                 this.where(symbol, (TraceabilityPredicate) predicate);
             } else if (value instanceof String blockId) {
                 this.where(symbol, Predicates.blocks(
-                        ForgeRegistries.BLOCKS.getValue(new ResourceLocation((String) blockId))));
+                        ForgeRegistries.BLOCKS.getValue(new ResourceLocation(blockId))));
             } else {
                 var valueKind = value == null ? "null" : value.getClass().getName();
                 throw new IllegalArgumentException(
