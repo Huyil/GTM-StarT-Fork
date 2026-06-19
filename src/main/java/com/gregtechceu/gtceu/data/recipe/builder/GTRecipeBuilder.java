@@ -291,7 +291,7 @@ public class GTRecipeBuilder {
     }
 
     public GTRecipeBuilder EUtV(int tier) {
-        return EUtV(tier, tier < 0);
+        return EUtV(Math.abs(tier), tier < 0);
     }
 
     public GTRecipeBuilder EUtVA(int tier, boolean isGenerator) {
@@ -299,7 +299,7 @@ public class GTRecipeBuilder {
     }
 
     public GTRecipeBuilder EUtVA(int tier) {
-        return EUtVA(tier, tier < 0);
+        return EUtVA(Math.abs(tier), tier < 0);
     }
 
     public GTRecipeBuilder EUtVH(int tier, boolean isGenerator) {
@@ -307,7 +307,7 @@ public class GTRecipeBuilder {
     }
 
     public GTRecipeBuilder EUtVH(int tier) {
-        return EUtVH(tier, tier < 0);
+        return EUtVH(Math.abs(tier), tier < 0);
     }
 
     public GTRecipeBuilder EUtVHA(int tier, boolean isGenerator) {
@@ -315,7 +315,7 @@ public class GTRecipeBuilder {
     }
 
     public GTRecipeBuilder EUtVHA(int tier) {
-        return EUtVHA(tier, tier < 0);
+        return EUtVHA(Math.abs(tier), tier < 0);
     }
 
     public GTRecipeBuilder outputEU(long eu) {
