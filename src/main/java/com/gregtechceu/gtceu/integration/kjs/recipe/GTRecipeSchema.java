@@ -234,7 +234,7 @@ public interface GTRecipeSchema {
         }
 
         public GTRecipeJS EUtV(int tier) {
-            return EUtV(tier, tier < 0);
+            return EUtV(Math.abs(tier), tier < 0);
         }
 
         public GTRecipeJS EUtVA(int tier, boolean isGenerator) {
@@ -242,7 +242,7 @@ public interface GTRecipeSchema {
         }
 
         public GTRecipeJS EUtVA(int tier) {
-            return EUtVA(tier, tier < 0);
+            return EUtVA(Math.abs(tier), tier < 0);
         }
 
         public GTRecipeJS EUtVH(int tier, boolean isGenerator) {
@@ -250,7 +250,7 @@ public interface GTRecipeSchema {
         }
 
         public GTRecipeJS EUtVH(int tier) {
-            return EUtVH(tier, tier < 0);
+            return EUtVH(Math.abs(tier), tier < 0);
         }
 
         public GTRecipeJS EUtVHA(int tier, boolean isGenerator) {
@@ -258,7 +258,7 @@ public interface GTRecipeSchema {
         }
 
         public GTRecipeJS EUtVHA(int tier) {
-            return EUtVHA(tier, tier < 0);
+            return EUtVHA(Math.abs(tier), tier < 0);
         }
 
         public GTRecipeJS outputEU(EnergyStack eu) {
