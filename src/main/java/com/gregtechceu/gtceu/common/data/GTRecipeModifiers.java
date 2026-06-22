@@ -23,6 +23,7 @@ import com.gregtechceu.gtceu.common.capability.EnvironmentalHazardSavedData;
 import com.gregtechceu.gtceu.common.machine.multiblock.electric.FusionReactorMachine;
 import com.gregtechceu.gtceu.common.recipe.condition.EUToStartCondition;
 import com.gregtechceu.gtceu.config.ConfigHolder;
+import com.gregtechceu.gtceu.utils.GTUtil;
 
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -134,10 +135,25 @@ public class GTRecipeModifiers {
                 return ModifierFunction.IDENTITY;
             }
 
+            var baseOCs = 0;
+            if (machine instanceof IOverclockMachine overclockMachine) {
+                var EUt = RecipeHelper.getRealEUt(recipe).getTotalEU();
+                var recipeTier = (int) GTUtil.getOCTierByVoltage(EUt);
+                int maximumTier = overclockMachine.getMaxOverclockTier();
+                var parallelTier = (int) GTUtil.getOCTierByVoltage(EUt * parallels);
+
+                parallelTier = Math.min(parallelTier, maximumTier);
+                baseOCs = parallelTier - recipeTier;
+                if (recipeTier == GTValues.ULV) {
+                    baseOCs--;
+                }
+            }
+
             return ModifierFunction.builder()
                     .modifyAllContents(ContentModifier.multiplier(parallels))
                     .eutMultiplier(parallels)
                     .parallels(parallels, GTParallelTypes.HATCH)
+                    .addBaseOCs(baseOCs)
                     .build();
         }
         return ModifierFunction.IDENTITY;
