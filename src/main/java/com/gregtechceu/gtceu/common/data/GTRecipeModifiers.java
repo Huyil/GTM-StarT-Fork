@@ -135,14 +135,17 @@ public class GTRecipeModifiers {
                 return ModifierFunction.IDENTITY;
             }
 
-            var EUt = RecipeHelper.getRealEUt(recipe).getTotalEU();
-            var recipeTier = (int) GTUtil.getOCTierByVoltage(EUt);
-            var parallelTier = (int) GTUtil.getOCTierByVoltage(EUt * parallels);
-
+            var baseOCs = 0;
             if (machine instanceof IOverclockMachine overclockMachine) {
+                var EUt = RecipeHelper.getRealEUt(recipe).getTotalEU();
+                var recipeTier = (int) GTUtil.getOCTierByVoltage(EUt);
                 int maximumTier = overclockMachine.getMaxOverclockTier();
-                if (parallelTier > maximumTier) {
-                    parallelTier = maximumTier;
+                var parallelTier = (int) GTUtil.getOCTierByVoltage(EUt * parallels);
+
+                parallelTier = Math.min(parallelTier, maximumTier);
+                baseOCs = parallelTier - recipeTier;
+                if (recipeTier == GTValues.ULV) {
+                    baseOCs--;
                 }
             }
 
@@ -150,7 +153,7 @@ public class GTRecipeModifiers {
                     .modifyAllContents(ContentModifier.multiplier(parallels))
                     .eutMultiplier(parallels)
                     .parallels(parallels, GTParallelTypes.HATCH)
-                    .addBaseOCs(parallelTier - recipeTier)
+                    .addBaseOCs(baseOCs)
                     .build();
         }
         return ModifierFunction.IDENTITY;
