@@ -37,9 +37,7 @@ import com.gregtechceu.gtceu.api.fluids.store.FluidStorageKeys;
 import com.gregtechceu.gtceu.api.gui.GuiTextures;
 import com.gregtechceu.gtceu.api.item.tool.GTToolType;
 import com.gregtechceu.gtceu.api.item.tool.ToolHelper;
-import com.gregtechceu.gtceu.api.machine.MachineDefinition;
-import com.gregtechceu.gtceu.api.machine.SimpleGeneratorMachine;
-import com.gregtechceu.gtceu.api.machine.SimpleTieredMachine;
+import com.gregtechceu.gtceu.api.machine.*;
 import com.gregtechceu.gtceu.api.machine.multiblock.CleanroomType;
 import com.gregtechceu.gtceu.api.machine.multiblock.PartAbility;
 import com.gregtechceu.gtceu.api.machine.property.GTMachineModelProperties;
@@ -158,25 +156,31 @@ public class GregTechKubeJSPlugin extends KubeJSPlugin {
         GTRegistryInfo.RECIPE_CATEGORY.addType("basic", GTRecipeCategoryBuilder.class, GTRecipeCategoryBuilder::new,
                 true);
 
-        GTRegistryInfo.MACHINE.addType("simple", KJSWrappingMachineBuilder.class,
-                (id) -> new KJSWrappingMachineBuilder(id,
-                        new KJSTieredMachineBuilder(id, SimpleTieredMachine::new,
-                                SimpleTieredMachine.EDITABLE_UI_CREATOR, false)),
+        GTRegistryInfo.MACHINE.addType("simple", KJSWrappingTieredMachineBuilder.class,
+                (id) -> new KJSWrappingTieredMachineBuilder(id, new KJSTieredMachineBuilder(id,
+                        SimpleTieredMachine::new, SimpleTieredMachine.EDITABLE_UI_CREATOR, false)),
                 true);
-        GTRegistryInfo.MACHINE.addType("custom", KJSWrappingMachineBuilder.class,
-                (id) -> new KJSWrappingMachineBuilder(id, new KJSTieredMachineBuilder(id)),
-                false);
+
+        GTRegistryInfo.MACHINE.addType("custom", KJSWrappingTieredMachineBuilder.class,
+                (id) -> new KJSWrappingTieredMachineBuilder(id, new KJSTieredMachineBuilder(id)), false);
+
         GTRegistryInfo.MACHINE.addType("steam", KJSSteamMachineBuilder.class,
                 KJSSteamMachineBuilder::new, false);
-        GTRegistryInfo.MACHINE.addType("generator", KJSWrappingMachineBuilder.class,
-                (id) -> new KJSWrappingMachineBuilder(id,
-                        new KJSTieredMachineBuilder(id, SimpleGeneratorMachine::new,
-                                SimpleGeneratorMachine.EDITABLE_UI_CREATOR, true)),
+
+        GTRegistryInfo.MACHINE.addType("generator", KJSWrappingTieredMachineBuilder.class,
+                (id) -> new KJSWrappingTieredMachineBuilder(id, new KJSTieredMachineBuilder(id,
+                        SimpleGeneratorMachine::new, SimpleGeneratorMachine.EDITABLE_UI_CREATOR, true)),
                 false);
+
         GTRegistryInfo.MACHINE.addType("multiblock", MultiblockMachineBuilder.class,
                 KJSWrappingMultiblockBuilder::createKJSMulti, false);
+
         GTRegistryInfo.MACHINE.addType("tiered_multiblock", KJSWrappingMultiblockBuilder.class,
                 (id) -> new KJSWrappingMultiblockBuilder(id, new KJSTieredMultiblockBuilder(id)), false);
+
+        GTRegistryInfo.MACHINE.addType("primitive_singleblock", KJSWrappingMachineBuilder.class,
+                KJSWrappingMachineBuilder::createKJSPrimitiveSingleblock, false);
+
         GTRegistryInfo.MACHINE.addType("primitive", MultiblockMachineBuilder.class,
                 (id) -> KJSWrappingMultiblockBuilder.createKJSMulti(id, PrimitiveFancyUIWorkableMachine::new),
                 false);
