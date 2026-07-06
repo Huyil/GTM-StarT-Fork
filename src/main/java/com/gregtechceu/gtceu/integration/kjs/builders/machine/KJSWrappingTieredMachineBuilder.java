@@ -1,5 +1,6 @@
 package com.gregtechceu.gtceu.integration.kjs.builders.machine;
 
+import com.gregtechceu.gtceu.api.GTValues;
 import com.gregtechceu.gtceu.api.machine.MachineDefinition;
 import com.gregtechceu.gtceu.api.registry.registrate.BuilderBase;
 
@@ -29,6 +30,11 @@ public class KJSWrappingTieredMachineBuilder extends BuilderBase<MachineDefiniti
 
     public KJSWrappingTieredMachineBuilder tiers(int... tiers) {
         tieredBuilder.tiers(tiers);
+        return this;
+    }
+
+    public KJSWrappingTieredMachineBuilder tiersBetween(int min, int max) {
+        tieredBuilder.tiers(GTValues.tiersBetween(min, max));
         return this;
     }
 
