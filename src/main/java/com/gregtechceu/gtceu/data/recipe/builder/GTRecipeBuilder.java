@@ -270,6 +270,54 @@ public class GTRecipeBuilder {
         return this;
     }
 
+    private GTRecipeBuilder tieredEUtBuilderMethod(int[] values, int tier, boolean isGenerator) {
+        if (tier >= values.length) {
+            GTCEu.LOGGER.error("Invalid voltage tier {} for recipe: {}", tier, id); 
+        }
+        int sign = (isGenerator) ? -1 : 1;
+        return EUt(sign * values[tier]);
+    }
+
+    private GTRecipeBuilder tieredEUtBuilderMethod(long[] values, int tier, boolean isGenerator) {
+        if (tier >= values.length) {
+            GTCEu.LOGGER.error("Invalid voltage tier {} for recipe: {}", tier, id); 
+        }
+        int sign = (isGenerator) ? -1 : 1;
+        return EUt(sign * values[tier]);
+    }
+
+    public GTRecipeBuilder EUtV(int tier, boolean isGenerator) {
+        return tieredEUtBuilderMethod(GTValues.V, tier, isGenerator);
+    }
+
+    public GTRecipeBuilder EUtV(int tier) {
+        return EUtV(Math.abs(tier), tier < 0);
+    }
+
+    public GTRecipeBuilder EUtVA(int tier, boolean isGenerator) {
+        return tieredEUtBuilderMethod(GTValues.VA, tier, isGenerator);
+    }
+
+    public GTRecipeBuilder EUtVA(int tier) {
+        return EUtVA(Math.abs(tier), tier < 0);
+    }
+
+    public GTRecipeBuilder EUtVH(int tier, boolean isGenerator) {
+        return tieredEUtBuilderMethod(GTValues.VH, tier, isGenerator);
+    }
+
+    public GTRecipeBuilder EUtVH(int tier) {
+        return EUtVH(Math.abs(tier), tier < 0);
+    }
+
+    public GTRecipeBuilder EUtVHA(int tier, boolean isGenerator) {
+        return tieredEUtBuilderMethod(GTValues.VHA, tier, isGenerator);
+    }
+
+    public GTRecipeBuilder EUtVHA(int tier) {
+        return EUtVHA(Math.abs(tier), tier < 0);
+    }
+
     public GTRecipeBuilder outputEU(long eu) {
         return outputEU(eu, 1);
     }

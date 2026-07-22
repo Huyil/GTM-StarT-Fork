@@ -14,7 +14,7 @@ publishing {
             url = "https://repo.expandium.net/releases"
             credentials {
                 username = System.getenv("MAVEN_USER")
-                password = System.getenv("MAVEN_PASSWORD")
+                password = System.getenv("MAVEN_TOKEN")
             }
         }
     }

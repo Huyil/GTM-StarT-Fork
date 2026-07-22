@@ -598,6 +598,8 @@ public class MachineLang {
 
         // Parallel
         provider.add("gtceu.multiblock.parallelizable.tooltip", "Can parallelize with Parallel Control Hatches.");
+        provider.add("gtceu.gui.title.parallel_hatch.max_parallel", "Maximum Parallel");
+        provider.add("gtceu.gui.title.parallel_hatch.min_parallel", "Minimum Parallel");
 
         provider.add("gtceu.machine.parallel_hatch_mk5.tooltip", "Allows to run up to 4 recipes in parallel.");
         provider.add("gtceu.machine.parallel_hatch_mk6.tooltip", "Allows to run up to 16 recipes in parallel.");
@@ -786,7 +788,7 @@ public class MachineLang {
                 "Auto-Pull Disabled");
         provider.add("gtceu.machine.me.copy_paste.tooltip",
                 "Sneak right-click with Data Stick to copy settings, right-click to apply");
-        provider.add("gtuce.machine.me.expose_sides.tooltip",
+        provider.add("gtceu.machine.me.expose_sides.tooltip",
                 "Use a screwdriver to toggle channel passthrough on and off.");
         provider.add("gtceu.machine.me.import_copy_settings",
                 "Saved settings to Data Stick");

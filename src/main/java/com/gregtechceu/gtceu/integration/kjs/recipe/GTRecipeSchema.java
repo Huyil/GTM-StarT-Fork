@@ -215,6 +215,52 @@ public interface GTRecipeSchema {
             return EUt(EnergyStack.WithIO.fromVA(voltage, amperage));
         }
 
+        private GTRecipeJS tieredEUtBuilderMethod(int[] values, int tier, boolean isGenerator) {
+            if (tier >= values.length) {
+                throw new RecipeExceptionJS(String.format("Invalid voltage tier %s for recipe: %s", tier, id));
+            }
+            return EUt(new EnergyStack.WithIO(new EnergyStack(values[Math.abs(tier)]), (isGenerator) ? IO.IN : IO.OUT));
+        }
+
+        private GTRecipeJS tieredEUtBuilderMethod(long[] values, int tier, boolean isGenerator) {
+            if (tier >= values.length) {
+                throw new RecipeExceptionJS(String.format("Invalid voltage tier %s for recipe: %s", tier, id));
+            }
+            return EUt(new EnergyStack.WithIO(new EnergyStack(values[Math.abs(tier)]), (isGenerator) ? IO.IN : IO.OUT));
+        }
+
+        public GTRecipeJS EUtV(int tier, boolean isGenerator) {
+            return tieredEUtBuilderMethod(GTValues.V, tier, isGenerator);
+        }
+
+        public GTRecipeJS EUtV(int tier) {
+            return EUtV(Math.abs(tier), tier < 0);
+        }
+
+        public GTRecipeJS EUtVA(int tier, boolean isGenerator) {
+            return tieredEUtBuilderMethod(GTValues.VA, tier, isGenerator);
+        }
+
+        public GTRecipeJS EUtVA(int tier) {
+            return EUtVA(Math.abs(tier), tier < 0);
+        }
+
+        public GTRecipeJS EUtVH(int tier, boolean isGenerator) {
+            return tieredEUtBuilderMethod(GTValues.VH, tier, isGenerator);
+        }
+
+        public GTRecipeJS EUtVH(int tier) {
+            return EUtVH(Math.abs(tier), tier < 0);
+        }
+
+        public GTRecipeJS EUtVHA(int tier, boolean isGenerator) {
+            return tieredEUtBuilderMethod(GTValues.VHA, tier, isGenerator);
+        }
+
+        public GTRecipeJS EUtVHA(int tier) {
+            return EUtVHA(Math.abs(tier), tier < 0);
+        }
+
         public GTRecipeJS outputEU(EnergyStack eu) {
             return output(EURecipeCapability.CAP, eu);
         }
